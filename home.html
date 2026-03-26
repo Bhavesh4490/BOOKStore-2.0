@@ -1523,34 +1523,35 @@ const now = Date.now();
 // 🔥 GET BEST NAME
 let name = "User";
 
-if (user.name) {
-  name = user.name;
-} else if (user.email) {
-  name = user.email.split("@")[0];
-}
+if (user.displayName) {
+  // ✅ GOOGLE NAME (BEST)
+  name = user.displayName;
 
-// 🔥 🚀 FORCE SAVE INTO FIREBASE AUTH PROFILE
-if (!user.name && name !== "User") {
-  await updateProfile(user, {
-    name: name
-  });
+} else if (snapshot.exists() && snapshot.val().name) {
+  // ✅ FALLBACK DB NAME
+  name = snapshot.val().name;
+
+} else if (user.email) {
+  // ✅ LAST FALLBACK
+  name = user.email.split("@")[0];
 }
 
 if (!snapshot.exists()) {
 
+  // 🔥 NEW USER → SAVE GOOGLE NAME
   await set(userRef, {
     name: name,
     email: user.email || "",
     createdAt: now,
     lastSeen: now,
-    device: device   // 🔥 added
+    device: device
   });
 
 } else {
 
   const data = snapshot.val();
 
-  // 🔥 UPDATE NAME IF STILL "User"
+  // 🔥 UPDATE NAME ONLY IF EMPTY OR "User"
   if (!data.name || data.name === "User") {
     await set(ref(db, "users/" + uid + "/name"), name);
   }
