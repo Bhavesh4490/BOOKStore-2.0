@@ -1523,31 +1523,26 @@ const now = Date.now();
 // 🔥 GET BEST NAME
 let name = "User";
 
-if (user.displayName) {
-  // ✅ GOOGLE NAME (BEST)
-  name = user.displayName;
-
-} else if (snapshot.exists() && snapshot.val().name) {
-  // ✅ FALLBACK DB NAME
+if (snapshot.exists() && snapshot.val().name) {
   name = snapshot.val().name;
 
-} else if (user.email) {
-  // ✅ LAST FALLBACK
-  name = user.email.split("@")[0];
+} else {
+  // fallback ONLY if DB empty
+  name = user.email ? user.email.split("@")[0] : "User";
+
+  // save fallback into DB
+  await set(ref(db, "users/" + uid + "/name"), name);
 }
 
 if (!snapshot.exists()) {
-
-  // 🔥 NEW USER → SAVE GOOGLE NAME
   await set(userRef, {
-    name: name,
+    name: user.email ? user.email.split("@")[0] : "User",
     email: user.email || "",
     createdAt: now,
     lastSeen: now,
     device: device
   });
-
-} else {
+}else {
 
   const data = snapshot.val();
 
