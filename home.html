@@ -1523,16 +1523,16 @@ const now = Date.now();
 // 🔥 GET BEST NAME
 let name = "User";
 
-if (user.displayName) {
-  name = user.displayName;
+if (user.name) {
+  name = user.name;
 } else if (user.email) {
   name = user.email.split("@")[0];
 }
 
 // 🔥 🚀 FORCE SAVE INTO FIREBASE AUTH PROFILE
-if (!user.displayName && name !== "User") {
+if (!user.name && name !== "User") {
   await updateProfile(user, {
-    displayName: name
+    name: name
   });
 }
 
