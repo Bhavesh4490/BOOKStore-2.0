@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - BOOKStore</title>
+
+<!-- WhatsApp / Social Share Preview -->
+<meta property="og:title" content="BOOKStore - Official Platform">
+<meta property="og:description" content="Bharat’s Freemium Educational Platform. Free Books for Class 10 and 11.">
+<meta property="og:image" content="https://bookstore-nt.vercel.app/click.png">
+<meta property="og:url" content="https://bookstore-nt.vercel.app/">
+<meta property="og:type" content="website">
+
+<!-- Twitter Preview (also used by some apps) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BOOKStore - Official Platform">
+<meta name="twitter:description" content="Free learning books and study resources for students.">
+<meta name="twitter:image" content="https://bookstore-nt.vercel.app/click.png">
+
+<link rel="icon" type="image/png" href="book.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+background:#f5f6fa;
+padding-top:65px;
+}
+/* TOP NAVBAR */
+
+.navbar{
+height:65px;
+background:#111a22;
+color:white;
+display:flex;
+align-items:center;
+padding:0 20px;
+gap:20px;
+
+/* NEW */
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+overflow:visible;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+.dropdown{
+margin-left:10px;
+background:#1f2a33;
+padding:6px 14px;
+border-radius:6px;
+font-size:14px;
+white-space:nowrap;
+}
+#goalDropdown{
+position:relative;
+cursor:pointer;
+}
+
+.goal-menu{
+position:absolute;
+top:40px;
+left:0;
+background:white;
+color:#333;
+border-radius:8px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+width:200px;
+overflow:hidden;
+}
+
+.goal-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.goal-menu div:hover{
+background:#f2f2ff;
+}
+
+#goalDropdown.active .goal-menu{
+display:block;
+}
+
+#searchHint{
+position:absolute;
+left:34px;
+color:#9aa6b2;
+font-size:14px;
+pointer-events:none;
+transition:opacity 0.4s, transform 0.4s;
+}
+
+.search-box input:focus + #searchHint{
+opacity:0;
+transform:translateY(-8px);
+}
+.user{
+margin-left:auto;
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+.search input{
+width:260px;
+padding:8px 12px;
+border-radius:6px;
+border:none;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+/* LAYOUT */
+
+.container{
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#efefef;
+height:calc(100vh - 65px);
+padding:20px;
+
+/* NEW */
+position:fixed;
+top:65px;
+left:0;
+overflow-y:auto;
+}
+.sidebar h4{
+font-size:12px;
+margin-top:15px;
+margin-bottom:8px;
+color:#777;
+}
+
+.sidebar a{
+display:block;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:4px;
+}
+
+.sidebar a.active{
+background:#dcd6ff;
+color:#5c4cff;
+font-weight:500;
+}
+/* SIDEBAR BUTTONS */
+
+.sidebar a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:11px 12px;
+border-radius:10px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:6px;
+transition:all 0.25s ease;
+position:relative;
+}
+
+/* ICON */
+
+.sidebar a i{
+font-size:18px;
+color:#6b7280;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.sidebar a:hover{
+background:#f3f4ff;
+color:#5c4cff;
+transform:translateX(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* LEFT ACTIVE BAR */
+
+.sidebar a::before{
+content:"";
+position:absolute;
+left:-10px;
+top:50%;
+transform:translateY(-50%);
+width:4px;
+height:0;
+background:#5c4cff;
+border-radius:4px;
+transition:0.25s;
+}
+
+
+/* ACTIVE PAGE */
+
+.sidebar a.active{
+background:#ece9ff;
+color:#5c4cff;
+font-weight:500;
+}
+
+.sidebar a.active i{
+color:#5c4cff;
+}
+
+.sidebar a.active::before{
+height:70%;
+}
+/* MAIN */
+
+.main{
+flex:1;
+margin-left:230px;
+height:calc(100vh - 65px);
+overflow-y:auto;
+padding:0; /* 🔥 remove top gap */
+}
+
+.main h2{
+margin-bottom:10px;
+}
+.sidebar{
+z-index:100;
+}
+
+.main{
+z-index:1;
+}
+.small{
+font-size:14px;
+color:#777;
+margin-bottom:20px;
+}
+
+/* FILTERS */
+
+.filters{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filters button{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+}
+
+/* COURSE GRID */
+
+.courses{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.banner{
+height:150px;
+background-size:cover;
+background-position:center;
+position:relative;
+}
+
+.language{
+position:absolute;
+top:10px;
+right:10px;
+background:white;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+}
+
+.card-content{
+padding:16px;
+}
+
+.category{
+font-size:12px;
+color:#ff6a00;
+margin-bottom:6px;
+}
+
+.title{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.date{
+font-size:13px;
+color:#666;
+margin-bottom:10px;
+}
+
+.price{
+font-weight:600;
+}
+
+.discount{
+color:green;
+font-size:13px;
+}
+
+.explore{
+margin-top:10px;
+background:#111a22;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+/* POPUP BACKGROUND */
+
+#goalPopup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none; /* hidden by default */
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+/* POPUP BOX */
+
+.goal-box{
+width:600px;
+background:white;
+border-radius:12px;
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+
+.goal-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.goal-header h2{
+flex:1;
+text-align:center;
+font-weight:500;
+}
+
+/* GRID */
+
+.goal-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+/* CARDS */
+
+.goal-card{
+padding:18px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+background:#fafafa;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.goal-card:hover{
+border:2px solid #6c63ff;
+background:#f4f3ff;
+transform:translateY(-2px);
+}
+/* CLASS FILTER */
+
+.class-filter{
+position:relative;
+}
+
+.class-menu{
+position:absolute;
+top:42px;
+left:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+min-width:180px;
+overflow:hidden;
+z-index:10;
+}
+
+.class-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.class-menu div:hover{
+background:#f2f2ff;
+}
+
+.class-filter.active .class-menu{
+display:block;
+}
+/* USER DROPDOWN */
+
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+}
+
+.user-avatar{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+.dropdown-icon{
+font-size:16px;
+color:#ccc;
+}
+
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index:100;
+}
+
+.user-menu a,
+.user-menu button{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+font-size:14px;
+border:none;
+background:none;
+text-decoration:none;
+color:#333;
+cursor:pointer;
+width:100%;
+}
+
+.user-menu a:hover{
+background:#f3f3ff;
+}
+
+#logoutBtn{
+color:red;
+}
+
+#logoutBtn:hover{
+background:#ffecec;
+}
+
+.user.active .user-menu{
+display:flex;
+}
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+
+/* 🔥 FIX */
+z-index:99999;   /* increase this */
+}
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+z-index:1001; /* higher than navbar children */
+}
+/* Hover effect on cards - Highlight box */
+.card:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    border: 1px solid #1c252e; /* Highlight the card with a border */
+}
+
+/* Hover effect on "Explore Now" button - lighten color */
+.explore:hover {
+    background: #1c252e; /* Lighter background */
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease; /* Smooth transition */
+}
+/* PROFILE PAGE */
+.profile-page{
+max-width:1000px;
+margin:auto;
+padding-left:5px; /* small shift to left */
+}
+
+
+/* BACK ICON */
+
+.profile-header i{
+font-size:22px;
+cursor:pointer;
+color:#555;
+transition:0.2s;
+}
+
+.profile-header i:hover{
+color:#000;
+}
+
+/* TITLE */
+
+.profile-header h2{
+font-size:22px;
+font-weight:600;
+color:#111a22;
+}
+
+/* MAIN CARD */
+
+.profile-card{
+background:white;
+border-radius:12px;
+padding:28px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+border:1px solid #f0f0f0;
+}
+
+/* TOP SECTION */
+
+.profile-top{
+display:flex;
+justify-content:space-between;
+gap:30px;
+margin-bottom:30px;
+}
+
+/* LEFT PROFILE */
+
+.profile-left{
+text-align:center;
+width:200px;
+}
+
+.avatar-box{
+position:relative;
+width:110px;
+height:110px;
+margin:auto;
+}
+
+.avatar-box img{
+width:100%;
+height:100%;
+border-radius:50%;
+background:#ffd34d;
+padding:8px;
+}
+
+
+/* NAME */
+
+.profile-left h3{
+margin-top:10px;
+font-weight:600;
+}
+
+/* LEVEL BOX */
+
+.level-box{
+flex:1;
+background:#eef0f6;
+border-radius:12px;
+padding:20px;
+}
+
+.level-box h4{
+margin-bottom:12px;
+}
+/* Updated Tooltip Styling */
+.xp-card {
+    position: relative;
+}
+.level-box{
+flex:1;
+background:#f1f3f9; /* 🔥 light grey */
+border-radius:16px;
+padding:22px;
+color:#111;
+border:1px solid #e5e7eb;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
+
+/* TITLE */
+.level-box h4{
+font-weight:500;
+margin-bottom:12px;
+color:#333;
+}
+
+/* XP CARD */
+.xp-card{
+background:white;
+border-radius:12px;
+padding:16px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border:1px solid #eee;
+}
+
+/* LABEL */
+.xp-label{
+font-size:14px;
+color:#555;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+/* VALUE */
+.xp-value{
+font-size:20px;
+font-weight:600;
+color:#111;
+}
+
+/* ICON */
+.xp-info-wrapper i{
+color:#888;
+}
+
+.xp-info-wrapper i:hover{
+color:#111;
+}
+/* DETAILS */
+
+.profile-details{
+margin-top:10px;
+}
+
+.details-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:8px;
+}
+
+.edit-btn{
+border:none;
+background:none;
+color:#5c4cff;
+font-size:14px;
+display:flex;
+align-items:center;
+gap:6px;
+cursor:pointer;
+}
+.edit-btn:hover{
+    color:#877cfc;
+}
+.profile-details hr{
+border:none;
+border-top:1px solid #eee;
+margin-bottom:16px;
+}
+
+/* ROWS */
+
+.detail-row{
+display:flex;
+padding:10px 0;
+}
+
+.label{
+width:230px;
+color:#777;
+font-size:14px;
+}
+
+.value{
+font-weight:500;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+.profile-top{
+flex-direction:column;
+align-items:center;
+}
+
+.level-box{
+width:100%;
+}
+
+.xp-card{
+width:100%;
+}
+
+.detail-row{
+flex-direction:column;
+gap:4px;
+}
+
+.label{
+width:auto;
+}
+
+}
+/* Info Icon Styling */
+.xp-card {
+    position: relative; /* Make the card position relative to place the icon */
+}
+
+.xp-info-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ICON */
+.xp-info-wrapper i {
+    font-size: 12px;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.xp-info-wrapper i:hover {
+    color: #5c4cff;
+}
+
+/* TOOLTIP */
+.xp-info-tooltip {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: #111a22;
+    color: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    width: 260px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    z-index: 999;
+}
+
+/* ARROW */
+.xp-info-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent #111a22 transparent;
+}
+
+/* ✅ THIS IS THE KEY FIX */
+.xp-info-wrapper:hover .xp-info-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+.cancel-btn{
+    padding:8px 14px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    background:white;
+    cursor:pointer;
+}
+
+.save-btn{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    background:#6c63ff;
+    color:white;
+    cursor:pointer;
+}
+/* Save button inactive by default */
+.save-btn {
+    background: #6c63ff;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.save-btn.active {
+    cursor: pointer;
+    opacity: 1;
+}
+/* 🔥 PROFILE STICKY HEADER */
+.profile-sticky-header{
+position:sticky;
+top:0;
+background:#f5f6fa;
+z-index:50;
+padding:10px 0;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* reuse same title style */
+.page-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+font-weight:500;
+color:#111;
+padding:0 20px;
+}
+
+/* back button */
+.back-btn{
+font-size:20px;
+cursor:pointer;
+opacity:0.7;
+transition:0.2s;
+}
+
+.back-btn:hover{
+opacity:1;
+transform:translateX(-2px);
+}.profile-page{
+max-width:1000px;
+margin:auto;
+padding:20px 25px; /* spacing here instead */
+}
+/* 🔥 SMOOTH FADE BACKGROUND */
+body.modal-open .navbar,
+body.modal-open .sidebar,
+body.modal-open .main {
+    filter: blur(6px) brightness(0.7);
+    transition: all 0.3s ease;
+    pointer-events: none; /* disable clicks behind */
+}
+
+/* USER CARD */
+.user-card{
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    transition:0.3s ease;
+    border:1px solid #eee;
+}
+
+.user-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 28px rgba(0,0,0,0.15);
+}
+
+/* TOP */
+.user-top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+}
+
+.user-top img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+}
+
+/* NAME */
+.user-name{
+    font-weight:600;
+    font-size:15px;
+}
+
+/* EMAIL */
+.user-email{
+    font-size:13px;
+    color:#666;
+}
+
+/* INFO */
+.user-info{
+    font-size:13px;
+    color:#555;
+    margin-top:8px;
+}
+
+/* ROLE BADGE */
+.badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    margin-top:8px;
+}
+
+.admin-badge{
+    background:#ffecec;
+    color:red;
+}
+
+.user-badge{
+    background:#eef2ff;
+    color:#5c4cff;
+}
+/* Limit 3 cards per row */
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    gap: 20px;
+}
+
+/* XP container inside card */
+.user-xp {
+    margin-top: 12px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #eee;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+.user-xp:hover {
+    background: #f9f9f9;
+}
+.user-xp input {
+    width: 60px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 2px 6px;
+}
+/* VIP Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 26px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #5c4cff;
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+.vip-label {
+  font-size: 13px;
+  color: #555;
+  margin-left: 8px;
+}
+.last-seen {
+  font-size: 13px;
+  color: #888;
+  margin-top: 6px;
+}
+/* VIP Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 26px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #5c4cff;
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+.vip-label {
+  font-size: 13px;
+  color: #555;
+  margin-left: 8px;
+}
+.last-seen {
+  font-size: 13px;
+  color: #888;
+  margin-top: 6px;
+}
+.copy-btn{
+    border:none;
+    background:#f1f3f9;
+    padding:6px 8px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.copy-btn:hover{
+    background:#e0e4ff;
+}
+/* 🔥 EDIT INPUT (Name + XP) */
+.edit-input{
+    width: 100%;
+    max-width: 140px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1.5px solid #d1d5db;
+    outline: none;
+    transition: all 0.25s ease;
+    background: #f9fafb;
+    font-weight: 500;
+}
+
+/* ✨ FOCUS EFFECT */
+.edit-input:focus{
+    border-color: #5c4cff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(92,76,255,0.15);
+}
+
+/* ❌ ERROR LOOK (optional future use) */
+.edit-input.error{
+    border-color: #ef4444;
+    background: #fff0f0;
+}
+
+/* 🔢 XP SMALL INPUT */
+.edit-input.xp{
+    max-width: 80px;
+    text-align: center;
+}
+/* MOBILE NAVBAR */
+.menu-btn{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* MOBILE STYLES */
+@media (max-width:768px){
+
+  .navbar{
+    padding:0 12px;
+    justify-content:space-between;
+  }
+
+  /* SHOW MENU ICON */
+  .menu-btn{
+    display:block;
+    color:white;
+  }
+
+  /* HIDE LOGO */
+  .logo{
+    display:none;
+  }
+
+
+  /* HIDE SEARCH (optional like image) */
+  .search{
+    display:none;
+  }
+
+  /* HIDE "Hi, User" TEXT */
+  #userName{
+    display:none;
+  }
+
+  /* KEEP ONLY AVATAR */
+  .user{
+    gap:0;
+  }
+
+  /* OPTIONAL: SMALLER DROPDOWN */
+  .dropdown{
+    padding:5px 10px;
+    font-size:13px;
+  }
+.sidebar{
+    position:fixed;
+    top:65px;
+    left:0;
+    width:260px;
+    height:calc(100vh - 65px);
+    background:#ffffff;
+    transform:translateX(-100%);
+    transition:transform 0.35s ease;
+    z-index:1001;
+    box-shadow:4px 0 20px rgba(0,0,0,0.15);
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+  }
+
+  .sidebar.active{
+    transform:translateX(0);
+  }
+  .sidebar a:hover{
+  transform:translateX(6px);
+}
+  /* REMOVE LEFT MARGIN FROM MAIN */
+  .main{
+    margin-left:0;
+  }
+  .users-grid{
+        grid-template-columns: 1fr; /* ✅ 1 card per row */
+        gap:14px;
+    }
+}
+
+#overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s ease;
+  z-index:1000;
+}
+
+#overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+/* SEARCH BAR BELOW ALL USERS */
+.search-container {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-container input:focus {
+    border-color: #5c4cff;
+    box-shadow: 0 0 0 3px rgba(92, 76, 255, 0.1);
+}
+
+.search-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+<div id="overlay"></div>
+<!-- NAVBAR -->
+
+<div class="navbar">
+<div class="menu-btn" id="menuBtn">
+  <i class="ph ph-list"></i>
+</div>
+<a href="home.html" class="logo">
+  <img src="logo.png">
+</a>
+
+<div class="dropdown" id="goalDropdown">
+
+<span id="goalText">Select Goal</span>
+<span style="margin-left:6px;">▼</span>
+
+<div id="goalMenu" class="goal-menu">
+<div data-goal="class9th">9th Class</div>
+<div data-goal="board10th">10th Boards</div>
+<div data-goal="science11">11th Science</div>
+<div data-goal="commerce11">11th Commerce</div>
+<div data-goal="humanities11">11th Humanities</div>
+
+</div>
+
+</div>
+
+
+<div class="user" id="userBox">
+
+<span id="userName">Hi, User</span>
+
+<div class="user-avatar">
+
+<img src="https://static.pw.live/images/boy_20250107145242.png">
+
+<i class="ph ph-caret-down dropdown-icon"></i>
+
+</div>
+
+<div class="user-menu" id="userMenu">
+
+<a href="profile.html">
+<i class="ph ph-user"></i> My Profile
+</a>
+
+<button id="logoutBtn">
+<i class="ph ph-sign-out"></i> Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<a href="study.html">
+<i class="ph ph-graduation-cap"></i> Study Hub
+</a>
+
+<a href="home.html">
+<i class="ph ph-squares-four"></i> All Classes
+</a>
+<a class="active" id="adminLink" style="display:none;">
+  <i class="ph ph-lock"></i> Admin Panel
+</a>
+
+
+
+<h4>MORE</h4>
+
+<a href="josh-game.html">
+<i class="ph ph-lightning"></i> Josh Game
+</a>
+
+
+<a href="refer.html">
+<i class="ph ph-gift"></i> Refer & Earn
+</a>
+
+<a href="about.html">
+<i class="ph ph-info"></i> About us
+</a>
+
+<a href="privacy.html">
+<i class="ph ph-shield-check"></i> Privacy Policy
+</a>
+
+</div>
+
+<!-- GOAL SELECTION POPUP -->
+
+<div id="goalPopup">
+
+<div class="goal-box">
+
+<div class="goal-header">
+<h2>Select your Goal</h2>
+</div>
+
+<div class="goal-grid">
+<div class="goal-card" data-goal="class9th">
+9th Class
+</div>
+<div class="goal-card" data-goal="board10th">
+10th Boards
+</div>
+
+<div class="goal-card" data-goal="science11">
+11th Science
+</div>
+
+<div class="goal-card" data-goal="commerce11">
+11th Commerce
+</div>
+
+<div class="goal-card" data-goal="humanities11">
+11th Humanities
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="main">
+    <!-- 🔥 STICKY HEADER -->
+<div class="profile-sticky-header">
+    <div class="page-title">
+        <i class="ph ph-arrow-left back-btn" onclick="history.back()"></i>
+        <span>Admin Panel</span>
+    </div>
+</div>
+<div style="padding:20px;">
+    <h2 style="margin-bottom:15px;">
+        All Users (<span id="totalUsers">0</span> Users)
+    </h2>
+
+    <div class="search-container">
+        <i class="ph ph-magnifying-glass"></i>
+        <input type="text" id="userSearch" placeholder="Search by name or email...">
+    </div>
+
+    <div id="usersContainer" class="users-grid"></div>
+</div>
+</div>
+<!-- LOGOUT CONFIRM POPUP -->
+<div id="logoutPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+">
+
+  <div style="
+    width:400px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  ">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-weight:500;">Confirm Logout</h3>
+      <span id="closeLogoutPopup" style="cursor:pointer; font-size:18px;">✕</span>
+    </div>
+
+    <p style="margin-top:10px; color:#555;">
+      Are you sure you want to log out? You'll need to log in again to access your account.
+    </p>
+
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      
+      <button id="cancelLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:1px solid #6c63ff;
+        background:white;
+        color:#6c63ff;
+        cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+      <button id="confirmLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:none;
+        background:#6c63ff;
+        color:white;
+        cursor:pointer;
+      ">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<!-- FIREBASE LOGIN PROTECTION -->
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import { 
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import {
+getDatabase,
+ref,
+get,
+set,
+onValue
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+
+const firebaseConfig = {
+apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+authDomain: "bookstore-6ab08.firebaseapp.com",
+projectId: "bookstore-6ab08",
+databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/"
+};
+
+const app = initializeApp(firebaseConfig);
+const userName = document.getElementById("userName");
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const popup = document.getElementById("goalPopup");
+const goalText = document.getElementById("goalText");
+
+const goalMap={
+    class9th:"9th Class",
+board10th:"10th Boards",
+science11:"11th Science",
+commerce11:"11th Commerce",
+humanities11:"11th Humanities"
+};
+
+window.closeBook = function(){
+
+document.getElementById("viewerPane").style.display="none";
+
+document.getElementById("pdfFrame").src="";
+
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const xpCard = document.querySelector(".xp-card");
+    const xpInfoIcon = document.getElementById("xp-info-icon");
+
+});
+/* AUTH CHECK */
+
+document.body.style.display="none";
+
+// Wait for Firebase auth to finish and body to be visible
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuBtn.onclick = () => {
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+};
+
+// CLOSE when clicking outside
+overlay.onclick = () => {
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+};
+
+    document.body.style.display = "block";
+
+    const uid = user.uid;
+    const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
+const adminLink = document.getElementById("adminLink");
+
+if(uid === adminUID){
+  adminLink.style.display = "flex";
+}
+const userRef = ref(db, "users/" + uid);
+// 🔥 LOAD ALL USERS
+// 🔥 REALTIME USERS LOAD (BEST METHOD)
+
+const usersContainer = document.getElementById("usersContainer");
+const usersRef = ref(db, "users");
+
+onValue(usersRef, (snapshot) => {
+
+    const usersData = snapshot.val() || {};
+const totalUsers = Object.keys(usersData).length;
+
+document.getElementById("totalUsers").innerText = totalUsers;
+    usersContainer.innerHTML = "";
+
+    const sortedUsers = Object.entries(usersData).sort((a, b) => {
+    const [uidA, dataA] = a;
+    const [uidB, dataB] = b;
+
+    const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
+
+    // 🔥 1. Admin always on top
+    if (uidA === adminUID) return -1;
+    if (uidB === adminUID) return 1;
+
+    // 🔥 2. Sort by lastSeen (latest first)
+    const lastSeenA = dataA?.lastSeen || 0;
+    const lastSeenB = dataB?.lastSeen || 0;
+
+    if (lastSeenA !== lastSeenB) {
+        return lastSeenB - lastSeenA; // DESC
+    }
+
+    // 🔥 3. If same lastSeen → alphabetical
+    const nameA = (dataA?.name || "").toLowerCase();
+    const nameB = (dataB?.name || "").toLowerCase();
+
+    return nameA.localeCompare(nameB);
+});
+sortedUsers.forEach(([uidKey, userData]) => {
+        const name = userData?.name || "User";
+        const email = userData?.email || "No Email";
+        const goal = userData?.goals ? goalMap[userData.goals] : "No Goal";
+        const device = userData?.device || "Unknown";
+        const xp = userData?.xp || 0; // default XP
+        const isAdmin = uidKey === adminUID;
+
+        const card = document.createElement("div");
+        card.className = "user-card";
+
+       card.innerHTML = `
+    <div class="user-top">
+        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}">
+        <div>
+            <div class="user-name" data-uid="${uidKey}">
+    <span class="name-text">${name}</span>
+                <span class="badge ${isAdmin ? 'admin-badge' : 'user-badge'}">
+                    ${isAdmin ? 'Admin' : 'User'}
+                </span>
+            </div>
+            <div class="user-email">${email}</div>
+        </div>
+    </div>
+
+    <div class="user-info" style="display:flex; justify-content:space-between; align-items:center;">
+    <span><b>UID:</b> ********</span>
+    <button class="copy-btn" data-uid="${uidKey}" title="Copy UID">
+        <i class="ph ph-copy"></i>
+    </button>
+</div>
+    <div class="user-info"><b>Goal:</b> ${goal}</div>
+<div class="user-info"><b>Device:</b> ${device.charAt(0).toUpperCase() + device.slice(1)}</div>
+
+    <div class="user-xp" data-uid="${uidKey}">
+        <span>XP:</span>
+        <span class="xp-value">${xp}</span>
+    </div>
+
+    <div class="user-vip" style="margin-top:10px; display:flex; align-items:center;">
+        <label class="switch">
+            <input type="checkbox" ${userData?.vip ? 'checked' : ''} data-uid="${uidKey}">
+            <span class="slider round"></span>
+        </label>
+        <span class="vip-label">VIP</span>
+    </div>
+<div class="user-block" style="margin-top:10px; display:flex; align-items:center;">
+    <label class="switch">
+        <input type="checkbox" ${userData?.block ? 'checked' : ''} data-uid="${uidKey}" ${isAdmin ? 'disabled' : ''}>
+        <span class="slider round"></span>
+    </label>
+    <span class="vip-label" style="color:red;">Blocked</span>
+</div>
+    <div class="last-seen" data-uid="${uidKey}">
+        Last Seen: ${computeLastSeen(userData?.lastSeen)}
+    </div>
+`;
+        usersContainer.appendChild(card);
+    });
+document.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const uid = btn.dataset.uid;
+        navigator.clipboard.writeText(uid)
+        .then(() => {
+            btn.innerHTML = "✔";
+            setTimeout(()=>{
+                btn.innerHTML = '<i class="ph ph-copy"></i>';
+            },1000);
+        })
+        .catch(()=> alert("Copy failed"));
+    });
+});
+    // Add double-click edit event
+    document.querySelectorAll(".user-xp").forEach(xpCard => {
+        xpCard.ondblclick = function() {
+            const uidKey = this.dataset.uid;
+            const xpSpan = this.querySelector(".xp-value");
+            const currentXP = xpSpan.innerText;
+
+            const input = document.createElement("input");
+input.type = "number";
+input.value = currentXP;
+input.className = "edit-input xp";
+            xpSpan.replaceWith(input);
+            input.focus();
+
+            input.onblur = () => {
+                const newXP = input.value || 0;
+                set(ref(db, "users/" + uidKey + "/xp"), Number(newXP))
+                    .then(() => {
+                        const newSpan = document.createElement("span");
+                        newSpan.className = "xp-value";
+                        newSpan.innerText = newXP;
+                        input.replaceWith(newSpan);
+                    })
+                    .catch(err => alert("Error saving XP: " + err.message));
+            };
+        };
+    });
+    document.querySelectorAll(".user-name").forEach(nameBox => {
+    nameBox.ondblclick = function() {
+        const uidKey = this.dataset.uid;
+        const nameSpan = this.querySelector(".name-text");
+        const currentName = nameSpan.innerText;
+
+        const input = document.createElement("input");
+input.type = "text";
+input.value = currentName;
+input.className = "edit-input";
+
+        nameSpan.replaceWith(input);
+        input.focus();
+
+        input.onblur = () => {
+            const newName = input.value.trim() || "User";
+
+            set(ref(db, "users/" + uidKey + "/name"), newName)
+            .then(() => {
+                const newSpan = document.createElement("span");
+                newSpan.className = "name-text";
+                newSpan.innerText = newName;
+                input.replaceWith(newSpan);
+            })
+            .catch(err => alert("Error saving name: " + err.message));
+        };
+    };
+});
+// VIP toggle listener
+document.querySelectorAll(".user-vip input").forEach(toggle => {
+    toggle.addEventListener("change", (e) => {
+        const uidKey = e.target.dataset.uid;
+        const isVIP = e.target.checked;
+        set(ref(db, "users/" + uidKey + "/vip"), isVIP)
+          .catch(err => alert("Error updating VIP: " + err.message));
+    });
+});
+// BLOCK toggle listener
+document.querySelectorAll(".user-block input").forEach(toggle => {
+    toggle.addEventListener("change", (e) => {
+        const uidKey = e.target.dataset.uid;
+        const isBlocked = e.target.checked;
+
+        set(ref(db, "users/" + uidKey + "/block"), isBlocked)
+            .catch(err => alert("Error updating Block: " + err.message));
+    });
+});
+// Compute human-readable Last Seen
+function computeLastSeen(timestamp) {
+    if (!timestamp) return "N/A";  // If lastSeen is null or undefined
+
+    const now = Date.now();
+    const diff = now - timestamp;
+
+    const seconds = Math.floor(diff / 1000);
+    if (seconds < 60) return "Just Now";  // If less than 1 minute
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return minutes + " Min ago";  // If less than 1 hour
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return hours + " Hr ago";  // If less than 24 hours
+    const days = Math.floor(hours / 24);
+    if (days === 1) return "1 Day Ago";  // If 1 day
+    if (days < 7) return days + " Days Ago";  // Less than 7 days
+    return "N/A";  // For anything older or unknown
+}
+// Update Last Seen in real-time
+onValue(usersRef, (snapshot) => {
+    snapshot.forEach(([uidKey, userData]) => {
+        const lastSeenEl = document.querySelector(`.last-seen[data-uid="${uidKey}"]`);
+        if(lastSeenEl){
+            lastSeenEl.innerText = "Last Seen: " + computeLastSeen(userData?.lastSeen);
+        }
+    });
+});
+// Add this inside your script, ideally after the onValue(usersRef, ...) block
+const userSearch = document.getElementById("userSearch");
+
+userSearch.addEventListener("input", function() {
+    const searchTerm = this.value.toLowerCase();
+    const userCards = document.querySelectorAll(".user-card");
+
+    userCards.forEach(card => {
+        const name = card.querySelector(".name-text").innerText.toLowerCase();
+        const email = card.querySelector(".user-email").innerText.toLowerCase();
+        
+        if (name.includes(searchTerm) || email.includes(searchTerm)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
+}, (error) => {
+    console.error("❌ Firebase Error:", error);
+});
+get(userRef).then((snapshot) => {
+    const data = snapshot.exists() ? snapshot.val() : {};
+
+    // ✅ FIX NAME
+    const name = data.name || user.name || "User";
+    document.getElementById("userName").innerText = "Hi, " + name;
+
+    // ✅ FIX GOAL LOAD
+    const userGoal = data.goals;
+
+    if (userGoal && goalMap[userGoal]) {
+        goalText.innerText = goalMap[userGoal];
+        popup.style.display = "none";
+    } else {
+        popup.style.display = "flex"; // show if not selected
+    }
+
+}).catch((err) => console.error(err));
+    // Modal logic
+    const editBtn = document.querySelector(".edit-btn");
+    const closeBtn = document.getElementById("closeModal");
+    const cancelBtn = document.getElementById("cancelModal");
+    const saveBtn = document.getElementById("saveChangesBtn"); // Save button
+
+    if(editBtn && modal) {
+        editBtn.onclick = (e) => {
+            e.stopPropagation();
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden"; 
+        };
+    }
+    
+    if(closeBtn) closeBtn.onclick = () => { modal.classList.remove("active"); document.body.style.overflow = "auto"; };
+    if(cancelBtn) cancelBtn.onclick = () => { modal.classList.remove("active"); document.body.style.overflow = "auto"; };
+    if(modal) modal.onclick = (e) => { if(e.target === modal){ modal.classList.remove("active"); document.body.style.overflow = "auto"; } };
+
+    // ✅ Save updated name to Realtime Database
+    if(saveBtn){
+        saveBtn.onclick = () => {
+            const newName = document.getElementById("modalName").value.trim();
+            if(newName === "") return alert("Name cannot be empty.");
+
+            set(ref(db, "users/" + uid + "/name"), newName)
+            
+            .then(() => {
+                // Update profile UI
+                const profileLeftName = document.querySelector(".profile-left h3");
+                const profileNameField = document.getElementById("profileName");
+                const userName = document.getElementById("userName");
+
+                if(profileLeftName) profileLeftName.innerText = newName;
+                if(profileNameField) profileNameField.innerText = newName;
+                if(userName) userName.innerText = "Hi, " + newName;
+
+                // Close modal
+                modal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            })
+            .catch((err) => alert("Error saving name: " + err.message));
+        };
+    }
+    
+});
+
+const userBox = document.getElementById("userBox");
+userBox.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    userBox.classList.toggle("active");
+});
+
+/* CLOSE WHEN CLICK OUTSIDE */
+
+document.addEventListener("click",(e)=>{
+    if(!userBox.contains(e.target)){
+        userBox.classList.remove("active");
+    }
+});
+/* LOGOUT */
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+const logoutPopup = document.getElementById("logoutPopup");
+const confirmLogout = document.getElementById("confirmLogout");
+const cancelLogout = document.getElementById("cancelLogout");
+const closeLogoutPopup = document.getElementById("closeLogoutPopup");
+
+// Open popup
+logoutBtn.onclick = () => {
+  logoutPopup.style.display = "flex";
+};
+
+// Cancel / Close popup
+cancelLogout.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+closeLogoutPopup.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+// Confirm logout
+confirmLogout.onclick = () => {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
+};
+/* SAVE GOAL FROM POPUP */
+
+document.querySelectorAll(".goal-card").forEach(card=>{
+
+card.onclick=()=>{
+
+const goal=card.dataset.goal;
+
+const user=auth.currentUser;
+
+set(ref(db,"users/"+user.uid+"/goals"),goal);
+
+goalText.innerText=goalMap[goal];
+
+popup.style.display="none";
+
+};
+
+});
+
+
+/* DROPDOWN OPEN */
+
+const dropdown=document.getElementById("goalDropdown");
+
+dropdown.onclick=()=>{
+
+dropdown.classList.toggle("active");
+
+};
+
+
+/* CHANGE GOAL FROM DROPDOWN */
+
+document.querySelectorAll(".goal-menu div").forEach(item=>{
+
+item.onclick=(e)=>{
+
+e.stopPropagation();
+
+const goal=item.dataset.goal;
+
+const user=auth.currentUser;
+
+set(ref(db,"users/"+user.uid+"/goals"),goal);
+
+goalText.innerText=goalMap[goal];
+
+dropdown.classList.remove("active");
+
+};
+
+});
+const searchHint = document.getElementById("searchHint");
+/* HINT TEXTS */
+
+const hints = [
+"Search for 11th Sci",
+"Search for 10th Boards",
+"Search for 11th Commerce",
+"Search for 11th Humanities"
+];
+let hintIndex = 0;
+let hintInterval;
+/* START HINT ROTATION */
+
+function startHintRotation(){
+
+hintInterval = setInterval(()=>{
+
+hintIndex = (hintIndex + 1) % hints.length;
+
+searchHint.style.opacity = 0;
+
+setTimeout(()=>{
+searchHint.innerText = hints[hintIndex];
+searchHint.style.opacity = 1;
+},300);
+
+},2500);
+
+}
+
+/* STOP ROTATION */
+
+function stopHintRotation(){
+clearInterval(hintInterval);
+}
+
+
+/* CLICK OUTSIDE */
+
+const searchInput = document.querySelector(".search input");
+
+document.addEventListener("click",(e)=>{
+
+if(searchInput && !searchInput.contains(e.target) && searchInput.value===""){
+
+searchHint.style.opacity = 1;
+if (searchHint) {
+    startHintRotation();
+}
+
+}
+
+});
+
+/* START ON LOAD */
+
+if (searchHint) {
+    startHintRotation();
+}
+function updateSearchHint(goal){
+
+const hintMap={
+board10th:"Search for 10th",
+science11:"Search for 11th Science",
+commerce11:"Search for 11th Commerce",
+humanities11:"Search for 11th Humanities"
+};
+
+searchHint.style.opacity=0;
+
+setTimeout(()=>{
+searchHint.innerText=hintMap[goal];
+searchHint.style.opacity=1;
+},300);
+
+}
+function updateCourseCount(){
+
+const courses=document.querySelectorAll(".card");
+
+const count=courses.length;
+
+document.getElementById("courseCount").innerText=count;
+
+}
+
+window.addEventListener("DOMContentLoaded",updateCourseCount);
+/* CLASS FILTER DROPDOWN */
+
+const classFilter=document.getElementById("classFilter");
+const classBtn=document.getElementById("classBtn");
+
+classBtn.onclick=()=>{
+
+classFilter.classList.toggle("active");
+
+};
+
+/* SELECT CLASS */
+
+document.querySelectorAll(".class-menu div").forEach(item=>{
+
+item.onclick=(e)=>{
+
+e.stopPropagation();
+
+const selected=item.innerText;
+
+classBtn.innerText=selected+" ▼";
+
+classFilter.classList.remove("active");
+
+};
+
+});
+
+import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* USER DROPDOWN */
+const userMenu = document.getElementById("userMenu");
+
+</script>
+</body>
+</html>

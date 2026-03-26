@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy - BOOKStore</title>
+<link rel="icon" type="image/png" href="book.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+<!-- LEFT (hamburger for mobile) -->
+<a  href="index.html" class="nav-left">
+    <div class="hamburger" onclick="openMenu()">☰</div>
+    <img src="book.png" class="logo">
+</a>
+
+<nav class="nav-center">
+<a href="class10.html" class="protected-link">10th Boards</a>
+<a href="science11.html" class="protected-link">11th Science</a>
+<a href="commerce11.html" class="protected-link">11th Commerce</a>
+<a href="humanities11.html" class="protected-link">11th Humanities</a>
+</nav>
+
+<!-- RIGHT -->
+<div class="nav-right">
+
+    <!-- LOGIN BUTTON -->
+    <button class="login-btn" id="loginButton" onclick="openLogin()">
+        Login / Register
+    </button>
+
+    <!-- USER MENU -->
+    <div class="user-menu" id="userMenu" style="display:none;">
+        <div class="user-icon" onclick="toggleDropdown()">
+            <i class="fas fa-user"></i>
+        </div>
+
+        <div class="user-dropdown" id="userDropdown">
+            <a href="profile.html">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+
+            <hr>
+
+            <button class="logout-btn" onclick="logoutUser()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+</div>
+
+</header>
+<!-- MOBILE SIDEBAR MENU -->
+<div class="mobile-sidebar" id="mobileSidebar">
+
+    <!-- TOP -->
+    <div class="menu-top">
+        <img src="book.png" class="menu-logo">
+        <span class="close-btn" onclick="closeMenu()">✕</span>
+    </div>
+
+    <!-- MENU ITEMS -->
+    <div class="menu-items">
+        <a href="class10.html" class="protected-link">10th Boards</a>
+<a href="science11.html" class="protected-link">11th Science</a>
+<a href="commerce11.html" class="protected-link">11th Commerce</a>
+<a href="humanities11.html" class="protected-link">11th Humanities</a>
+    </div>
+
+    <!-- BOTTOM BUTTON -->
+    <div class="menu-bottom" id="menuBottom">
+    <button class="menu-login-btn" onclick="openLogin()">Login/Register</button>
+</div>
+
+</div>
+<!-- OVERLAY -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<!-- PRIVACY POLICY SECTION -->
+
+<section class="privacy-section">
+
+<div class="privacy-container">
+
+<h1>Privacy Policy</h1>
+
+<p>
+At <strong>BOOKStore</strong>, we value your privacy and are committed to protecting your personal information. 
+This Privacy Policy explains how we collect, use, and safeguard your data when you use our platform.
+</p>
+
+<h3>1. Information We Collect</h3>
+<p>
+We may collect personal information such as your email address, account details, and usage data when you register or interact with our services.
+</p>
+
+<h3>2. How We Use Your Information</h3>
+<p>
+Your information helps us provide better educational services, improve our platform, personalize your experience, and maintain security.
+</p>
+
+<h3>3. Data Protection</h3>
+<p>
+We use secure technologies and trusted services like Firebase to store and protect your data. Your personal information is never sold to third parties.
+</p>
+
+<h3>4. Third-Party Services</h3>
+<p>
+BOOKStore may use third-party services such as Google authentication for login. These services have their own privacy policies.
+</p>
+
+<h3>5. Updates to This Policy</h3>
+<p>
+We may update this Privacy Policy from time to time. Any changes will be posted on this page.
+</p>
+
+<p class="privacy-last">
+If you have any questions regarding this Privacy Policy, you can contact us through our official social media channels.
+</p>
+
+</div>
+
+</section>
+</section>
+<footer class="footer">
+
+<div class="footer-container">
+
+<!-- COLUMN 1 -->
+<div class="footer-col">
+
+<div class="footer-logo">
+<img src="book.png">
+<h3>BOOKStore</h3>
+</div>
+
+<p class="footer-desc">
+We understand that every student has unique needs and abilities, that's why our curriculum is designed to adapt to your needs and help you grow!
+</p>
+
+<h4 class="social-title">Let's get social :</h4>
+
+<div class="social-icons">
+
+<a href="https://www.instagram.com/bookstoreofficial_0/">
+<i class="fab fa-instagram"></i>
+</a>
+
+<a href="https://www.youtube.com/@bookstoreofficial">
+<i class="fab fa-youtube"></i>
+</a>
+
+<a href="http://t.me/bookstoretm">
+<i class="fab fa-telegram"></i>
+</a>
+
+</div>
+
+</div>
+
+
+<!-- COLUMN 2 -->
+<div class="footer-col">
+
+<h3 class="footer-heading">Company</h3>
+
+<a href="about.html">About Us</a>
+<a href="privacy.html">Privacy and Policy</a>
+
+</div>
+
+
+<!-- COLUMN 3 -->
+<div class="footer-col">
+
+<h3 class="footer-heading">Popular Exams</h3>
+
+<a href="class10.html" class="protected-link">10th Boards</a>
+<a href="science11.html" class="protected-link">11th Science</a>
+<a href="commerce11.html" class="protected-link">11th Commerce</a>
+<a href="humanities11.html" class="protected-link">11th Humanities</a>
+
+</div>
+
+</div>
+
+
+<!-- DIVIDER -->
+<div class="footer-divider"></div>
+
+
+<!-- LEARNING RESOURCES -->
+<div class="resources">
+
+<h3>Learning Resources</h3>
+
+<div class="resources-grid">
+
+<div>
+<h4>Know about BOOKStore</h4>
+<p>
+BOOKStore is an Indian online education platform that provides accessible & comprehensive learning experiences to students of class 10 and 11
+</p>
+</div>
+
+<div>
+<h4>What Makes Us Different</h4>
+<p>
+BOOKStore strives to develop a comprehensive pedagogical structure for students where they get a state-of-the-art learning experience with study material and resources.
+</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BOTTOM BAR -->
+
+<div class="footer-bottom">
+
+<div class="bottom-left">
+<a href="privacy.html">Privacy Policy</a> | 
+<a href="about.html">About Us</a>
+</div>
+
+<div class="bottom-right">
+Copyright © 2025 BOOKStore Limited All rights reserved.
+</div>
+
+</div>
+
+</footer>
+
+
+<div class="login-overlay" id="loginPopup">
+
+<div class="login-box">
+
+<button class="close-btn" onclick="closeLogin()">✕</button>
+
+<div class="login-image">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+</div>
+
+<h2>Please Enter your Details</h2>
+
+<form id="loginForm">
+
+<input type="email" id="email" placeholder="Email Address" required>
+
+<input type="password" id="password" placeholder="Password" required>
+
+<button type="submit" class="submit-btn">Login</button>
+
+<button type="button" class="google-btn" id="googleLogin">
+<img src="https://cdn-icons-png.flaticon.com/512/300/300221.png">
+Continue with Google
+</button>
+
+<p class="new-user">
+New User? <span onclick="openSignup()">Create Account</span>
+</p>
+<div class="form-alert" id="signupAlert"></div>
+
+<p class="terms-text">
+By continuing you agree to our 
+<a href="about.html">About Us</a> & 
+<a href="privacy.html">Privacy Policy</a>
+</p>
+
+</form>
+
+</div>
+
+</div>
+<div class="login-overlay" id="signupPopup">
+
+<div class="login-box">
+
+<button class="close-btn" onclick="closeSignup()">✕</button>
+
+<div class="login-image">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+</div>
+
+<h2>Create Your Account</h2>
+
+<form id="signupForm">
+
+<input type="email" id="signupEmail" placeholder="Email Address" required>
+
+<input type="password" id="signupPassword" placeholder="Password" required>
+
+<input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+
+<button type="submit" class="submit-btn">
+Create Account
+</button>
+
+<p class="new-user">
+Already a user? 
+<span onclick="switchToLogin()">Login</span>
+</p>
+
+<div class="form-alert" id="loginAlert"></div>
+
+<p class="terms-text">
+By continuing you agree to our 
+<a href="about.html">About Us</a> & 
+<a href="privacy.html">Privacy Policy</a>
+</p>
+</form>
+
+</div>
+</div>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+onAuthStateChanged,
+GoogleAuthProvider,
+signInWithPopup,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import {
+getDatabase,
+ref,
+set,
+get,
+child,
+update
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+authDomain:"bookstore-6ab08.firebaseapp.com",
+databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com",
+projectId:"bookstore-6ab08"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+
+async function saveUserToDatabase(user){
+
+const userRef = ref(db,"users/"+user.uid);
+
+const snapshot = await get(userRef);
+
+if(!snapshot.exists()){
+
+await set(userRef,{
+email:user.email || "",
+displayName:user.displayName || "",
+createdAt:Date.now(),
+lastSeen:Date.now(),
+verified:user.emailVerified || false
+});
+
+}else{
+
+await update(userRef,{
+lastSeen:Date.now()
+});
+
+}
+
+}
+/* AUTO LOGIN CHECK */
+let currentUser = null;
+onAuthStateChanged(auth, (user) => {
+
+const loginBtn = document.getElementById("loginButton");
+const userMenu = document.getElementById("userMenu");
+const menuBottom = document.getElementById("menuBottom");
+
+currentUser = user;
+
+if (user) {
+    if(loginBtn) loginBtn.style.display = "none";
+    if(userMenu) userMenu.style.display = "flex";
+
+    // 🔥 hide sidebar login button
+    if(menuBottom) menuBottom.style.display = "none";
+
+} else {
+    if(loginBtn) loginBtn.style.display = "block";
+    if(userMenu) userMenu.style.display = "none";
+
+    if(menuBottom) menuBottom.style.display = "block";
+}
+
+});
+function showLoginError(message){
+
+const box=document.getElementById("loginAlert");
+
+box.textContent=message;
+
+box.classList.add("show");
+
+}
+
+function showSignupError(message){
+
+const box=document.getElementById("signupAlert");
+
+box.textContent=message;
+
+box.classList.add("show");
+
+}
+/* LOGIN */
+
+document.getElementById("loginForm")
+.addEventListener("submit",(e)=>{
+
+e.preventDefault();
+
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+
+signInWithEmailAndPassword(auth,email,password)
+
+.then((userCredential)=>{
+
+const user=userCredential.user;
+
+set(ref(db,"users/"+user.uid+"/lastSeen"),Date.now());
+
+// redirect after login
+window.location.href = "home.html";
+
+})
+
+.catch((error)=>{
+
+if(error.code==="auth/email-already-in-use"){
+
+showSignupError("Email is already in use");
+
+}else{
+
+showSignupError(error.message);
+
+}
+
+});
+
+});
+const googleBtn = document.getElementById("googleLogin");
+
+googleBtn.addEventListener("click", async () => {
+
+try{
+
+const provider = new GoogleAuthProvider();
+
+const result = await signInWithPopup(auth, provider);
+
+const user = result.user;
+
+await saveUserToDatabase(user);
+
+// redirect after login
+window.location.href = "home.html";
+
+
+}catch(error){
+
+showLoginError("Google login failed");
+
+}
+
+});
+/* SIGNUP */
+
+document.getElementById("signupForm")
+.addEventListener("submit",(e)=>{
+
+e.preventDefault();
+
+const email=document.getElementById("signupEmail").value;
+const password=document.getElementById("signupPassword").value;
+const confirm=document.getElementById("confirmPassword").value;
+
+if(password!==confirm){
+showSignupError("Passwords don't match");
+return;
+}
+
+createUserWithEmailAndPassword(auth,email,password)
+.then(async(userCredential)=>{
+
+const user=userCredential.user;
+await saveUserToDatabase(user);
+
+// redirect after account creation
+window.location.href = "home.html";
+
+})
+.catch((error)=>{
+showSignupError(error.message);
+});
+
+});
+/* LOGOUT FUNCTION */
+
+window.logoutUser = function(){
+
+signOut(auth)
+.then(() => {
+
+    // optional: close dropdown
+    const dropdown = document.getElementById("userDropdown");
+    if(dropdown) dropdown.style.display = "none";
+
+    // redirect to home page
+    window.location.href = "index.html";
+
+})
+.catch((error) => {
+    console.error("Logout error:", error);
+});
+
+};
+
+/* PROTECT COURSE PAGES */
+
+document.querySelectorAll(".protected-link").forEach(link => {
+
+link.addEventListener("click", function(e){
+
+if(!currentUser){
+
+e.preventDefault();
+openLogin();
+
+}
+
+});
+
+});
+document.getElementById("allCoursesBtn").addEventListener("click", function(){
+
+if(currentUser){
+window.location.href = "home.html";
+}else{
+openLogin();
+}
+
+});</script>
+<script>
+function openMenu(){
+    document.getElementById("mobileSidebar").classList.add("active");
+    document.getElementById("menuOverlay").classList.add("active");
+}
+
+function closeMenu(){
+    document.getElementById("mobileSidebar").classList.remove("active");
+    document.getElementById("menuOverlay").classList.remove("active");
+}
+</script>
+<script>
+function openLogin(){
+
+    closeMenu(); // close sidebar
+
+    const popup = document.getElementById("loginPopup");
+
+    popup.classList.add("active");
+
+    // 🔥 LOCK BACKGROUND
+    document.body.style.overflow = "hidden";
+}
+
+function closeLogin(){
+
+    const popup = document.getElementById("loginPopup");
+
+    popup.classList.remove("active");
+
+    // 🔥 UNLOCK
+    document.body.style.overflow = "auto";
+}
+
+/* CLICK OUTSIDE CLOSE */
+document.getElementById("loginPopup").addEventListener("click",(e)=>{
+    if(e.target.id === "loginPopup"){
+        closeLogin();
+    }
+});
+</script>
+<script src="script.js"></script>
+
+</body>
+</html>

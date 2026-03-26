@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - BOOKStore</title>
+
+<!-- WhatsApp / Social Share Preview -->
+<meta property="og:title" content="BOOKStore - Official Platform">
+<meta property="og:description" content="Bharat’s Freemium Educational Platform. Free Books for Class 10 and 11.">
+<meta property="og:image" content="https://bookstore-nt.vercel.app/click.png">
+<meta property="og:url" content="https://bookstore-nt.vercel.app/">
+<meta property="og:type" content="website">
+
+<!-- Twitter Preview (also used by some apps) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BOOKStore - Official Platform">
+<meta name="twitter:description" content="Free learning books and study resources for students.">
+<meta name="twitter:image" content="https://bookstore-nt.vercel.app/click.png">
+
+<link rel="icon" type="image/png" href="book.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+background:#f5f6fa;
+padding-top:65px;
+}
+/* TOP NAVBAR */
+
+.navbar{
+height:65px;
+background:#111a22;
+color:white;
+display:flex;
+align-items:center;
+padding:0 20px;
+gap:20px;
+
+/* NEW */
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+overflow:visible;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+.dropdown{
+margin-left:10px;
+background:#1f2a33;
+padding:6px 14px;
+border-radius:6px;
+font-size:14px;
+white-space:nowrap;
+}
+
+.goal-menu{
+position:absolute;
+top:40px;
+left:0;
+background:white;
+color:#333;
+border-radius:8px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+width:200px;
+overflow:hidden;
+}
+
+.goal-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.goal-menu div:hover{
+background:#f2f2ff;
+}
+
+#goalDropdown.active .goal-menu{
+display:block;
+}
+
+#searchHint{
+position:absolute;
+left:34px;
+color:#9aa6b2;
+font-size:14px;
+pointer-events:none;
+transition:opacity 0.4s, transform 0.4s;
+}
+
+.search-box input:focus + #searchHint{
+opacity:0;
+transform:translateY(-8px);
+}
+.user{
+margin-left:auto;
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+.search input{
+width:260px;
+padding:8px 12px;
+border-radius:6px;
+border:none;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+/* LAYOUT */
+
+.container{
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#efefef;
+height:calc(100vh - 65px);
+padding:20px;
+
+/* NEW */
+position:fixed;
+top:65px;
+left:0;
+overflow-y:auto;
+}
+.sidebar h4{
+font-size:12px;
+margin-top:15px;
+margin-bottom:8px;
+color:#777;
+}
+
+.sidebar a{
+display:block;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:4px;
+}
+
+.sidebar a.active{
+background:#dcd6ff;
+color:#5c4cff;
+font-weight:500;
+}
+/* SIDEBAR BUTTONS */
+
+.sidebar a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:11px 12px;
+border-radius:10px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:6px;
+transition:all 0.25s ease;
+position:relative;
+}
+
+/* ICON */
+
+.sidebar a i{
+font-size:18px;
+color:#6b7280;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.sidebar a:hover{
+background:#f3f4ff;
+color:#5c4cff;
+transform:translateX(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* LEFT ACTIVE BAR */
+
+.sidebar a::before{
+content:"";
+position:absolute;
+left:-10px;
+top:50%;
+transform:translateY(-50%);
+width:4px;
+height:0;
+background:#5c4cff;
+border-radius:4px;
+transition:0.25s;
+}
+
+
+/* ACTIVE PAGE */
+
+.sidebar a.active{
+background:#ece9ff;
+color:#5c4cff;
+font-weight:500;
+}
+
+.sidebar a.active i{
+color:#5c4cff;
+}
+
+.sidebar a.active::before{
+height:70%;
+}
+/* MAIN */
+
+.main{
+flex:1;
+margin-left:230px;
+height:calc(100vh - 65px);
+overflow-y:auto;
+padding:0; /* 🔥 remove top gap */
+}
+
+.main h2{
+margin-bottom:10px;
+}
+.sidebar{
+z-index:100;
+}
+
+.main{
+z-index:1;
+}
+.small{
+font-size:14px;
+color:#777;
+margin-bottom:20px;
+}
+
+/* FILTERS */
+
+.filters{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filters button{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+}
+
+/* COURSE GRID */
+
+.courses{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.banner{
+height:150px;
+background-size:cover;
+background-position:center;
+position:relative;
+}
+
+.language{
+position:absolute;
+top:10px;
+right:10px;
+background:white;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+}
+
+.card-content{
+padding:16px;
+}
+
+.category{
+font-size:12px;
+color:#ff6a00;
+margin-bottom:6px;
+}
+
+.title{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.date{
+font-size:13px;
+color:#666;
+margin-bottom:10px;
+}
+
+.price{
+font-weight:600;
+}
+
+.discount{
+color:green;
+font-size:13px;
+}
+
+.explore{
+margin-top:10px;
+background:#111a22;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+/* POPUP BACKGROUND */
+
+#goalPopup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none; /* hidden by default */
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+/* POPUP BOX */
+
+.goal-box{
+width:600px;
+background:white;
+border-radius:12px;
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+
+.goal-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.goal-header h2{
+flex:1;
+text-align:center;
+font-weight:500;
+}
+
+/* GRID */
+
+.goal-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+/* CARDS */
+
+.goal-card{
+padding:18px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+background:#fafafa;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.goal-card:hover{
+border:2px solid #6c63ff;
+background:#f4f3ff;
+transform:translateY(-2px);
+}
+/* CLASS FILTER */
+
+.class-filter{
+position:relative;
+}
+
+.class-menu{
+position:absolute;
+top:42px;
+left:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+min-width:180px;
+overflow:hidden;
+z-index:10;
+}
+
+.class-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.class-menu div:hover{
+background:#f2f2ff;
+}
+
+.class-filter.active .class-menu{
+display:block;
+}
+/* USER DROPDOWN */
+
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+}
+
+.user-avatar{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+.dropdown-icon{
+font-size:16px;
+color:#ccc;
+}
+
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index:100;
+}
+
+.user-menu a,
+.user-menu button{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+font-size:14px;
+border:none;
+background:none;
+text-decoration:none;
+color:#333;
+cursor:pointer;
+width:100%;
+}
+
+.user-menu a:hover{
+background:#f3f3ff;
+}
+
+#logoutBtn{
+color:red;
+}
+
+#logoutBtn:hover{
+background:#ffecec;
+}
+
+.user.active .user-menu{
+display:flex;
+}
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+
+/* 🔥 FIX */
+z-index:99999;   /* increase this */
+}
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+z-index:1001; /* higher than navbar children */
+}
+/* Hover effect on cards - Highlight box */
+.card:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    border: 1px solid #1c252e; /* Highlight the card with a border */
+}
+
+/* Hover effect on "Explore Now" button - lighten color */
+.explore:hover {
+    background: #1c252e; /* Lighter background */
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease; /* Smooth transition */
+}
+/* PROFILE PAGE */
+.profile-page{
+max-width:1000px;
+margin:auto;
+padding-left:5px; /* small shift to left */
+}
+
+
+/* BACK ICON */
+
+.profile-header i{
+font-size:22px;
+cursor:pointer;
+color:#555;
+transition:0.2s;
+}
+
+.profile-header i:hover{
+color:#000;
+}
+
+/* TITLE */
+
+.profile-header h2{
+font-size:22px;
+font-weight:600;
+color:#111a22;
+}
+
+/* MAIN CARD */
+
+.profile-card{
+background:white;
+border-radius:12px;
+padding:28px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+border:1px solid #f0f0f0;
+}
+
+/* TOP SECTION */
+
+.profile-top{
+display:flex;
+justify-content:space-between;
+gap:30px;
+margin-bottom:30px;
+}
+
+/* LEFT PROFILE */
+
+.profile-left{
+text-align:center;
+width:200px;
+}
+
+.avatar-box{
+position:relative;
+width:110px;
+height:110px;
+margin:auto;
+}
+
+.avatar-box img{
+width:100%;
+height:100%;
+border-radius:50%;
+background:#ffd34d;
+padding:8px;
+}
+
+
+/* NAME */
+
+.profile-left h3{
+margin-top:10px;
+font-weight:600;
+}
+
+/* LEVEL BOX */
+
+.level-box{
+flex:1;
+background:#eef0f6;
+border-radius:12px;
+padding:20px;
+}
+
+.level-box h4{
+margin-bottom:12px;
+}
+/* Updated Tooltip Styling */
+.xp-card {
+    position: relative;
+}
+.level-box{
+flex:1;
+background:#f1f3f9; /* 🔥 light grey */
+border-radius:16px;
+padding:22px;
+color:#111;
+border:1px solid #e5e7eb;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
+
+/* TITLE */
+.level-box h4{
+font-weight:500;
+margin-bottom:12px;
+color:#333;
+}
+
+/* XP CARD */
+.xp-card{
+background:white;
+border-radius:12px;
+padding:16px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border:1px solid #eee;
+}
+
+/* LABEL */
+.xp-label{
+font-size:14px;
+color:#555;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+/* VALUE */
+.xp-value{
+font-size:20px;
+font-weight:600;
+color:#111;
+}
+
+/* ICON */
+.xp-info-wrapper i{
+color:#888;
+}
+
+.xp-info-wrapper i:hover{
+color:#111;
+}
+/* DETAILS */
+
+.profile-details{
+margin-top:10px;
+}
+
+.details-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:8px;
+}
+
+.edit-btn{
+border:none;
+background:none;
+color:#5c4cff;
+font-size:14px;
+display:flex;
+align-items:center;
+gap:6px;
+cursor:pointer;
+}
+.edit-btn:hover{
+    color:#877cfc;
+}
+.profile-details hr{
+border:none;
+border-top:1px solid #eee;
+margin-bottom:16px;
+}
+
+/* ROWS */
+
+.detail-row{
+display:flex;
+padding:10px 0;
+}
+
+.label{
+width:230px;
+color:#777;
+font-size:14px;
+}
+
+.value{
+font-weight:500;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+.profile-top{
+flex-direction:column;
+align-items:center;
+}
+
+.level-box{
+width:100%;
+}
+
+.xp-card{
+width:100%;
+}
+
+.detail-row{
+flex-direction:column;
+gap:4px;
+}
+
+.label{
+width:auto;
+}
+.sidebar{
+    position:fixed;
+    top:65px;
+    left:0;
+    width:260px;
+    height:calc(100vh - 65px);
+    background:#ffffff;
+    transform:translateX(-100%);
+    transition:transform 0.35s ease;
+    z-index:1001;
+    box-shadow:4px 0 20px rgba(0,0,0,0.15);
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+  }
+
+  .sidebar.active{
+    transform:translateX(0);
+  }
+}
+/* Info Icon Styling */
+.xp-card {
+    position: relative; /* Make the card position relative to place the icon */
+}
+
+.xp-info-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ICON */
+.xp-info-wrapper i {
+    font-size: 12px;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.xp-info-wrapper i:hover {
+    color: #5c4cff;
+}
+
+/* TOOLTIP */
+.xp-info-tooltip {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: #111a22;
+    color: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    width: 260px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    z-index: 999;
+}
+
+/* ARROW */
+.xp-info-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent #111a22 transparent;
+}
+
+/* ✅ THIS IS THE KEY FIX */
+.xp-info-wrapper:hover .xp-info-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+/* OVERLAY */
+.modal-overlay{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background: rgba(0,0,0,0.55);
+    display: none; /* hidden by default */
+    align-items: center; /* center vertically */
+    justify-content: center; /* center horizontally */
+    z-index: 99999; /* very high to appear above everything */
+}
+
+.modal-overlay.active{
+    display: flex; /* IMPORTANT: make it flex when active */
+}
+
+.modal-box{
+    width: 420px;
+    background: white;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    z-index: 100000;
+}
+
+/* ANIMATION ON OPEN */
+.modal-overlay.active .modal-box{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* HEADER */
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.modal-header h3{
+    font-weight:600;
+}
+
+.close-btn{
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* BODY */
+.modal-body{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.modal-body input,
+.modal-body select{
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ddd;
+    font-size:14px;
+}
+
+/* GENDER */
+.gender-box{
+    display:flex;
+    gap:20px;
+    font-size:14px;
+}
+
+/* FOOTER */
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:15px;
+}
+
+.cancel-btn{
+    padding:8px 14px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    background:white;
+    cursor:pointer;
+}
+
+.save-btn{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    background:#6c63ff;
+    color:white;
+    cursor:pointer;
+}
+/* Labels smaller and subtle */
+.modal-body label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+/* Inputs */
+.modal-body input,
+.modal-body select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: all 0.25s ease;
+}
+
+.modal-body input:focus,
+.modal-body select:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.15);
+    outline: none;
+}
+
+/* Save button inactive by default */
+.save-btn {
+    background: #6c63ff;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.save-btn.active {
+    cursor: pointer;
+    opacity: 1;
+}
+/* 🔥 PROFILE STICKY HEADER */
+.profile-sticky-header{
+position:sticky;
+top:0;
+background:#f5f6fa;
+z-index:50;
+padding:10px 0;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* reuse same title style */
+.page-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+font-weight:500;
+color:#111;
+padding:0 20px;
+}
+
+/* back button */
+.back-btn{
+font-size:20px;
+cursor:pointer;
+opacity:0.7;
+transition:0.2s;
+}
+
+.back-btn:hover{
+opacity:1;
+transform:translateX(-2px);
+}.profile-page{
+max-width:1000px;
+margin:auto;
+padding:20px 25px; /* spacing here instead */
+}
+/* 🔥 SMOOTH FADE BACKGROUND */
+body.modal-open .navbar,
+body.modal-open .sidebar,
+body.modal-open .main {
+    filter: blur(6px) brightness(0.7);
+    transition: all 0.3s ease;
+    pointer-events: none; /* disable clicks behind */
+}
+
+/* OVERLAY UPGRADE */
+.modal-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px); /* 🔥 glass effect */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    z-index: 99999;
+}
+
+.modal-overlay.active{
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MODAL ANIMATION */
+.modal-box{
+    transform: translateY(40px) scale(0.95);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal-box{
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+/* MOBILE NAVBAR */
+.menu-btn{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* MOBILE STYLES */
+@media (max-width:768px){
+
+  .navbar{
+    padding:0 12px;
+    justify-content:space-between;
+  }
+
+  /* SHOW MENU ICON */
+  .menu-btn{
+    display:block;
+    color:white;
+  }
+
+  /* HIDE LOGO */
+  .logo{
+    display:none;
+  }
+
+
+  /* HIDE SEARCH (optional like image) */
+  .search{
+    display:none;
+  }
+
+  /* HIDE "Hi, User" TEXT */
+  #userName{
+    display:none;
+  }
+
+  /* KEEP ONLY AVATAR */
+  .user{
+    gap:0;
+  }
+
+  /* OPTIONAL: SMALLER DROPDOWN */
+  .dropdown{
+    padding:5px 10px;
+    font-size:13px;
+  }
+
+  /* SIDEBAR HIDDEN BY DEFAULT */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:0.3s;
+  }
+
+  /* SHOW SIDEBAR WHEN ACTIVE */
+  .sidebar.active{
+    transform:translateX(0);
+  }
+.sidebar a:hover{
+  transform:translateX(6px);
+}
+  /* REMOVE LEFT MARGIN FROM MAIN */
+  .main{
+    margin-left:0;
+  }
+}
+#overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s ease;
+  z-index:1000;
+}
+
+#overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+#goalDropdown{
+  position: relative;   /* IMPORTANT */
+  z-index: 1001;
+  cursor: pointer;
+}
+.goal-menu{
+  position: absolute;
+  top: 48px; /* better spacing below dropdown */
+  left: 0;
+
+  background: white;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+
+  display: none;
+  width: 200px;
+
+  z-index: 9999; /* 🔥 MAIN FIX */
+}
+</style>
+</head>
+
+<body>
+<div id="overlay"></div>
+<!-- NAVBAR -->
+
+<div class="navbar">
+<div class="menu-btn" id="menuBtn">
+  <i class="ph ph-list"></i>
+</div>
+<a href="home.html" class="logo">
+  <img src="logo.png">
+</a>
+
+<div class="dropdown" id="goalDropdown">
+
+<span id="goalText">Select Goal</span>
+<span style="margin-left:6px;">▼</span>
+
+<div id="goalMenu" class="goal-menu">
+<div data-goal="class9th">9th Class</div>
+<div data-goal="board10th">10th Boards</div>
+<div data-goal="science11">11th Science</div>
+<div data-goal="commerce11">11th Commerce</div>
+<div data-goal="humanities11">11th Humanities</div>
+
+</div>
+
+</div>
+
+
+<div class="user" id="userBox">
+
+<span id="userName">Hi, User</span>
+
+<div class="user-avatar">
+
+<img src="https://static.pw.live/images/boy_20250107145242.png">
+
+<i class="ph ph-caret-down dropdown-icon"></i>
+
+</div>
+
+<div class="user-menu" id="userMenu">
+
+<a href="profile.html">
+<i class="ph ph-user"></i> My Profile
+</a>
+
+<button id="logoutBtn">
+<i class="ph ph-sign-out"></i> Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<a href="study.html">
+<i class="ph ph-graduation-cap"></i> Study Hub
+</a>
+
+<a href="home.html">
+<i class="ph ph-squares-four"></i> All Classes
+</a>
+<a href="admin.html" id="adminLink" style="display:none;">
+  <i class="ph ph-lock"></i> Admin Panel
+</a>
+
+
+
+<h4>MORE</h4>
+
+<a href="josh-game.html">
+<i class="ph ph-lightning"></i> Josh Game
+</a>
+
+
+<a href="refer.html">
+<i class="ph ph-gift"></i> Refer & Earn
+</a>
+
+<a href="about.html">
+<i class="ph ph-info"></i> About us
+</a>
+
+<a href="privacy.html">
+<i class="ph ph-shield-check"></i> Privacy Policy
+</a>
+
+</div>
+
+<!-- GOAL SELECTION POPUP -->
+
+<div id="goalPopup">
+
+<div class="goal-box">
+
+<div class="goal-header">
+<h2>Select your Goal</h2>
+</div>
+
+<div class="goal-grid">
+<div class="goal-card" data-goal="class9th">
+9th Class
+</div>
+<div class="goal-card" data-goal="board10th">
+10th Boards
+</div>
+
+<div class="goal-card" data-goal="science11">
+11th Science
+</div>
+
+<div class="goal-card" data-goal="commerce11">
+11th Commerce
+</div>
+
+<div class="goal-card" data-goal="humanities11">
+11th Humanities
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="main">
+    <!-- 🔥 STICKY PROFILE HEADER -->
+<div class="profile-sticky-header">
+    <div class="page-title">
+        <i class="ph ph-arrow-left back-btn" onclick="history.back()"></i>
+        <span>Profile</span>
+    </div>
+</div>
+
+<div class="profile-page">
+
+
+
+<div class="profile-card">
+
+<!-- PROFILE TOP SECTION -->
+
+<div class="profile-top">
+
+<!-- LEFT PROFILE -->
+
+<div class="profile-left">
+
+<div class="avatar-box">
+
+<img src="https://static.pw.live/images/boy_20250107145242.png">
+
+</div>
+
+<h3>-</h3>
+
+</div>
+
+
+<!-- RIGHT LEVEL BOX -->
+
+<div class="level-box">
+
+<h4>Level Up Overview</h4>
+
+<div class="xp-card">
+    <div class="xp-label">
+        Total XP
+
+        <div class="xp-info-wrapper">
+            <i class="ph ph-info"></i>
+
+            <div class="xp-info-tooltip">
+                <div style="font-weight:600; margin-bottom:6px;">Total XP</div>
+                <div style="color:#cbd5e0; margin-bottom:6px;">
+                    This is the lifetime XP you have earned on BOOKStore.
+                </div>
+                <div style="color:#cbd5e0;">
+                    <b>Note:</b> This is different from Weekly XP.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="xp-value" id="xpValue">
+    N/A <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:15px;height:15px;">
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PROFILE DETAILS -->
+<div class="profile-details">
+    <div class="details-header">
+        <h3>Profile Detail</h3>
+        <button class="edit-btn">
+            <i class="ph ph-pencil"></i> Edit
+        </button>
+    </div>
+    <hr>
+    <div class="detail-row">
+        <span class="label">Name</span>
+        <span class="value" id="profileName">-</span>
+    </div>
+    <div class="detail-row">
+        <span class="label">Email</span>
+        <span class="value" id="profileEmail">-</span>
+    </div>
+</div>
+
+</div>
+
+</div>
+</div>
+<!-- EDIT PROFILE MODAL -->
+<div id="editModal" class="modal-overlay">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <h3>Edit Details</h3>
+      <span class="close-btn" id="closeModal">&times;</span>
+    </div>
+
+    <div class="modal-body">
+  <label>Name</label>
+  <input type="text" id="modalName" placeholder="Enter your name">
+
+  <label>Email</label>
+  <input type="email" id="modalEmail" readonly>
+</div>
+
+<div class="modal-footer">
+  <button class="cancel-btn" id="cancelModal">Cancel</button>
+  <button class="save-btn" id="saveChangesBtn">Save Changes</button>
+</div>
+
+  </div>
+
+</div>
+<!-- LOGOUT CONFIRM POPUP -->
+<div id="logoutPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+">
+
+  <div style="
+    width:400px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  ">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-weight:500;">Confirm Logout</h3>
+      <span id="closeLogoutPopup" style="cursor:pointer; font-size:18px;">✕</span>
+    </div>
+
+    <p style="margin-top:10px; color:#555;">
+      Are you sure you want to log out? You'll need to log in again to access your account.
+    </p>
+
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      
+      <button id="cancelLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:1px solid #6c63ff;
+        background:white;
+        color:#6c63ff;
+        cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+      <button id="confirmLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:none;
+        background:#6c63ff;
+        color:white;
+        cursor:pointer;
+      ">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<!-- FIREBASE LOGIN PROTECTION -->
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import { 
+getAuth,
+onAuthStateChanged,
+signOut   // ✅ ADD HERE (top)
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+getDatabase,
+ref,
+get,
+set
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+
+const firebaseConfig = {
+apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+authDomain: "bookstore-6ab08.firebaseapp.com",
+projectId: "bookstore-6ab08",
+databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/"
+};
+
+const app = initializeApp(firebaseConfig);
+const userName = document.getElementById("userName");
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const popup = document.getElementById("goalPopup");
+const goalText = document.getElementById("goalText");
+
+const goalMap={
+  class9th:"9th Class",
+board10th:"10th Boards",
+science11:"11th Science",
+commerce11:"11th Commerce",
+humanities11:"11th Humanities"
+};
+
+window.closeBook = function(){
+
+document.getElementById("viewerPane").style.display="none";
+
+document.getElementById("pdfFrame").src="";
+
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const xpCard = document.querySelector(".xp-card");
+    const xpInfoIcon = document.getElementById("xp-info-icon");
+
+});
+/* AUTH CHECK */
+
+document.body.style.display="none";
+
+// Wait for Firebase auth to finish and body to be visible
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    document.body.style.display = "block";
+
+    const uid = user.uid;
+    const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
+const adminLink = document.getElementById("adminLink");
+
+if(uid === adminUID){
+  adminLink.style.display = "flex";
+}
+    const userRef = ref(db, "users/" + uid);
+
+    get(userRef).then((snapshot) => {
+        const modalName = document.getElementById("modalName");
+const saveBtn = document.getElementById("saveChangesBtn");
+
+let originalName = "";
+
+// After data fetch
+get(userRef).then((snapshot) => {
+    const data = snapshot.exists() ? snapshot.val() : {};
+    const name = data.name || user.name || "";
+const xpElement = document.getElementById("xpValue");
+// ✅ LOAD USER'S SELECTED GOAL (NEW CODE)
+get(userRef).then((snapshot) => {
+    const data = snapshot.exists() ? snapshot.val() : {};
+    
+    // ... existing code for name, XP, email ...
+    
+    // NEW: Load user's selected goal
+    const userGoal = data.goals;
+    if (userGoal && goalMap[userGoal]) {
+        goalText.innerText = goalMap[userGoal];  // Replace "Select Goal" with user's goal
+        popup.style.display = "none";  // Hide popup if goal already selected
+    }
+});
+// Get XP from database
+const xp = data.xp;
+
+// If XP exists → show it, else show N/A
+if (xp !== undefined && xp !== null) {
+    xpElement.innerHTML = xp + ' <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:15px;height:15px;">';
+} else {
+    xpElement.innerHTML = 'N/A <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:15px;height:15px;">';
+}
+    modalName.value = name;
+    originalName = name;
+    
+    // Get modal elements once
+const modalName = document.getElementById("modalName");
+const saveBtn = document.getElementById("saveChangesBtn");
+
+// After fetching user data from Firebase
+get(userRef).then((snapshot) => {
+    const data = snapshot.exists() ? snapshot.val() : {};
+    const name = data.name || user.name || "";
+    
+    modalName.value = name;         // fill input
+    let originalName = name;         // store original
+
+    // Initially, disable save button
+    saveBtn.classList.remove("active");
+
+    // Enable save button only if input is non-empty AND changed
+    modalName.addEventListener("input", () => {
+        const trimmed = modalName.value.trim();
+        if (trimmed !== "" && trimmed !== originalName) {
+            saveBtn.classList.add("active");
+        } else {
+            saveBtn.classList.remove("active");
+        }
+    });
+
+    // Save changes
+    saveBtn.onclick = () => {
+        if (!saveBtn.classList.contains("active")) return;
+
+        const newName = modalName.value.trim();
+        set(ref(db, "users/" + user.uid + "/name"), newName)
+        .then(() => {
+            document.querySelector(".profile-left h3").innerText = newName;
+            document.getElementById("profileName").innerText = newName;
+            document.getElementById("userName").innerText = "Hi, " + newName;
+
+            originalName = newName;       // update original
+            saveBtn.classList.remove("active");
+            modal.classList.remove("active");
+            document.body.style.overflow = "auto";
+        })
+        .catch(err => alert(err.message));
+    };
+});
+});
+const data = snapshot.exists() ? snapshot.val() : {};
+
+// 🚫 BLOCK CHECK (ADD THIS)
+if(data.block === true){
+    document.body.innerHTML = `
+      <div style="
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:#f5f6fa;
+        font-family:Poppins;
+      ">
+        <div style="
+          text-align:center;
+          max-width:500px;
+        ">
+          
+          <h1 style="
+            color:#e74c3c;
+            font-size:32px;
+            margin-bottom:10px;
+          ">
+            🚫 Access Blocked
+          </h1>
+          
+          <p style="
+            font-size:18px;
+            color:#444;
+            margin-top:10px;
+          ">
+            You are blocked by Admin from BOOKStore.
+          </p>
+          
+          <p style="
+            font-size:16px;
+            color:#777;
+            margin-top:8px;
+          ">
+            Contact support if you think this is a mistake.
+          </p>
+
+          <button onclick="window.open('https://www.instagram.com/bookstoreofficial_0/','_blank')" style="
+            margin-top:25px;
+            padding:12px 28px;
+            font-size:16px;
+            border:none;
+            background:#111a22;
+            color:white;
+            border-radius:8px;
+            cursor:pointer;
+          ">
+            Contact
+          </button>
+
+        </div>
+      </div>
+    `;
+    return; // ⛔ STOP EVERYTHING
+  }
+
+// Enable Save button
+modalName.addEventListener("input", () => {
+    if (modalName.value.trim() !== originalName) {
+        saveBtn.classList.add("active");
+    } else {
+        saveBtn.classList.remove("active");
+    }
+});
+
+        // Navbar greeting
+        userName.innerText = "Hi, " + (data.name || user.name || "User");
+
+        // Profile-left name
+        const profileLeftName = document.querySelector(".profile-left h3");
+        if (profileLeftName) profileLeftName.innerText = data.name || user.name || "-";
+
+        // Profile Details Name
+        const profileNameField = document.getElementById("profileName");
+        if (profileNameField) profileNameField.innerText = data.name || user.name || "-";
+
+        // Profile Email (read-only)
+        const profileEmailField = document.getElementById("profileEmail");
+        const modalEmail = document.getElementById("modalEmail");
+        const emailToShow = data.email || user.email || "-";
+        if (profileEmailField) profileEmailField.innerText = emailToShow;
+        if (modalEmail) modalEmail.value = emailToShow;
+
+        // ✅ Fill modal Name input with database value
+        if(modalName) modalName.value = data.name || "";
+    });
+
+    // Modal logic
+    const editBtn = document.querySelector(".edit-btn");
+    const modal = document.getElementById("editModal");
+    const closeBtn = document.getElementById("closeModal");
+    const cancelBtn = document.getElementById("cancelModal");
+    const saveBtn = document.getElementById("saveChangesBtn"); // Save button
+
+    if(editBtn && modal) {
+        editBtn.onclick = (e) => {
+            e.stopPropagation();
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden"; 
+        };
+    }
+    
+    if(closeBtn) closeBtn.onclick = () => { modal.classList.remove("active"); document.body.style.overflow = "auto"; };
+    if(cancelBtn) cancelBtn.onclick = () => { modal.classList.remove("active"); document.body.style.overflow = "auto"; };
+    if(modal) modal.onclick = (e) => { if(e.target === modal){ modal.classList.remove("active"); document.body.style.overflow = "auto"; } };
+
+    // ✅ Save updated name to Realtime Database
+    if(saveBtn){
+        saveBtn.onclick = () => {
+            const newName = document.getElementById("modalName").value.trim();
+            if(newName === "") return alert("Name cannot be empty.");
+
+            set(ref(db, "users/" + uid + "/name"), newName)
+            .then(() => {
+                // Update profile UI
+                const profileLeftName = document.querySelector(".profile-left h3");
+                const profileNameField = document.getElementById("profileName");
+                const userName = document.getElementById("userName");
+
+                if(profileLeftName) profileLeftName.innerText = newName;
+                if(profileNameField) profileNameField.innerText = newName;
+                if(userName) userName.innerText = "Hi, " + newName;
+
+                // Close modal
+                modal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            })
+            .catch((err) => alert("Error saving name: " + err.message));
+        };
+    }
+    // ✅ LOGOUT FIX (PLACE HERE)
+const logoutPopup = document.getElementById("logoutPopup");
+const confirmLogout = document.getElementById("confirmLogout");
+const cancelLogout = document.getElementById("cancelLogout");
+const closeLogoutPopup = document.getElementById("closeLogoutPopup");
+
+// Open popup
+logoutBtn.onclick = () => {
+  logoutPopup.style.display = "flex";
+};
+
+// Cancel / Close popup
+cancelLogout.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+closeLogoutPopup.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+// Confirm logout
+confirmLogout.onclick = () => {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
+};
+});
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuBtn.onclick = () => {
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+};
+
+// CLOSE when clicking outside
+overlay.onclick = () => {
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+};
+
+const userBox = document.getElementById("userBox");
+userBox.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    userBox.classList.toggle("active");
+});
+
+/* CLOSE WHEN CLICK OUTSIDE */
+
+document.addEventListener("click",(e)=>{
+    if(!userBox.contains(e.target)){
+        userBox.classList.remove("active");
+    }
+});
+/* SAVE GOAL FROM POPUP */
+
+document.querySelectorAll(".goal-card").forEach(card=>{
+
+card.onclick=()=>{
+
+const goal=card.dataset.goal;
+
+const user=auth.currentUser;
+
+set(ref(db,"users/"+user.uid+"/goals"),goal);
+
+goalText.innerText=goalMap[goal];
+
+popup.style.display="none";
+
+};
+
+});
+
+
+/* DROPDOWN OPEN */
+
+const dropdown=document.getElementById("goalDropdown");
+
+dropdown.onclick=()=>{
+
+dropdown.classList.toggle("active");
+
+};
+
+
+/* CHANGE GOAL FROM DROPDOWN */
+
+document.querySelectorAll(".goal-menu div").forEach(item=>{
+
+item.onclick=(e)=>{
+
+e.stopPropagation();
+
+const goal=item.dataset.goal;
+
+const user=auth.currentUser;
+
+set(ref(db,"users/"+user.uid+"/goals"),goal);
+
+goalText.innerText=goalMap[goal];
+
+dropdown.classList.remove("active");
+
+};
+
+});
+const searchHint = document.getElementById("searchHint");
+/* HINT TEXTS */
+
+const hints = [
+"Search for 11th Sci",
+"Search for 10th Boards",
+"Search for 11th Commerce",
+"Search for 11th Humanities"
+];
+let hintIndex = 0;
+let hintInterval;
+/* START HINT ROTATION */
+
+function startHintRotation(){
+
+hintInterval = setInterval(()=>{
+
+hintIndex = (hintIndex + 1) % hints.length;
+
+searchHint.style.opacity = 0;
+
+setTimeout(()=>{
+searchHint.innerText = hints[hintIndex];
+searchHint.style.opacity = 1;
+},300);
+
+},2500);
+
+}
+
+/* STOP ROTATION */
+
+function stopHintRotation(){
+clearInterval(hintInterval);
+}
+
+
+/* CLICK OUTSIDE */
+
+const searchInput = document.querySelector(".search input");
+
+document.addEventListener("click",(e)=>{
+
+if(searchInput && !searchInput.contains(e.target) && searchInput.value===""){
+
+searchHint.style.opacity = 1;
+if (searchHint) {
+    startHintRotation();
+}
+
+}
+
+});
+
+/* START ON LOAD */
+
+if (searchHint) {
+    startHintRotation();
+}
+function updateSearchHint(goal){
+
+const hintMap={
+board10th:"Search for 10th",
+science11:"Search for 11th Science",
+commerce11:"Search for 11th Commerce",
+humanities11:"Search for 11th Humanities"
+};
+
+searchHint.style.opacity=0;
+
+setTimeout(()=>{
+searchHint.innerText=hintMap[goal];
+searchHint.style.opacity=1;
+},300);
+
+}
+function updateCourseCount(){
+
+const courses=document.querySelectorAll(".card");
+
+const count=courses.length;
+
+document.getElementById("courseCount").innerText=count;
+
+}
+
+window.addEventListener("DOMContentLoaded",updateCourseCount);
+/* CLASS FILTER DROPDOWN */
+
+const classFilter=document.getElementById("classFilter");
+const classBtn=document.getElementById("classBtn");
+
+classBtn.onclick=()=>{
+
+classFilter.classList.toggle("active");
+
+};
+
+/* SELECT CLASS */
+
+document.querySelectorAll(".class-menu div").forEach(item=>{
+
+item.onclick=(e)=>{
+
+e.stopPropagation();
+
+const selected=item.innerText;
+
+classBtn.innerText=selected+" ▼";
+
+classFilter.classList.remove("active");
+
+};
+
+});
+
+
+/* USER DROPDOWN */
+const userMenu = document.getElementById("userMenu");
+
+</script>
+</body>
+</html>

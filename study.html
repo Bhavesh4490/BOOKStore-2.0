@@ -1,0 +1,2770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study - BOOKStore</title>
+<link rel="icon" type="image/png" href="book.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+background:#f5f6fa;
+padding-top:65px;
+}
+/* TOP NAVBAR */
+
+.navbar{
+height:65px;
+background:#111a22;
+color:white;
+display:flex;
+align-items:center;
+padding:0 20px;
+gap:20px;
+
+/* NEW */
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+.dropdown{
+margin-left:10px;
+background:#1f2a33;
+padding:6px 14px;
+border-radius:6px;
+font-size:14px;
+white-space:nowrap;
+}
+#goalDropdown{
+position:relative;
+cursor:pointer;
+}
+
+.goal-menu{
+position:absolute;
+top:40px;
+left:0;
+background:white;
+color:#333;
+border-radius:8px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+width:200px;
+overflow:hidden;
+}
+
+.goal-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.goal-menu div:hover{
+background:#f2f2ff;
+}
+
+#goalDropdown.active .goal-menu{
+display:block;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+/* LAYOUT */
+
+.container{
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#efefef;
+height:calc(100vh - 65px);
+padding:20px;
+
+/* NEW */
+position:fixed;
+top:65px;
+left:0;
+overflow-y:auto;
+}
+.sidebar h4{
+font-size:12px;
+margin-top:15px;
+margin-bottom:8px;
+color:#777;
+}
+
+.sidebar a{
+display:block;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:4px;
+}
+
+.sidebar a.active{
+background:#dcd6ff;
+color:#5c4cff;
+font-weight:500;
+}
+/* SIDEBAR BUTTONS */
+
+.sidebar a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:11px 12px;
+border-radius:10px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:6px;
+transition:all 0.25s ease;
+position:relative;
+}
+
+/* ICON */
+
+.sidebar a i{
+font-size:18px;
+color:#6b7280;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.sidebar a:hover{
+background:#f3f4ff;
+color:#5c4cff;
+transform:translateX(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* LEFT ACTIVE BAR */
+
+.sidebar a::before{
+content:"";
+position:absolute;
+left:-10px;
+top:50%;
+transform:translateY(-50%);
+width:4px;
+height:0;
+background:#5c4cff;
+border-radius:4px;
+transition:0.25s;
+}
+
+
+/* ACTIVE PAGE */
+
+.sidebar a.active{
+background:#ece9ff;
+color:#5c4cff;
+font-weight:500;
+}
+
+.sidebar a.active i{
+color:#5c4cff;
+}
+
+.sidebar a.active::before{
+height:70%;
+}
+/* MAIN */
+
+.main{
+flex:1;
+padding:25px;
+
+/* NEW */
+margin-left:230px;
+height:calc(100vh - 65px);
+overflow-y:auto;
+}
+
+.main h2{
+margin-bottom:10px;
+}
+
+.small{
+font-size:14px;
+color:#777;
+margin-bottom:20px;
+}
+
+/* FILTERS */
+
+.filters{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filters button{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+}
+
+/* COURSE GRID */
+
+.courses{
+display:grid;
+grid-template-columns:repeat(4, 1fr);
+gap:20px;
+}
+
+/* 🎓 BATCHES GRID - 3 per row */
+#batchesContainer{
+display:grid;
+grid-template-columns:repeat(3, 1fr);
+gap:20px;
+}
+
+
+.batch-card{
+background:white;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.batch-card .banner{
+height:180px;
+background-size:cover;
+background-position:center;
+position:relative;
+}
+
+.language{
+position:absolute;
+top:10px;
+right:10px;
+background:white;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+}
+
+.batch-card .card-content{
+padding:16px;
+}
+
+.category{
+font-size:12px;
+color:#ff6a00;
+margin-bottom:6px;
+}
+
+.batch-card .title{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.batch-card .date{
+font-size:13px;
+color:#666;
+margin-bottom:10px;
+}
+
+.price{
+font-weight:600;
+}
+
+.discount{
+color:green;
+font-size:13px;
+}
+
+.batch-card .explore{
+margin-top:10px;
+background:#111a22;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+/* POPUP BACKGROUND */
+
+#goalPopup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none; /* hidden by default */
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+/* POPUP BOX */
+
+.goal-box{
+width:600px;
+background:white;
+border-radius:12px;
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+
+.goal-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.goal-header h2{
+flex:1;
+text-align:center;
+font-weight:500;
+}
+
+/* GRID */
+
+.goal-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+/* CARDS */
+
+.goal-card{
+padding:18px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+background:#fafafa;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.goal-card:hover{
+border:2px solid #6c63ff;
+background:#f4f3ff;
+transform:translateY(-2px);
+}
+/* CLASS FILTER */
+
+.class-filter{
+position:relative;
+}
+
+.class-menu{
+position:absolute;
+top:42px;
+left:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+min-width:180px;
+overflow:hidden;
+z-index:10;
+}
+
+.class-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.class-menu div:hover{
+background:#f2f2ff;
+}
+
+.class-filter.active .class-menu{
+display:block;
+}
+/* USER DROPDOWN */
+
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+}
+
+.user-avatar{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+.dropdown-icon{
+font-size:16px;
+color:#ccc;
+}
+
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index:100;
+}
+
+.user-menu a,
+.user-menu button{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+font-size:14px;
+border:none;
+background:none;
+text-decoration:none;
+color:#333;
+cursor:pointer;
+width:100%;
+}
+
+.user-menu a:hover{
+background:#f3f3ff;
+}
+
+#logoutBtn{
+color:red;
+}
+
+#logoutBtn:hover{
+background:#ffecec;
+}
+
+.user.active .user-menu{
+display:flex;
+}
+/* Hover effect on cards - Highlight box */
+.batch-card{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    border:1px solid transparent; /* important */
+    transition:border 0.25s ease;
+}
+
+.batch-card:hover{
+    border:1px solid #303030; /* highlight only */
+}
+
+/* Hover effect on "Explore Now" button - lighten color */
+.batch-card .explore:hover {
+    background: #1c252e; /* Lighter background */
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease; /* Smooth transition */
+}
+#courseViewer{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:none;
+  z-index:99999;
+}
+
+#courseFrame{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+
+.old-price{
+  font-size:12px;
+  color:#aaa;
+  margin-left:8px;
+  text-decoration:line-through;
+}
+
+.price{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.footer-quote{
+  margin-top:40px;
+  padding:30px 20px;
+  text-align:left;
+  border-radius:8px;
+}
+
+.footer-quote h2{
+  font-size:28px;
+  color:#666;
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.footer-quote p{
+  font-size:16px;
+  color:#777;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+/* MOBILE NAVBAR */
+.menu-btn{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* MOBILE STYLES */
+@media (max-width:768px){
+
+  .navbar{
+    padding:0 12px;
+    justify-content:space-between;
+  }
+
+  /* SHOW MENU ICON */
+  .menu-btn{
+    display:block;
+    color:white;
+  }
+
+  /* HIDE LOGO */
+  .logo{
+    display:none;
+  }
+
+  /* HIDE "Hi, User" TEXT */
+  #userName{
+    display:none;
+  }
+
+  /* KEEP ONLY AVATAR */
+  .user{
+    gap:0;
+  }
+
+  /* OPTIONAL: SMALLER DROPDOWN */
+  .dropdown{
+    padding:5px 10px;
+    font-size:13px;
+  }
+  .sidebar{
+    position:fixed;
+    top:65px;
+    left:0;
+    width:260px;
+    height:calc(100vh - 65px);
+    background:#ffffff;
+    transform:translateX(-100%);
+    transition:transform 0.35s ease;
+    z-index:1001;
+    box-shadow:4px 0 20px rgba(0,0,0,0.15);
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+  }
+
+  .sidebar.active{
+    transform:translateX(0);
+  }
+.sidebar a:hover{
+  transform:translateX(6px);
+}
+  /* REMOVE LEFT MARGIN FROM MAIN */
+  .main{
+    margin-left:0;
+  }
+  /* 📚 Books → 2 per row */
+  .courses{
+    grid-template-columns:repeat(2, 1fr) !important;
+  }
+
+  /* 🎓 Batches → 1 per row */
+  #batchesContainer{
+    grid-template-columns:1fr !important;
+  }
+  #viewerPane {
+    display: none; /* Controlled by JS */
+    position: fixed;
+    top: 65px;     /* Start below Navbar */
+    left: 0 !important;
+    width: 100% !important;
+    height: calc(100vh - 65px) !important;
+    z-index: 2000; /* Higher than sidebar and overlay */
+    border-radius: 0;
+    margin: 0;
+  }
+
+  #pdfContainer {
+    top: 95px; /* Adjust based on your viewer-topbar + viewer-toolbar height */
+    height: calc(100% - 95px);
+  }
+
+
+}
+
+
+#overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s ease;
+  z-index:1000;
+}
+
+
+#overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+/* MOVE USER TO RIGHT */
+.user {
+    margin-left: auto; /* Pushes the user profile to the far right */
+}
+/* NEW SEARCH BAR STYLING */
+.search-box-container {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 400px; /* Limits width so it doesn't span the whole screen */
+}
+
+.search-box-container input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus {
+    border-color: #5c4cff;
+    box-shadow: 0 0 0 3px rgba(92, 76, 255, 0.1);
+}
+
+.search-box-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+}
+
+/* SEARCH HINT */
+#searchHint {
+    position: absolute;
+    left: 42px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus + #searchHint,
+.search-box-container input:not(:placeholder-shown) + #searchHint {
+    opacity: 0;
+}
+
+
+.filters{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+/* LEFT GROUP */
+.filters-left{
+    display:flex;
+    gap:10px;
+}
+
+/* RIGHT GROUP */
+.filters-right{
+    display:flex;
+    gap:10px;
+}
+
+/* ICON BUTTON STYLE */
+.icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:18px;
+    transition:0.25s ease;
+}
+
+/* HOVER EFFECT */
+.icon-btn:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+    border-color:#c7c3ff;
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(0,0,0,0.1);
+}
+/* EDIT MODE ICON */
+.batch-card{
+    position:relative; /* IMPORTANT */
+}
+
+.edit-icon{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:32px;
+    height:32px;
+    background:white;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    cursor:pointer;
+    font-size:16px;
+    color:#333;
+    display:none; /* hidden by default */
+    transition:0.2s;
+}
+
+.edit-icon:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+}
+
+/* SHOW ICON WHEN EDIT MODE ACTIVE */
+.edit-mode .edit-icon{
+    display:flex;
+}
+.icon-btn.active {
+    background:#6c4cff;
+    color:white;
+    border-color:#6c4cff;
+    box-shadow:0 6px 16px rgba(108,76,255,0.4);
+    transform:translateY(-2px);
+}
+/* Update Edit Icon to be on the left of Delete */
+.edit-mode .edit-icon {
+    display: flex;
+    right: 50px; /* Shifted left to make room for delete */
+}
+
+/* Delete Icon Styling */
+.delete-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    font-size: 16px;
+    color: #ff4d4d; /* Red color for delete */
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.delete-icon:hover {
+    background: #ffecec;
+    color: #e60000;
+}
+
+/* Show Delete Icon in Edit Mode */
+.edit-mode .delete-icon {
+    display: flex;
+}
+.edit-icon, .delete-icon {
+  position: absolute;
+  top: 5px; /* higher than language badge */
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 10;
+}
+
+.edit-mode .edit-icon, .edit-mode .delete-icon {
+  display: flex;
+}
+
+.edit-icon {
+  right: 50px; /* shift left to avoid overlap with delete */
+  color: #333;
+}
+
+.delete-icon {
+  right: 10px;
+  color: #ff4d4d;
+}
+.batch-card .banner {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    background-color: #e0e0e0; /* Fallback gray color */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Optional: Show a book icon if no image is present */
+.batch-card .banner:empty::before {
+    content: "\e292"; /* Phosphor Book icon code */
+    font-family: "Poppins"; 
+    color: #bbb;
+    font-size: 40px;
+}
+
+/* Styles for Book Cards */
+
+.book-card{
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+transition:all .25s ease;
+cursor:pointer;
+}
+
+.book-card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 28px rgba(0,0,0,0.15);
+}
+/* hover effect */
+.book-card:hover .banner::before{
+opacity:1;
+}
+
+.book-card:hover .banner{
+transform:scale(1.04);
+transition:0.3s;
+}
+.book-card .card-content{
+padding:16px;
+}
+
+.book-card .banner{
+height:190px;
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+background-color:#f9fafc;
+position:relative;
+padding:15px;
+display:flex;
+align-items:flex-end;
+justify-content:flex-start;
+overflow:hidden;
+}
+
+/* book shadow */
+.book-card .banner::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(to top, rgba(0,0,0,0.35), transparent 60%);
+opacity:0;
+transition:0.3s;
+}
+/* 🔥 PROFILE STICKY HEADER */
+.profile-sticky-header{
+position:sticky;
+top:0;
+background:#f5f6fa;
+z-index:50;
+padding:10px 0;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* reuse same title style */
+.page-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+font-weight:500;
+color:#111;
+padding:0 20px;
+}
+
+/* back button */
+.back-btn{
+font-size:20px;
+cursor:pointer;
+opacity:0.7;
+transition:0.2s;
+}
+
+.back-btn:hover{
+opacity:1;
+transform:translateX(-2px);
+}
+.book-card .title{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.book-card .date{
+font-size:13px;
+color:#666;
+margin-bottom:10px;
+}
+
+.book-card .explore{
+margin-top:10px;
+width:100%;
+padding:9px;
+border-radius:8px;
+border:none;
+font-size:14px;
+font-weight:500;
+color:white;
+background:linear-gradient(135deg,#5c4cff,#7a73ff);
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+transition:all .25s ease;
+}
+
+.book-card .explore:hover{
+background:linear-gradient(135deg,#4a3cff,#6a63ff);
+transform:scale(1.03);
+box-shadow:0 6px 16px rgba(0,0,0,0.2);
+}
+
+
+/* VIEWER */
+
+#viewerPane{
+display:none;
+position:fixed;
+top:65px;
+left:230px;
+width:100%;
+width:calc(100% - 230px);
+height:calc(100vh - 65px);
+background:#dfe3ea;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 8px 24px rgba(0,0,0,0.15);
+z-index:200;
+}
+
+.viewer-actions button{
+border:none;
+background:white;
+padding:6px 10px;
+border-radius:6px;
+margin-left:6px;
+cursor:pointer;
+}
+
+.viewer-actions button:hover{
+background:#ecefff;
+}
+
+#closeViewer{
+border:none;
+background:white;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+font-size:18px;
+display:flex;
+align-items:center;
+gap:6px;
+position:absolute;
+top:15px;
+  right:20px;
+}
+#viewerPane.withSidebar #pdfFrame{
+margin-left:120px;
+}
+
+#pdfFrame{
+  margin-left:0;
+transition:0.25s;
+transition:transform 0.2s ease;
+width:900px;
+height:1200px;
+height:calc(100% - 50px);
+border:none;
+background:white;
+transform-origin:top center;
+}
+
+/* PDF VIEWER */
+
+
+.viewer-header{
+height:50px;
+display:flex;
+align-items:center;
+padding:0 15px;
+border-bottom:1px solid #ddd;
+background:white;
+}
+
+/* TOOLBAR */
+
+.viewer-toolbar{
+height:50px;
+background:#eef1f6;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+border-bottom:1px solid #d6d9df;
+}
+
+/* LEFT */
+
+.viewer-left{
+font-size:20px;
+cursor:pointer;
+}
+
+/* CENTER */
+
+.viewer-center{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.viewer-center button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+.page-indicator{
+font-size:14px;
+color:#333;
+}
+
+.zoom-text{
+font-size:14px;
+width:50px;
+text-align:center;
+}
+
+.divider{
+width:1px;
+height:20px;
+background:#cfd4db;
+margin:0 5px;
+}
+
+/* RIGHT */
+
+.viewer-right{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.viewer-right button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+/* ICON BUTTONS */
+
+.viewer-center button,
+.viewer-right button,
+.viewer-left i{
+position:relative;
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:6px;
+border-radius:50%;
+transition:0.2s;
+}
+
+/* PURPLE HOVER BUBBLE */
+
+.viewer-center button:hover,
+.viewer-right button:hover,
+.viewer-left i:hover{
+background:#ede9fe;
+color:#6c4cff;
+}
+
+
+.viewer-center button:hover::after,
+.viewer-right button:hover::after,
+.viewer-left i:hover::after{
+opacity:1;
+}
+
+.viewer-topbar{
+height:45px;
+display:flex;
+align-items:center;
+gap:10px;
+padding:0 18px;
+background:#ffffff;
+border-bottom:1px solid #e5e7eb;
+font-size:15px;
+font-weight:500;
+color:#333;
+}
+
+.viewer-topbar button{
+border:none;
+background:transparent;
+display:flex;
+align-items:center;
+gap:6px;
+font-size:15px;
+cursor:pointer;
+color:#333;
+padding:6px 8px;
+border-radius:6px;
+transition:0.2s;
+}
+
+.viewer-topbar button:hover{
+background:#f3f4f6;
+}
+
+.viewer-topbar i{
+font-size:18px;
+}
+.viewer-center button,
+.viewer-right button{
+width:34px;
+height:34px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:8px;
+font-size:18px;
+transition:0.2s;
+}
+.viewer-center button:hover,
+.viewer-right button:hover{
+background:#ede9fe;
+color:#6c4cff;
+transform:scale(1.05);
+}
+.zoom-indicator{
+background:white;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:500;
+color:#333;
+border:1px solid #d1d5db;
+min-width:60px;
+text-align:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+transition:0.2s;
+}
+#pageSidebar{
+position:absolute;
+left:0;
+top:50px;
+width:120px;
+height:calc(100% - 50px);
+background:white;
+border-right:1px solid #ddd;
+overflow-y:auto;
+display:none;
+}
+
+.pageList{
+padding:10px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+#pdfContainer{
+position:absolute;
+top:95px;
+left:0;
+width:100%;
+height:calc(100% - 50px);
+overflow:auto;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+background:#dfe3ea;
+}
+/* RIGHT HEADER ICONS */
+.header-icons{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+/* ICON BOX */
+.icon-box{
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  transition:0.2s;
+  position:relative;
+}
+
+.icon-box i{
+  font-size:20px;
+  color:#555;
+}
+
+.icon-box:hover{
+  background:#f3f4ff;
+  transform:translateY(-2px);
+}
+
+/* XP BOX */
+.xp-box{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:white;
+  padding:6px 10px;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  font-weight:500;
+}
+
+.xp-box img{
+  width:20px;
+  height:20px;
+}
+
+/* NOTIFICATION BADGE */
+.notification .badge{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  background:#ff3b30;
+  color:white;
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:50%;
+  font-weight:600;
+}
+/* 🔔 PANEL */
+#notificationPanel{
+  position:fixed;
+  top:0;
+  right:-380px;
+  width:360px;
+  height:100%;
+  background:white;
+  box-shadow:-6px 0 25px rgba(0,0,0,0.2);
+  z-index:99999;
+  transition:0.35s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+/* OPEN STATE */
+#notificationPanel.active{
+  right:0;
+}
+
+/* HEADER */
+.notif-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px;
+  font-size:18px;
+  font-weight:500;
+  border-bottom:1px solid #eee;
+}
+
+.notif-header i{
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* LIST */
+.notif-list{
+  overflow-y:auto;
+  flex:1;
+}
+
+/* ITEM */
+.notif-item{
+  display:flex;
+  gap:12px;
+  padding:14px;
+  border-bottom:1px solid #f1f1f1;
+  cursor:pointer;
+  transition:0.2s;
+  position:relative;
+}
+
+.notif-item:hover{
+  background:#f7f7f7;
+}
+
+/* ICON BOX */
+.notif-icon{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  background:#ffe8d6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.notif-icon i{
+  color:#ff7a00;
+  font-size:20px;
+}
+
+/* CONTENT */
+.notif-content{
+  flex:1;
+}
+
+.notif-title{
+  font-weight:500;
+  font-size:14px;
+}
+
+.notif-desc{
+  font-size:12px;
+  color:#666;
+  margin-top:3px;
+}
+
+/* DATE */
+.notif-date{
+  font-size:12px;
+  color:#888;
+  white-space:nowrap;
+}
+
+/* 🔔 POPUP OVERLAY (STRONGER THAN NORMAL OVERLAY) */
+#notifPopup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(6px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100000;
+}
+
+/* POPUP BOX */
+.notif-popup-box{
+  width:500px;
+  max-width:90%;
+  background:white;
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.3);
+  animation:fadeInScale 0.3s ease;
+}
+
+/* HEADER */
+.notif-popup-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:18px;
+  font-weight:500;
+  margin-bottom:12px;
+}
+
+.notif-popup-header i{
+  cursor:pointer;
+  font-size:20px;
+}
+
+/* BODY */
+.notif-popup-body{
+  font-size:14px;
+  color:#444;
+  line-height:1.6;
+}
+
+/* ANIMATION */
+@keyframes fadeInScale{
+  from{
+    transform:scale(0.8);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+/* 🔥 FADE BACKGROUND CONTENT */
+body.popup-active .navbar,
+body.popup-active .sidebar,
+body.popup-active .main,
+body.popup-active #notificationPanel{
+  filter:blur(3px);
+  pointer-events:none;
+}
+/* 🔧 ADMIN BAR */
+.notif-admin-bar{
+  display:flex;
+  gap:10px;
+  padding:10px 15px;
+  border-bottom:1px solid #eee;
+  background:#fafafa;
+}
+
+.notif-admin-bar button{
+  flex:1;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  background:white;
+  cursor:pointer;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:0.2s;
+}
+
+.notif-admin-bar button:hover{
+  background:#ede9fe;
+  border-color:#c7c3ff;
+  color:#6c4cff;
+}
+.notif-item {
+  position: relative;
+}
+
+.notif-item .delete-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+/* 🔥 KEEP HOVER EFFECT EVEN IN ACTIVE MODE */
+.icon-btn.active:hover {
+    background:#7a73ff; /* slightly lighter than active */
+    color:white;
+    border-color:#7a73ff;
+    box-shadow:0 8px 20px rgba(108,76,255,0.5);
+    transform:translateY(-3px) scale(1.03);
+}
+
+</style>
+</head>
+
+<body>
+<div id="overlay"></div>
+<!-- NAVBAR -->
+
+<div class="navbar">
+<div class="menu-btn" id="menuBtn">
+  <i class="ph ph-list"></i>
+</div>
+<a href="home.html" class="logo">
+  <img src="logo.png">
+</a>
+
+<div class="dropdown" id="goalDropdown">
+
+<span id="goalText">Select Goal</span>
+<span style="margin-left:6px;">▼</span>
+
+<div id="goalMenu" class="goal-menu">
+<div data-goal="class9th">9th Class</div>
+<div data-goal="board10th">10th Boards</div>
+<div data-goal="science11">11th Science</div>
+<div data-goal="commerce11">11th Commerce</div>
+<div data-goal="humanities11">11th Humanities</div>
+
+</div>
+
+</div>
+
+
+<div class="user" id="userBox">
+
+<span id="userName">Hi, User</span>
+
+<div class="user-avatar">
+
+<img src="https://static.pw.live/images/boy_20250107145242.png">
+
+<i class="ph ph-caret-down dropdown-icon"></i>
+
+</div>
+
+<div class="user-menu" id="userMenu">
+
+<a href="profile.html">
+<i class="ph ph-user"></i> My Profile
+</a>
+
+<button id="logoutBtn">
+<i class="ph ph-sign-out"></i> Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<a class="active">
+<i class="ph ph-graduation-cap"></i> Study Hub
+</a>
+
+<a href="home.html">
+<i class="ph ph-squares-four"></i> All Classes
+</a>
+<a href="admin.html" id="adminLink" style="display:none;">
+  <i class="ph ph-lock"></i> Admin Panel
+</a>
+
+
+<h4>MORE</h4>
+
+<a href="josh-game.html">
+<i class="ph ph-lightning"></i> Josh Game
+</a>
+
+
+<a href="refer.html">
+<i class="ph ph-gift"></i> Refer & Earn
+</a>
+
+<a href="about.html">
+<i class="ph ph-info"></i> About us
+</a>
+
+<a href="privacy.html">
+<i class="ph ph-shield-check"></i> Privacy Policy
+</a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+    <!-- 🔥 STICKY PROFILE HEADER -->
+<div class="profile-sticky-header">
+  <div class="page-title" style="justify-content:space-between;">
+
+    <!-- LEFT -->
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="ph ph-arrow-left back-btn" onclick="history.back()"></i>
+      <span>Study Hub</span>
+    </div>
+
+    <!-- RIGHT ICONS -->
+    <div class="header-icons">
+
+      <!-- GIFT -->
+      <div class="icon-box" onclick="window.location.href='refer.html'">
+        <i class="ph ph-gift"></i>
+      </div>
+
+      <!-- XP -->
+      <div class="xp-box">
+        <img src="https://static.pw.live/images/xp-icon_20250107145335.png" alt="xp">
+        <span id="xpValue">0</span>
+      </div>
+
+      <!-- NOTIFICATION -->
+     <div class="icon-box notification" id="notifBtn">
+  <i class="ph ph-bell"></i>
+  <span class="badge">0</span>
+</div>
+
+    </div>
+
+  </div>
+</div>
+    <!-- ⭐ BEST BOOKS -->
+<h2>Best Books</h2>
+<p class="small">Top recommended books for your goal</p>
+
+<div class="courses">
+
+</div>
+
+
+<!-- ⭐ BEST BATCHES -->
+<h2 style="margin-top:30px;">Best Batches</h2>
+<p class="small">Top live & recorded batches</p>
+
+<div class="courses" id="batchesContainer"> </div>
+
+<div class="footer-quote">
+  <h2>From Fear into Confidence</h2>
+  <p>❤️ From BOOKStore</p>
+</div>
+</div>
+</div>
+</div>
+    
+<div id="viewerPane">
+
+<!-- VIEW BOOK HEADER -->
+<div class="viewer-topbar">
+
+<button onclick="closeBook()">
+<i class="ph ph-arrow-left"></i>
+</button>
+
+<span>View Book</span>
+
+</div>
+
+<div class="viewer-toolbar">
+
+
+
+<div class="viewer-center">
+
+
+<button onclick="zoomOut()">
+<i class="ph ph-magnifying-glass-minus"></i>
+</button>
+
+<div class="zoom-indicator">
+<span id="zoomLevel">100%</span>
+</div>
+
+<button onclick="zoomIn()">
+<i class="ph ph-magnifying-glass-plus"></i>
+</button>
+
+<button onclick="fitScreen()" >
+<i class="ph ph-arrows-out"></i>
+</button>
+
+</div>
+
+<div class="viewer-right">
+<button onclick="downloadPDF()" >
+<i class="ph ph-download-simple"></i>
+</button>
+
+</div>
+
+</div>
+<div id="pageSidebar">
+
+<div class="pageList" id="pageList"></div>
+
+</div>
+<div id="pdfContainer">
+<iframe id="pdfFrame"></iframe>
+</div>
+
+</div>
+<!-- GOAL SELECTION POPUP -->
+
+<div id="goalPopup">
+
+<div class="goal-box">
+
+<div class="goal-header">
+<h2>Select your Goal</h2>
+</div>
+
+<div class="goal-grid">
+<div class="goal-card" data-goal="class9th">
+9th Class
+</div>
+<div class="goal-card" data-goal="board10th">
+10th Boards
+</div>
+
+<div class="goal-card" data-goal="science11">
+11th Science
+</div>
+
+<div class="goal-card" data-goal="commerce11">
+11th Commerce
+</div>
+
+<div class="goal-card" data-goal="humanities11">
+11th Humanities
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- 🔔 NOTIFICATION PANEL -->
+<div id="notificationPanel">
+
+  <!-- HEADER -->
+  <div class="notif-header">
+    <span>Notifications</span>
+    <i class="ph ph-x" id="closeNotif"></i>
+  </div>
+<!-- 🔧 ADMIN BAR -->
+<div id="notifAdminBar" style="display:none;" class="notif-admin-bar">
+  <button id="addNotifBtn">
+    <i class="ph ph-plus"></i> Add
+  </button>
+
+  <button id="editNotifBtn">
+    <i class="ph ph-pencil"></i> Edit
+  </button>
+</div>
+  <!-- LIST -->
+  <div class="notif-list" id="notifList">
+
+    <!-- ITEM -->
+    <div class="notif-item">
+
+      <div class="notif-icon">
+        <i class="ph ph-megaphone"></i>
+      </div>
+
+      <div class="notif-content">
+        <div class="notif-title"></div>
+        <div class="notif-desc">
+        </div>
+      </div>
+
+      <div class="notif-date"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- 🔔 NOTIFICATION POPUP -->
+<div id="notifPopup">
+
+  <div class="notif-popup-box">
+
+    <div class="notif-popup-header">
+      <span id="popupTitle">Title</span>
+      <i class="ph ph-x" id="closeNotifPopup"></i>
+    </div>
+
+    <div class="notif-popup-body" id="popupContent">
+      Full notification content here...
+    </div>
+
+  </div>
+
+</div>
+
+<!-- 🔔 ADD NOTIFICATION POPUP -->
+<div id="addNotifPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100000;
+">
+
+  <div style="
+    width:420px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+  ">
+
+    <h3 style="margin-bottom:15px;">Add Notification</h3>
+
+    <!-- HEADER INPUT -->
+    <input id="notifHeadInput" placeholder="Enter Title" style="
+      width:100%;
+      padding:10px;
+      margin-bottom:10px;
+      border-radius:8px;
+      border:1px solid #ddd;
+    ">
+
+    <!-- BODY INPUT -->
+    <textarea id="notifBodyInput" placeholder="Enter Description" style="
+      width:100%;
+      padding:10px;
+      height:100px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      margin-bottom:10px;
+    "></textarea>
+
+    <!-- DATE (AUTO) -->
+    <input id="notifDateInput" readonly style="
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      margin-bottom:15px;
+      background:#f5f5f5;
+    ">
+
+    <!-- BUTTONS -->
+    <div style="display:flex; justify-content:flex-end; gap:10px;">
+      <button id="cancelAddNotif" style="
+        padding:8px 14px;
+        border-radius:6px;
+        border:1px solid #6c4cff;
+        background:white;
+        color:#6c4cff;
+        cursor:pointer;
+      ">Cancel</button>
+
+      <button id="confirmAddNotif" style="
+        padding:8px 14px;
+        border-radius:6px;
+        border:none;
+        background:#6c4cff;
+        color:white;
+        cursor:pointer;
+      ">Add</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- LOGOUT CONFIRM POPUP -->
+<div id="logoutPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+">
+
+  <div style="
+    width:400px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  ">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-weight:500;">Confirm Logout</h3>
+      <span id="closeLogoutPopup" style="cursor:pointer; font-size:18px;">✕</span>
+    </div>
+
+    <p style="margin-top:10px; color:#555;">
+      Are you sure you want to log out? You'll need to log in again to access your account.
+    </p>
+
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      
+      <button id="cancelLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:1px solid #6c63ff;
+        background:white;
+        color:#6c63ff;
+        cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+      <button id="confirmLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:none;
+        background:#6c63ff;
+        color:white;
+        cursor:pointer;
+      ">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<!-- FIREBASE LOGIN PROTECTION -->
+
+<script type="module">
+
+/* 🔥 IMPORTS */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  getDatabase, 
+  ref, 
+  get, 
+  set 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+/* 🔥 CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+  authDomain: "bookstore-6ab08.firebaseapp.com",
+  projectId: "bookstore-6ab08",
+  databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/"
+};
+
+/* 🔥 INIT */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+const coursesContainer = document.querySelector(".courses");
+
+/* 🔥 INIT CONTAINERS */
+const booksContainer = document.querySelector(".courses"); // First one
+const batchesContainer = document.getElementById("batchesContainer");
+import { onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const notifList = document.getElementById("notifList");
+const notifBadge = document.querySelector(".notification .badge");
+/* 🔔 LOCAL STORAGE HANDLING */
+function getReadNotifications(){
+  return JSON.parse(localStorage.getItem("readNotifs") || "[]");
+}
+
+function markAsRead(id){
+  let read = getReadNotifications();
+  if(!read.includes(id)){
+    read.push(id);
+    localStorage.setItem("readNotifs", JSON.stringify(read));
+  }
+}
+
+function markAllAsRead(ids){
+  localStorage.setItem("readNotifs", JSON.stringify(ids));
+}
+/* 🔔 LOAD NOTIFICATIONS */
+async function loadNotifications() {
+
+  const notifRef = ref(db, "notifications");
+
+  onValue(notifRef, (snapshot) => {
+
+  notifList.innerHTML = "";
+
+  if(!snapshot.exists()){
+    notifBadge.innerText = 0;
+    return;
+  }
+
+  const data = snapshot.val();
+
+  /* 🔥 CONVERT TO ARRAY */
+  const notifArray = Object.keys(data).map(id => ({
+    id,
+    ...data[id]
+  }));
+
+  /* 🔥 SORT BY DATE (LATEST FIRST) */
+  notifArray.sort((a, b) => {
+    const [d1, m1, y1] = a.date.split("/");
+    const [d2, m2, y2] = b.date.split("/");
+
+    const dateA = new Date(`${y1}-${m1}-${d1}`);
+    const dateB = new Date(`${y2}-${m2}-${d2}`);
+
+    return dateB - dateA; // newest first
+  });
+
+
+  const readNotifs = getReadNotifications();
+let unreadCount = 0;
+let allIds = [];
+
+notifArray.forEach(notif => {
+
+  allIds.push(notif.id);
+
+  const isRead = readNotifs.includes(notif.id);
+  if(!isRead) unreadCount++;
+
+  const item = document.createElement("div");
+  item.className = "notif-item";
+
+  if(!isRead){
+    item.style.background = "#eef2ff"; // highlight unread
+  }
+
+  item.dataset.title = notif.head;
+  item.dataset.content = notif.body;
+
+  item.innerHTML = `
+  <div class="notif-icon">
+    <i class="ph ph-megaphone"></i>
+  </div>
+
+  <div class="notif-content">
+    <div class="notif-title">${notif.head}</div>
+    <div class="notif-desc">
+      ${notif.body.substring(0, 60)}...
+    </div>
+  </div>
+
+  <div class="notif-date">${formatDate(notif.date)}</div>
+
+  ${isEditMode ? `
+    <div class="delete-icon" data-id="${notif.id}">
+      <i class="ph ph-trash"></i>
+    </div>
+  ` : ""}
+`;
+
+// 🗑 DELETE CLICK
+const deleteBtn = item.querySelector(".delete-icon");
+
+if(deleteBtn){
+  deleteBtn.onclick = async (e) => {
+    e.stopPropagation(); // prevent opening popup
+
+    if(confirm("Delete this notification?")){
+      const notifRef = ref(db, "notifications/" + deleteBtn.dataset.id);
+      await set(notifRef, null); // delete from Firebase
+      loadNotifications();
+    }
+  };
+}
+
+  /* 🔥 CLICK = MARK AS READ */
+  item.onclick = () => {
+
+    markAsRead(notif.id);
+
+    popupTitle.innerText = notif.head;
+    popupContent.innerText = notif.body;
+
+    notifPopup.style.display = "flex";
+    document.body.classList.add("popup-active");
+
+    loadNotifications(); // refresh UI + badge
+  };
+
+  notifList.appendChild(item);
+});
+
+/* 🔔 UPDATE BADGE */
+notifBadge.innerText = unreadCount;
+
+});
+}
+function formatDate(dateStr){
+  const [day, month, year] = dateStr.split("/");
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${day} ${months[month-1]}`;
+}
+
+import { push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+/* ELEMENTS */
+const addNotifBtn = document.getElementById("addNotifBtn");
+const addPopup = document.getElementById("addNotifPopup");
+
+const notifHeadInput = document.getElementById("notifHeadInput");
+const notifBodyInput = document.getElementById("notifBodyInput");
+const notifDateInput = document.getElementById("notifDateInput");
+
+const cancelAddNotif = document.getElementById("cancelAddNotif");
+const confirmAddNotif = document.getElementById("confirmAddNotif");
+
+/* 📅 GET TODAY DATE */
+function getTodayDate(){
+  const d = new Date();
+  const day = String(d.getDate()).padStart(2,'0');
+  const month = String(d.getMonth()+1).padStart(2,'0');
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+/* ➕ OPEN POPUP */
+addNotifBtn.onclick = () => {
+  addPopup.style.display = "flex";
+
+  notifHeadInput.value = "";
+  notifBodyInput.value = "";
+  notifDateInput.value = getTodayDate();
+};
+
+/* ❌ CANCEL */
+cancelAddNotif.onclick = () => {
+  addPopup.style.display = "none";
+};
+
+/* CLICK OUTSIDE */
+addPopup.onclick = (e) => {
+  if(e.target === addPopup){
+    addPopup.style.display = "none";
+  }
+};
+
+/* ✅ ADD NOTIFICATION */
+confirmAddNotif.onclick = async () => {
+
+  const head = notifHeadInput.value.trim();
+  const body = notifBodyInput.value.trim();
+  const date = notifDateInput.value;
+
+  if(!head || !body){
+    alert("Fill all fields");
+    return;
+  }
+
+  const notifRef = ref(db, "notifications");
+
+  await push(notifRef, {
+    head,
+    body,
+    date
+  });
+
+  addPopup.style.display = "none";
+
+  // refresh UI
+  loadNotifications();
+};
+/* ✏️ EDIT MODE TOGGLE */
+const editBtn = document.getElementById("editNotifBtn");
+
+let isEditMode = false;
+
+editBtn.onclick = () => {
+  isEditMode = !isEditMode;
+
+  // Highlight button
+  editBtn.classList.toggle("active", isEditMode);
+
+  // Toggle edit mode on notification list
+  notifList.classList.toggle("edit-mode", isEditMode);
+
+  // Re-render notifications so delete buttons appear/disappear
+  loadNotifications();
+};
+/* 🔥 LOAD EVERYTHING */
+async function loadPageData(goal) {
+    loadBooks(goal);
+    loadBatches(goal);
+}
+
+/* 🔥 LOAD BOOKS (Your existing function modified slightly) */
+async function loadBooks(goal) {
+    booksContainer.innerHTML = "<p>Loading Books...</p>";
+    const booksRef = ref(db, goal); 
+    const snap = await get(booksRef);
+    booksContainer.innerHTML = "";
+
+    if(!snap.exists()) {
+        booksContainer.innerHTML = "<p>No books found</p>";
+        return;
+    }
+
+    const data = snap.val();
+    for(const subjectKey in data) {
+        for(const bookKey in data[subjectKey]) {
+            const book = data[subjectKey][bookKey];
+            renderCard(booksContainer, book, subjectKey, true);
+        }
+    }
+}
+
+/* 🔥 NEW: LOAD BATCHES */
+async function loadBatches(goal) {
+    batchesContainer.innerHTML = "<p>Loading Batches...</p>";
+    // This assumes your DB structure is batches/board10th/...
+    const batchesRef = ref(db, `batches/${goal}`); 
+    const snap = await get(batchesRef);
+    batchesContainer.innerHTML = "";
+
+    if(!snap.exists()) {
+        batchesContainer.innerHTML = "<p>No batches found</p>";
+        return;
+    }
+
+    const batches = snap.val();
+    Object.keys(batches).forEach(id => {
+    const batch = batches[id];
+
+    // 🚫 HIDE "Best Book(s)" batches
+    if (batch.title && batch.title.toLowerCase().includes("best book")) {
+        return; // skip this batch
+    }
+
+    renderCard(batchesContainer, batch, batch.lang, false);
+});
+}
+
+/* 🔥 HELPER: RENDER CARD */
+function renderCard(container, item, category, isBook) {
+
+    const card = document.createElement("div");
+    card.className = isBook ? "book-card" : "batch-card";
+
+   const footerInfo = isBook 
+    ? `Edition: ${item.edition}` 
+    : `${item.year}`;
+
+    /* 🔥 PRICE LOGIC FOR BATCH */
+    let priceHTML = "";
+
+    if(isBook){
+        priceHTML = ""; // keep books same
+    } else {
+        priceHTML = `
+            <div class="price">
+                <span class="price">₹0</span>
+                <span class="old-price">₹${item.price || 0}</span>
+            </div>
+            <div class="discount">100% OFF</div>
+        `;
+    }
+
+    card.innerHTML = `
+        <div class="banner" style="background-image:url('${item.cover || "https://via.placeholder.com/200x300"}')">
+            ${!isBook && item.lang ? `<div class="language">${item.lang}</div>` : ""}
+        </div>
+
+        <div class="card-content">
+            
+            ${isBook ? `<div class="category">${category}</div>` : ""}
+
+            <div class="title">${item.title}</div>
+            <div class="date">${footerInfo}</div>
+
+            ${priceHTML}
+
+            <button class="explore">
+                ${isBook ? "View Now" : "Explore Batch"}
+            </button>
+        </div>
+    `;
+
+    card.querySelector(".explore").onclick = () => {
+        if(isBook){
+            window.openBook(item.view);
+        } else {
+            window.open(item.link, "_blank");
+        }
+    };
+
+    container.appendChild(card);
+}
+
+/* 🔥 UPDATE AUTH CHECK & GOAL SAVING */
+// Find where you called loadBooks(goal) in your script and change it to:
+// loadPageData(goal);
+/* 🔥 ELEMENTS */
+const userName = document.getElementById("userName");
+const adminLink = document.getElementById("adminLink");
+
+const goalText = document.getElementById("goalText");
+const popup = document.getElementById("goalPopup");
+
+/* 🔥 GOAL MAP */
+const goalMap = {
+  class9th:"9th Class",
+  board10th:"10th Boards",
+  science11:"11th Science",
+  commerce11:"11th Commerce",
+  humanities11:"11th Humanities"
+};
+
+/* 🔥 HIDE PAGE UNTIL AUTH */
+document.body.style.display = "none";
+
+/* 🔥 AUTH CHECK */
+onAuthStateChanged(auth, async (user) => {
+
+  if(!user){
+    window.location.href = "index.html";
+    return;
+  }
+
+  document.body.style.display = "block";
+
+  const uid = user.uid;
+loadNotifications();
+  /* 🔒 ADMIN */
+  const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
+  if(uid === adminUID){
+    adminLink.style.display = "flex";
+  }
+const notifAdminBar = document.getElementById("notifAdminBar");
+
+if(uid === adminUID){
+  adminLink.style.display = "flex";
+
+  // 🔥 SHOW ADMIN BAR
+  notifAdminBar.style.display = "flex";
+}
+
+  /* 🔥 USER DATA */
+  const xpValue = document.getElementById("xpValue");
+
+const userRef = ref(db, "users/" + uid);
+const snap = await get(userRef);
+
+if(snap.exists()){
+  const data = snap.val();
+
+  /* 🚫 BLOCK CHECK */
+  if(data.block === true){
+    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🚫 You are blocked</h2>";
+    return;
+  }
+
+  /* 👤 NAME */
+  if(data.name){
+    userName.innerText = "Hi, " + data.name;
+  }
+
+  /* ⭐ XP LOAD */
+  if(data.xp !== undefined){
+    xpValue.innerText = data.xp;
+  } else {
+    xpValue.innerText = 0;
+  }
+}
+
+  /* 🔥 GOAL */
+  const goalRef = ref(db, "users/" + uid + "/goals");
+  const goalSnap = await get(goalRef);
+
+  if(goalSnap.exists()){
+    const goal = goalSnap.val();
+    goalText.innerText = goalMap[goal];
+    popup.style.display = "none";
+
+    // CHANGE THIS LINE:
+    loadPageData(goal); 
+  } else {
+    popup.style.display = "flex";
+  }
+});
+
+/* 🔥 SAVE GOAL */
+document.querySelectorAll(".goal-card").forEach(card => {
+  card.onclick = () => {
+    const goal = card.dataset.goal;
+    const user = auth.currentUser;
+
+    set(ref(db, "users/" + user.uid + "/goals"), goal);
+    goalText.innerText = goalMap[goal];
+    popup.style.display = "none";
+
+    // CHANGE THIS LINE:
+    loadPageData(goal); 
+  };
+});
+
+/* 🔽 DROPDOWN */
+const dropdown = document.getElementById("goalDropdown");
+dropdown.onclick = () => {
+  dropdown.classList.toggle("active");
+};
+
+/* 🔄 CHANGE GOAL */
+document.querySelectorAll(".goal-menu div").forEach(item => {
+  item.onclick = (e) => {
+    e.stopPropagation();
+    const goal = item.dataset.goal;
+    const user = auth.currentUser;
+
+    set(ref(db, "users/" + user.uid + "/goals"), goal);
+    goalText.innerText = goalMap[goal];
+    dropdown.classList.remove("active");
+
+    // CHANGE THIS LINE:
+    loadPageData(goal); 
+  };
+});
+
+/* 👤 USER MENU */
+const userBox = document.getElementById("userBox");
+
+userBox.onclick = (e) => {
+  e.stopPropagation();
+  userBox.classList.toggle("active");
+};
+
+document.addEventListener("click", () => {
+  userBox.classList.remove("active");
+});
+
+/* 🚪 LOGOUT */
+const logoutBtn = document.getElementById("logoutBtn");
+
+const logoutPopup = document.getElementById("logoutPopup");
+const closeLogoutPopup = document.getElementById("closeLogoutPopup");
+const cancelLogout = document.getElementById("cancelLogout");
+const confirmLogout = document.getElementById("confirmLogout");
+
+/* 🚪 OPEN POPUP */
+logoutBtn.onclick = (e) => {
+  e.stopPropagation(); // prevent menu close issue
+  logoutPopup.style.display = "flex";
+  userBox.classList.remove("active"); // close dropdown
+};
+
+/* ❌ CLOSE POPUP (X button) */
+closeLogoutPopup.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ❌ CANCEL BUTTON */
+cancelLogout.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ✅ CONFIRM LOGOUT */
+confirmLogout.onclick = () => {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
+};
+
+/* CLICK OUTSIDE TO CLOSE */
+logoutPopup.onclick = (e) => {
+  if (e.target === logoutPopup) {
+    logoutPopup.style.display = "none";
+  }
+};
+
+/* 📱 SIDEBAR */
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuBtn.onclick = () => {
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+
+  const viewer = document.getElementById("viewerPane");
+
+  if (sidebar.classList.contains("active")) {
+    viewer.style.left = "260px";
+    viewer.style.width = "calc(100% - 260px)";
+  } else {
+    viewer.style.left = "0";
+    viewer.style.width = "100%";
+  }
+};
+
+overlay.onclick = () => {
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+};
+
+const notifBtn = document.getElementById("notifBtn");
+const notifPanel = document.getElementById("notificationPanel");
+const closeNotif = document.getElementById("closeNotif");
+
+notifBtn.onclick = (e) => {
+  e.stopPropagation();
+
+  notifPanel.classList.add("active");
+  overlay.classList.add("active");
+
+  // 🔥 mark all as read
+  const ids = Array.from(document.querySelectorAll(".notif-item"))
+                   .map((_, i) => notifArray[i]?.id)
+                   .filter(Boolean);
+
+  markAllAsRead(ids);
+
+  loadNotifications();
+};
+
+closeNotif.onclick = () => {
+  notifPanel.classList.remove("active");
+  overlay.classList.remove("active");
+};
+
+overlay.addEventListener("click", () => {
+  notifPanel.classList.remove("active");
+});
+
+const notifItems = document.querySelectorAll(".notif-item");
+const notifPopup = document.getElementById("notifPopup");
+const popupTitle = document.getElementById("popupTitle");
+const popupContent = document.getElementById("popupContent");
+const closeNotifPopup = document.getElementById("closeNotifPopup");
+
+/* 🔔 CLICK NOTIFICATION */
+notifItems.forEach(item => {
+  item.onclick = () => {
+
+    const title = item.dataset.title;
+    const content = item.dataset.content;
+
+    popupTitle.innerText = title;
+    popupContent.innerText = content;
+
+    notifPopup.style.display = "flex";
+
+    // 🔥 Blur everything INCLUDING notif panel
+    document.body.classList.add("popup-active");
+  };
+});
+
+/* ❌ CLOSE POPUP */
+closeNotifPopup.onclick = () => {
+  notifPopup.style.display = "none";
+  document.body.classList.remove("popup-active");
+};
+
+/* CLICK OUTSIDE */
+notifPopup.onclick = (e) => {
+  if(e.target === notifPopup){
+    notifPopup.style.display = "none";
+    document.body.classList.remove("popup-active");
+  }
+};
+const lastReadSnap = await get(ref(db, "users/" + uid + "/lastRead"));
+const lastRead = lastReadSnap.exists() ? lastReadSnap.val() : 0;
+
+if(new Date(`${y}-${m}-${d}`).getTime() > lastRead){
+   unreadCount++;
+}
+/* 📄 VIEWER */
+const viewer = document.getElementById("viewerPane");
+const frame = document.getElementById("pdfFrame");
+
+let zoomLevel = 100;
+let rotation = 0;
+
+// Add this variable at the top of your viewer logic section
+let currentDownloadLink = ""; 
+
+/* RUN WHEN BOOK OPENS */
+window.openBook = function(link){
+    const viewer = document.getElementById("viewerPane");
+    const frame = document.getElementById("pdfFrame");
+    
+    viewer.style.display = "block";
+    frame.src = link;
+    
+    // IMPORTANT: This line updates the variable so downloadPDF works!
+    currentDownloadLink = link; 
+
+    zoomLevel = 100;
+    rotation = 0;
+    
+    applyTransform();
+};
+window.closeBook = function(){
+
+document.getElementById("viewerPane").style.display="none";
+
+document.getElementById("pdfFrame").src="";
+
+}
+/* APPLY ZOOM + ROTATE */
+function applyTransform(){
+frame.style.transform =
+"scale(" + (zoomLevel/100) + ") rotate(" + rotation + "deg)";
+document.getElementById("zoomLevel").innerText = zoomLevel + "%";
+}
+/* ZOOM IN */
+
+window.zoomIn = function(){
+
+if(zoomLevel < 300){
+zoomLevel += 10;
+applyTransform();
+}
+
+}
+
+/* ZOOM OUT */
+
+window.zoomOut = function(){
+
+if(zoomLevel > 50){
+zoomLevel -= 10;
+applyTransform();
+}
+
+}
+
+/* FIT SCREEN */
+
+window.fitScreen = function(){
+
+const elem = document.getElementById("viewerPane");
+
+if (!document.fullscreenElement) {
+
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { 
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { 
+        elem.msRequestFullscreen();
+    }
+
+} else {
+
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+
+}
+
+}
+/* DOWNLOAD */
+
+window.downloadPDF = function(){
+    if (!currentDownloadLink) {
+        alert("No file selected for download.");
+        return;
+    }
+
+    // Check if it's a Google Drive link and convert to download format if needed
+    let downloadUrl = currentDownloadLink;
+    
+    if (currentDownloadLink.includes("drive.google.com")) {
+        // This converts /file/d/ID/view into /uc?export=download&id=ID
+        const fileId = currentDownloadLink.split('/d/')[1]?.split('/')[0];
+        if (fileId) {
+            downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        }
+    }
+
+    window.open(downloadUrl, "_blank");
+}
+</script>
+</body>
+</html>

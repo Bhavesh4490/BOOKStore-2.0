@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YOUR TEXT HERE - BOOKStore</title>
+<link rel="icon" type="image/png" href="book.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+background:#f5f6fa;
+padding-top:65px;
+}
+/* TOP NAVBAR */
+
+.navbar{
+height:65px;
+background:#111a22;
+color:white;
+display:flex;
+align-items:center;
+padding:0 20px;
+gap:20px;
+
+/* NEW */
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+.dropdown{
+margin-left:10px;
+background:#1f2a33;
+padding:6px 14px;
+border-radius:6px;
+font-size:14px;
+white-space:nowrap;
+}
+#goalDropdown{
+position:relative;
+cursor:pointer;
+}
+
+.goal-menu{
+position:absolute;
+top:40px;
+left:0;
+background:white;
+color:#333;
+border-radius:8px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+width:200px;
+overflow:hidden;
+}
+
+.goal-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.goal-menu div:hover{
+background:#f2f2ff;
+}
+
+#goalDropdown.active .goal-menu{
+display:block;
+}
+
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+/* LAYOUT */
+
+.container{
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#efefef;
+height:calc(100vh - 65px);
+padding:20px;
+
+/* NEW */
+position:fixed;
+top:65px;
+left:0;
+overflow-y:auto;
+}
+.sidebar h4{
+font-size:12px;
+margin-top:15px;
+margin-bottom:8px;
+color:#777;
+}
+
+.sidebar a{
+display:block;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:4px;
+}
+
+.sidebar a.active{
+background:#dcd6ff;
+color:#5c4cff;
+font-weight:500;
+}
+/* SIDEBAR BUTTONS */
+
+.sidebar a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:11px 12px;
+border-radius:10px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:6px;
+transition:all 0.25s ease;
+position:relative;
+}
+
+/* ICON */
+
+.sidebar a i{
+font-size:18px;
+color:#6b7280;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.sidebar a:hover{
+background:#f3f4ff;
+color:#5c4cff;
+transform:translateX(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ICON COLOR CHANGE */
+
+.sidebar a:hover i{
+color:#5c4cff;
+}
+
+/* LEFT ACTIVE BAR */
+
+.sidebar a::before{
+content:"";
+position:absolute;
+left:-10px;
+top:50%;
+transform:translateY(-50%);
+width:4px;
+height:0;
+background:#5c4cff;
+border-radius:4px;
+transition:0.25s;
+}
+
+
+/* ACTIVE PAGE */
+
+.sidebar a.active{
+background:#ece9ff;
+color:#5c4cff;
+font-weight:500;
+}
+
+.sidebar a.active i{
+color:#5c4cff;
+}
+
+.sidebar a.active::before{
+height:70%;
+}
+/* MAIN */
+
+.main{
+flex:1;
+padding:25px;
+
+/* NEW */
+margin-left:230px;
+height:calc(100vh - 65px);
+overflow-y:auto;
+}
+
+.main h2{
+margin-bottom:10px;
+}
+
+.small{
+font-size:14px;
+color:#777;
+margin-bottom:20px;
+}
+
+/* FILTERS */
+
+.filters{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filters button{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+}
+
+/* COURSE GRID */
+
+.courses{
+display:grid;
+grid-template-columns: repeat(4, 1fr);
+gap:18px;
+}
+
+.card{
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+transition:all .25s ease;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 28px rgba(0,0,0,0.15);
+}
+
+.banner{
+height:190px;
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+background-color:#f9fafc;
+position:relative;
+padding:15px;
+display:flex;
+align-items:flex-end;
+justify-content:flex-start;
+overflow:hidden;
+}
+
+/* book shadow */
+.banner::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(to top, rgba(0,0,0,0.35), transparent 60%);
+opacity:0;
+transition:0.3s;
+}
+
+/* hover effect */
+.card:hover .banner::before{
+opacity:1;
+}
+
+.card:hover .banner{
+transform:scale(1.04);
+transition:0.3s;
+}
+
+.language{
+position:absolute;
+top:10px;
+right:10px;
+background:white;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+}
+
+.card-content{
+padding:16px;
+}
+
+.category{
+font-size:12px;
+color:#ff6a00;
+margin-bottom:6px;
+}
+
+.title{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.date{
+font-size:13px;
+color:#666;
+margin-bottom:10px;
+}
+
+.price{
+font-weight:600;
+}
+
+.discount{
+color:green;
+font-size:13px;
+}
+
+.explore{
+margin-top:10px;
+width:100%;
+padding:9px;
+border-radius:8px;
+border:none;
+font-size:14px;
+font-weight:500;
+color:white;
+background:linear-gradient(135deg,#5c4cff,#7a73ff);
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+transition:all .25s ease;
+}
+
+.explore:hover{
+background:linear-gradient(135deg,#4a3cff,#6a63ff);
+transform:scale(1.03);
+box-shadow:0 6px 16px rgba(0,0,0,0.2);
+}
+
+/* POPUP BACKGROUND */
+
+#goalPopup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none; /* hidden by default */
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+/* POPUP BOX */
+
+.goal-box{
+width:600px;
+background:white;
+border-radius:12px;
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+
+.goal-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.goal-header h2{
+flex:1;
+text-align:center;
+font-weight:500;
+}
+
+/* GRID */
+
+.goal-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+/* CARDS */
+
+.goal-card{
+padding:18px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+background:#fafafa;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.goal-card:hover{
+border:2px solid #6c63ff;
+background:#f4f3ff;
+transform:translateY(-2px);
+}
+/* CLASS FILTER */
+
+.class-filter{
+position:relative;
+}
+
+.class-menu{
+position:absolute;
+top:42px;
+left:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+min-width:180px;
+overflow:hidden;
+z-index:10;
+}
+
+.class-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.class-menu div:hover{
+background:#f2f2ff;
+}
+
+.class-filter.active .class-menu{
+display:block;
+}
+/* USER DROPDOWN */
+
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+}
+
+.user-avatar{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+.dropdown-icon{
+font-size:16px;
+color:#ccc;
+}
+
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index:100;
+}
+
+.user-menu a,
+.user-menu button{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+font-size:14px;
+border:none;
+background:none;
+text-decoration:none;
+color:#333;
+cursor:pointer;
+width:100%;
+}
+
+.user-menu a:hover{
+background:#f3f3ff;
+}
+
+#logoutBtn{
+color:red;
+}
+
+#logoutBtn:hover{
+background:#ffecec;
+}
+
+.user.active .user-menu{
+display:flex;
+}
+@media (max-width:1200px){
+.courses{
+grid-template-columns: repeat(4,1fr);
+}
+}
+
+@media (max-width:900px){
+.courses{
+grid-template-columns: repeat(3,1fr);
+}
+}
+
+@media (max-width:600px){
+.courses{
+grid-template-columns: repeat(2,1fr);
+}
+}
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:linear-gradient(135deg,#ff7a18,#ffb347);
+color:white;
+font-size:11px;
+font-weight:500;
+padding:4px 8px;
+border-radius:6px;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 16px 30px rgba(0,0,0,0.15);
+}
+/* VIEWER */
+
+#viewerPane{
+display:none;
+position:relative;
+width:100%;
+height:calc(100vh - 120px);
+background:#f1f3f7;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 8px 24px rgba(0,0,0,0.15);
+}
+
+.viewer-actions button{
+border:none;
+background:white;
+padding:6px 10px;
+border-radius:6px;
+margin-left:6px;
+cursor:pointer;
+}
+
+.viewer-actions button:hover{
+background:#ecefff;
+}
+
+#closeViewer{
+border:none;
+background:white;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+#pdfFrame{
+width:100%;
+height:100%;
+border:none;
+}
+/* PDF VIEWER */
+
+#viewerPane{
+display:none;
+position:fixed;
+top:65px;
+left:230px;
+width:calc(100% - 230px);
+height:calc(100vh - 65px);
+background:#e5e7eb;
+z-index:100;
+}
+
+.viewer-header{
+height:50px;
+display:flex;
+align-items:center;
+padding:0 15px;
+border-bottom:1px solid #ddd;
+background:white;
+}
+
+#closeViewer{
+background:none;
+border:none;
+font-size:16px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+#pdfFrame{
+width:100%;
+height:calc(100% - 50px);
+border:none;
+}
+/* VIEWER FULL */
+
+#viewerPane{
+display:none;
+position:fixed;
+top:65px;
+left:230px;
+width:calc(100% - 230px);
+height:calc(100vh - 65px);
+background:#dfe3ea;
+z-index:200;
+}
+
+/* TOOLBAR */
+
+.viewer-toolbar{
+height:50px;
+background:#e5e7eb;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 15px;
+border-bottom:1px solid #cfd4db;
+}
+
+/* LEFT */
+
+.viewer-left{
+font-size:20px;
+cursor:pointer;
+}
+
+/* CENTER */
+
+.viewer-center{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.viewer-center button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+.page-indicator{
+font-size:14px;
+color:#333;
+}
+
+.zoom-text{
+font-size:14px;
+width:50px;
+text-align:center;
+}
+
+.divider{
+width:1px;
+height:20px;
+background:#cfd4db;
+margin:0 5px;
+}
+
+/* RIGHT */
+
+.viewer-right{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.viewer-right button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+/* PDF */
+
+#pdfFrame{
+width:100%;
+height:calc(100% - 50px);
+border:none;
+background:white;
+}
+/* ICON BUTTONS */
+
+.viewer-center button,
+.viewer-right button,
+.viewer-left i{
+position:relative;
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:6px;
+border-radius:50%;
+transition:0.2s;
+}
+
+/* PURPLE HOVER BUBBLE */
+
+.viewer-center button:hover,
+.viewer-right button:hover,
+.viewer-left i:hover{
+background:#ede9fe;
+color:#6c4cff;
+}
+
+
+.viewer-center button:hover::after,
+.viewer-right button:hover::after,
+.viewer-left i:hover::after{
+opacity:1;
+}
+#pageSidebar{
+position:absolute;
+left:0;
+top:50px;
+width:120px;
+height:calc(100% - 50px);
+background:white;
+border-right:1px solid #ddd;
+overflow-y:auto;
+display:none;
+}
+
+.pageList{
+padding:10px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.pageThumb{
+background:#f3f4f6;
+border-radius:6px;
+padding:10px;
+text-align:center;
+cursor:pointer;
+font-size:13px;
+border:1px solid transparent;
+}
+
+.pageThumb:hover{
+border:1px solid #6c4cff;
+background:#f4f3ff;
+}
+#pdfFrame{
+margin-left:0;
+transition:0.25s;
+}
+
+#viewerPane.withSidebar #pdfFrame{
+margin-left:120px;
+}
+#pdfContainer{
+position:absolute;
+top:95px;
+left:0;
+width:100%;
+height:calc(100% - 50px);
+overflow:auto;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+background:#dfe3ea;
+}
+
+#pdfFrame{
+width:900px;
+height:1200px;
+border:none;
+background:white;
+transform-origin:top center;
+transition:transform 0.2s ease;
+}
+
+.viewer-toolbar{
+position:absolute;
+top:45px;
+left:0;
+width:100%;
+height:50px;
+background:#e5e7eb;
+z-index:999;
+}
+/* ZOOM INDICATOR */
+
+.zoom-indicator{
+background:white;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:500;
+color:#333;
+border:1px solid #d1d5db;
+min-width:60px;
+text-align:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+transition:0.2s;
+}
+
+/* TOOLBAR LAYOUT IMPROVEMENT */
+
+.viewer-toolbar{
+height:50px;
+background:#eef1f6;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+border-bottom:1px solid #d6d9df;
+}
+
+/* CENTER CONTROLS */
+
+.viewer-center{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* RIGHT SIDE BUTTONS */
+
+.viewer-right{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* BUTTON IMPROVEMENT */
+
+.viewer-center button,
+.viewer-right button{
+width:34px;
+height:34px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:8px;
+font-size:18px;
+transition:0.2s;
+}
+
+.viewer-center button:hover,
+.viewer-right button:hover{
+background:#ede9fe;
+color:#6c4cff;
+transform:scale(1.05);
+}
+/* VIEW BOOK HEADER */
+
+.viewer-topbar{
+height:45px;
+display:flex;
+align-items:center;
+gap:10px;
+padding:0 18px;
+background:#ffffff;
+border-bottom:1px solid #e5e7eb;
+font-size:15px;
+font-weight:500;
+color:#333;
+}
+
+.viewer-topbar button{
+border:none;
+background:transparent;
+display:flex;
+align-items:center;
+gap:6px;
+font-size:15px;
+cursor:pointer;
+color:#333;
+padding:6px 8px;
+border-radius:6px;
+transition:0.2s;
+}
+
+.viewer-topbar button:hover{
+background:#f3f4f6;
+}
+
+.viewer-topbar i{
+font-size:18px;
+}
+/* MOBILE NAVBAR */
+.menu-btn{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* MOBILE STYLES */
+@media (max-width:768px){
+
+  .navbar{
+    padding:0 12px;
+    justify-content:space-between;
+  }
+
+  /* SHOW MENU ICON */
+  .menu-btn{
+    display:block;
+    color:white;
+  }
+
+  /* HIDE LOGO */
+  .logo{
+    display:none;
+  }
+
+  /* HIDE "Hi, User" TEXT */
+  #userName{
+    display:none;
+  }
+
+  /* KEEP ONLY AVATAR */
+  .user{
+    gap:0;
+  }
+
+  /* OPTIONAL: SMALLER DROPDOWN */
+  .dropdown{
+    padding:5px 10px;
+    font-size:13px;
+  }
+
+  /* SIDEBAR HIDDEN BY DEFAULT */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:0.3s;
+  }
+
+  /* SHOW SIDEBAR WHEN ACTIVE */
+  .sidebar.active{
+    transform:translateX(0);
+  }
+
+  /* REMOVE LEFT MARGIN FROM MAIN */
+  .main{
+    margin-left:0;
+  }
+   .sidebar{
+    position:fixed;
+    top:65px;
+    left:0;
+    width:260px;
+    height:calc(100vh - 65px);
+    background:#ffffff;
+    transform:translateX(-100%);
+    transition:transform 0.35s ease;
+    z-index:1001;
+    box-shadow:4px 0 20px rgba(0,0,0,0.15);
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+  }
+
+  .sidebar.active{
+    transform:translateX(0);
+  }
+.sidebar a:hover{
+  transform:translateX(6px);
+}
+#viewerPane{
+    top:65px;
+    left:0;                 /* remove sidebar offset */
+    width:100%;             /* full width */
+    height:calc(100vh - 65px);
+    z-index:1100;
+  }
+
+  /* OPTIONAL: keep sidebar above viewer */
+  .sidebar{
+    z-index:1200;
+  }
+}
+
+#overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s ease;
+  z-index:1000;
+}
+
+#overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+/* MOVE USER TO RIGHT */
+.user {
+    margin-left: auto; /* Pushes the user profile to the far right */
+}
+
+/* NEW SEARCH BAR STYLING */
+.search-box-container {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 400px; /* Limits width so it doesn't span the whole screen */
+}
+
+.search-box-container input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus {
+    border-color: #5c4cff;
+    box-shadow: 0 0 0 3px rgba(92, 76, 255, 0.1);
+}
+
+.search-box-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+}
+
+/* SEARCH HINT */
+#searchHint {
+    position: absolute;
+    left: 42px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus + #searchHint,
+.search-box-container input:not(:placeholder-shown) + #searchHint {
+    opacity: 0;
+}
+
+.filters{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+/* LEFT GROUP */
+.filters-left{
+    display:flex;
+    gap:10px;
+}
+
+/* RIGHT GROUP */
+.filters-right{
+    display:flex;
+    gap:10px;
+}
+
+/* ICON BUTTON STYLE */
+.icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:18px;
+    transition:0.25s ease;
+}
+
+/* HOVER EFFECT */
+.icon-btn:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+    border-color:#c7c3ff;
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(0,0,0,0.1);
+}
+/* EDIT MODE ICON */
+.card{
+    position:relative; /* IMPORTANT */
+}
+
+.edit-icon{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:32px;
+    height:32px;
+    background:white;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    cursor:pointer;
+    font-size:16px;
+    color:#333;
+    display:none; /* hidden by default */
+    transition:0.2s;
+}
+
+.edit-icon:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+}
+
+/* SHOW ICON WHEN EDIT MODE ACTIVE */
+.edit-mode .edit-icon{
+    display:flex;
+}
+.icon-btn.active {
+    background:#6c4cff;
+    color:white;
+    border-color:#6c4cff;
+    box-shadow:0 6px 16px rgba(108,76,255,0.4);
+    transform:translateY(-2px);
+}
+/* Update Edit Icon to be on the left of Delete */
+.edit-mode .edit-icon {
+    display: flex;
+    right: 50px; /* Shifted left to make room for delete */
+}
+
+/* Delete Icon Styling */
+.delete-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    font-size: 16px;
+    color: #ff4d4d; /* Red color for delete */
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.delete-icon:hover {
+    background: #ffecec;
+    color: #e60000;
+}
+
+/* Show Delete Icon in Edit Mode */
+.edit-mode .delete-icon {
+    display: flex;
+}
+/* 🔥 PROFILE STICKY HEADER */
+.profile-sticky-header{
+position:sticky;
+top:0;
+background:#f5f6fa;
+z-index:50;
+padding:10px 0;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* reuse same title style */
+.page-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+font-weight:500;
+color:#111;
+padding:0 20px;
+}
+
+/* back button */
+.back-btn{
+font-size:20px;
+cursor:pointer;
+opacity:0.7;
+transition:0.2s;
+}
+
+.back-btn:hover{
+opacity:1;
+transform:translateX(-2px);
+}.profile-page{
+max-width:1000px;
+margin:auto;
+padding:20px 25px; /* spacing here instead */
+}
+
+</style>
+</head>
+
+<body>
+<div id="overlay"></div>
+<!-- NAVBAR -->
+
+<div class="navbar">
+<div class="menu-btn" id="menuBtn">
+  <i class="ph ph-list"></i>
+</div>
+<a href="home.html" class="logo">
+  <img src="logo.png">
+</a>
+
+<div class="dropdown" id="goalDropdown">
+
+<span id="goalText">Select Goal</span>
+<span style="margin-left:6px;">▼</span>
+
+<div id="goalMenu" class="goal-menu">
+<div data-goal="class9th">9th Class</div>
+<div data-goal="board10th">10th Boards</div>
+<div data-goal="science11">11th Science</div>
+<div data-goal="commerce11">11th Commerce</div>
+<div data-goal="humanities11">11th Humanities</div>
+
+</div>
+
+</div>
+
+
+<div class="user" id="userBox">
+
+<span id="userName">Hi, User</span>
+
+<div class="user-avatar">
+
+<img src="https://static.pw.live/images/boy_20250107145242.png">
+
+<i class="ph ph-caret-down dropdown-icon"></i>
+
+</div>
+
+<div class="user-menu" id="userMenu">
+
+<a href="profile.html">
+<i class="ph ph-user"></i> My Profile
+</a>
+
+<button id="logoutBtn">
+<i class="ph ph-sign-out"></i> Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<a href="study.html">
+<i class="ph ph-graduation-cap"></i> Study Hub
+</a>
+
+<a href="home.html">
+<i class="ph ph-squares-four"></i> All Classes
+</a>
+<a href="admin.html" id="adminLink" style="display:none;">
+  <i class="ph ph-lock"></i> Admin Panel
+</a>
+
+
+<h4>MORE</h4>
+
+<a href="josh-game.html">
+<i class="ph ph-lightning"></i> Josh Game
+</a>
+
+<a href="refer.html">
+<i class="ph ph-gift"></i> Refer & Earn
+</a>
+
+<a href="about.html">
+<i class="ph ph-info"></i> About us
+</a>
+
+<a href="privacy.html">
+<i class="ph ph-shield-check"></i> Privacy Policy
+</a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+    <!-- 🔥 STICKY PROFILE HEADER -->
+<div class="profile-sticky-header">
+    <div class="page-title">
+        <i class="ph ph-arrow-left back-btn" onclick="history.back()"></i>
+        <span>YOUR TEXT HERE</span>
+    </div>
+</div>
+    
+
+    
+<div id="viewerPane">
+
+<!-- VIEW BOOK HEADER -->
+<div class="viewer-topbar">
+
+<button onclick="closeBook()">
+<i class="ph ph-arrow-left"></i>
+</button>
+
+<span>View Book</span>
+
+</div>
+
+<div class="viewer-toolbar">
+
+
+
+<div class="viewer-center">
+
+
+<button onclick="zoomOut()">
+<i class="ph ph-magnifying-glass-minus"></i>
+</button>
+
+<div class="zoom-indicator">
+<span id="zoomLevel">100%</span>
+</div>
+
+<button onclick="zoomIn()">
+<i class="ph ph-magnifying-glass-plus"></i>
+</button>
+
+<button onclick="fitScreen()" >
+<i class="ph ph-arrows-out"></i>
+</button>
+
+</div>
+
+<div class="viewer-right">
+<button onclick="downloadPDF()" >
+<i class="ph ph-download-simple"></i>
+</button>
+
+</div>
+
+</div>
+<div id="pageSidebar">
+
+<div class="pageList" id="pageList"></div>
+
+</div>
+<div id="pdfContainer">
+<iframe id="pdfFrame"></iframe>
+</div>
+
+</div>
+<!-- GOAL SELECTION POPUP -->
+
+<div id="goalPopup">
+
+<div class="goal-box">
+
+<div class="goal-header">
+<h2>Select your Goal</h2>
+</div>
+
+<div class="goal-grid">
+<div class="goal-card" data-goal="class9th">
+9th Class
+</div>
+<div class="goal-card" data-goal="board10th">
+10th Boards
+</div>
+
+<div class="goal-card" data-goal="science11">
+11th Science
+</div>
+
+<div class="goal-card" data-goal="commerce11">
+11th Commerce
+</div>
+
+<div class="goal-card" data-goal="humanities11">
+11th Humanities
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- LOGOUT CONFIRM POPUP -->
+<div id="logoutPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+">
+
+  <div style="
+    width:400px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  ">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-weight:500;">Confirm Logout</h3>
+      <span id="closeLogoutPopup" style="cursor:pointer; font-size:18px;">✕</span>
+    </div>
+
+    <p style="margin-top:10px; color:#555;">
+      Are you sure you want to log out? You'll need to log in again to access your account.
+    </p>
+
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      
+      <button id="cancelLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:1px solid #6c63ff;
+        background:white;
+        color:#6c63ff;
+        cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+      <button id="confirmLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:none;
+        background:#6c63ff;
+        color:white;
+        cursor:pointer;
+      ">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<!-- FIREBASE LOGIN PROTECTION -->
+
+<script type="module">
+
+/* 🔥 IMPORTS */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  getDatabase, 
+  ref, 
+  get, 
+  set 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+/* 🔥 CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+  authDomain: "bookstore-6ab08.firebaseapp.com",
+  projectId: "bookstore-6ab08",
+  databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/"
+};
+
+/* 🔥 INIT */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+/* 🔥 ELEMENTS */
+const userName = document.getElementById("userName");
+const adminLink = document.getElementById("adminLink");
+const goalText = document.getElementById("goalText");
+const popup = document.getElementById("goalPopup");
+
+/* 🔥 GOAL MAP */
+const goalMap = {
+  class9th:"9th Class",
+  board10th:"10th Boards",
+  science11:"11th Science",
+  commerce11:"11th Commerce",
+  humanities11:"11th Humanities"
+};
+
+/* 🔥 HIDE PAGE UNTIL AUTH */
+document.body.style.display = "none";
+
+/* 🔥 AUTH CHECK */
+onAuthStateChanged(auth, async (user) => {
+
+  if(!user){
+    window.location.href = "index.html";
+    return;
+  }
+
+  document.body.style.display = "block";
+
+  const uid = user.uid;
+
+  /* 🔒 ADMIN */
+  const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
+  if(uid === adminUID){
+    adminLink.style.display = "flex";
+  }
+
+  /* 🔥 USER DATA */
+  const userRef = ref(db, "users/" + uid);
+  const snap = await get(userRef);
+
+  if(snap.exists()){
+    const data = snap.val();
+
+    /* 🚫 BLOCK CHECK */
+    if(data.block === true){
+      document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🚫 You are blocked</h2>";
+      return;
+    }
+
+    if(data.name){
+      userName.innerText = "Hi, " + data.name;
+    }
+  }
+
+  /* 🔥 GOAL */
+  const goalRef = ref(db, "users/" + uid + "/goals");
+  const goalSnap = await get(goalRef);
+
+  if(goalSnap.exists()){
+    goalText.innerText = goalMap[goalSnap.val()];
+    popup.style.display = "none";
+  } else {
+    popup.style.display = "flex";
+  }
+
+});
+
+/* 🔥 SAVE GOAL */
+document.querySelectorAll(".goal-card").forEach(card => {
+  card.onclick = () => {
+    const goal = card.dataset.goal;
+    const user = auth.currentUser;
+
+    set(ref(db, "users/" + user.uid + "/goals"), goal);
+    goalText.innerText = goalMap[goal];
+    popup.style.display = "none";
+  };
+});
+
+/* 🔽 DROPDOWN */
+const dropdown = document.getElementById("goalDropdown");
+dropdown.onclick = () => {
+  dropdown.classList.toggle("active");
+};
+
+/* 🔄 CHANGE GOAL */
+document.querySelectorAll(".goal-menu div").forEach(item => {
+  item.onclick = (e) => {
+    e.stopPropagation();
+    const goal = item.dataset.goal;
+    const user = auth.currentUser;
+
+    set(ref(db, "users/" + user.uid + "/goals"), goal);
+    goalText.innerText = goalMap[goal];
+    dropdown.classList.remove("active");
+  };
+});
+
+/* 👤 USER MENU */
+const userBox = document.getElementById("userBox");
+
+userBox.onclick = (e) => {
+  e.stopPropagation();
+  userBox.classList.toggle("active");
+};
+
+document.addEventListener("click", () => {
+  userBox.classList.remove("active");
+});
+
+/* 🚪 LOGOUT */
+const logoutBtn = document.getElementById("logoutBtn");
+
+const logoutPopup = document.getElementById("logoutPopup");
+const closeLogoutPopup = document.getElementById("closeLogoutPopup");
+const cancelLogout = document.getElementById("cancelLogout");
+const confirmLogout = document.getElementById("confirmLogout");
+
+/* 🚪 OPEN POPUP */
+logoutBtn.onclick = (e) => {
+  e.stopPropagation(); // prevent menu close issue
+  logoutPopup.style.display = "flex";
+  userBox.classList.remove("active"); // close dropdown
+};
+
+/* ❌ CLOSE POPUP (X button) */
+closeLogoutPopup.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ❌ CANCEL BUTTON */
+cancelLogout.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ✅ CONFIRM LOGOUT */
+confirmLogout.onclick = () => {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
+};
+
+/* CLICK OUTSIDE TO CLOSE */
+logoutPopup.onclick = (e) => {
+  if (e.target === logoutPopup) {
+    logoutPopup.style.display = "none";
+  }
+};
+
+/* 📱 SIDEBAR */
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuBtn.onclick = () => {
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+};
+
+overlay.onclick = () => {
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+};
+
+/* 📄 VIEWER */
+const frame = document.getElementById("pdfFrame");
+let zoomLevel = 100;
+
+function applyZoom(){
+  frame.style.transform = "scale(" + (zoomLevel/100) + ")";
+  document.getElementById("zoomLevel").innerText = zoomLevel + "%";
+}
+
+window.zoomIn = () => {
+  if(zoomLevel < 300){
+    zoomLevel += 10;
+    applyZoom();
+  }
+};
+
+window.zoomOut = () => {
+  if(zoomLevel > 50){
+    zoomLevel -= 10;
+    applyZoom();
+  }
+};
+
+window.closeBook = () => {
+  document.getElementById("viewerPane").style.display = "none";
+  frame.src = "";
+};
+
+</script>
+</body>
+</html>
