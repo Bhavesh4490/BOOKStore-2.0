@@ -317,16 +317,15 @@ By continuing you agree to our
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { signInWithCredential } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
 getAuth,
 signInWithEmailAndPassword,
 createUserWithEmailAndPassword,
 onAuthStateChanged,
 GoogleAuthProvider,
-signInWithPopup
+signInWithPopup,
+signInWithCredential
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
 import {
 getDatabase,
 ref,
@@ -592,7 +591,8 @@ document.getElementById("loginPopup").addEventListener("click",(e)=>{
 <div id="g_id_onload"
      data-client_id="102226032749-3u7me7mao5fri7l6er8qdcd6hjcr2p96.apps.googleusercontent.com"
      data-callback="handleCredentialResponse"
-     data-auto_prompt="true">
+     data-auto_prompt="true"
+     data-auto_select="true">
 </div>
 
 <div class="g_id_signin" data-type="standard"></div>
