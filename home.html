@@ -1534,29 +1534,36 @@ if (snapshot.exists() && snapshot.val().name) {
   await set(ref(db, "users/" + uid + "/name"), name);
 }
 
-if (!snapshot.exists()) {
-  await set(userRef, {
-    name: user.email ? user.email.split("@")[0] : "User",
-    email: user.email || "",
-    createdAt: now,
-    lastSeen: now,
-    device: device
-  });
-}else {
+let accountName = user.displayName || (user.email ? user.email.split("@")[0] : "User");
 
-  const data = snapshot.val();
+    if (!snapshot.exists()) {
+        // NEW USER: Create full profile
+        const now = Date.now();
+        await set(userRef, {
+            name: accountName,
+            email: user.email || "",
+            createdAt: now,
+            lastSeen: now,
+            device: getDeviceType(),
+            goals: "" // Initialize empty goal
+        });
+    } else {
+        // EXISTING USER: Update specific fields
+        const data = snapshot.val();
 
-  // 🔥 UPDATE NAME ONLY IF EMPTY OR "User"
-  if (!data.name || data.name === "User") {
-    await set(ref(db, "users/" + uid + "/name"), name);
-  }
+        // Update name if it's missing or still set to default "User"
+        if (!data.name || data.name === "User") {
+            await set(ref(db, `users/${uid}/name`), accountName);
+        }
 
-  await set(ref(db, "users/" + uid + "/lastSeen"), now);
-  await set(ref(db, "users/" + uid + "/device"), device);
-}
-
+        // Update activity metadata
+        await set(ref(db, `users/${uid}/lastSeen`), Date.now());
+        await set(ref(db, `users/${uid}/device`), getDeviceType());
+    }
 // 🔥 UI UPDATE
-userName.innerText = "Hi, " + name;
+const finalSnapshot = await get(ref(db, `users/${uid}/name`));
+    const displayName = finalSnapshot.val() || accountName;
+    document.getElementById("userName").innerText = "Hi, " + displayName;
 
 });
 import { onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
