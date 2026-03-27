@@ -1518,15 +1518,24 @@ if (snapshot.exists()) {
   // ❗ New user → show popup
   popup.style.display = "flex";
 }
-const now = Date.now();
-
-let name = "User";
-
-// Use Google name if available
-if (user.displayName) {
-  name = user.displayName;
+if (!snapshot.exists()) {
+  await set(userRef, {
+    displayName: name, // ✅ SAVE NAME HERE
+    email: user.email || "",
+    createdAt: now,
+    lastSeen: now,
+    device: device
+  });
 } else {
-  name = user.email ? user.email.split("@")[0] : "User";
+  const data = snapshot.val();
+
+  // ✅ Only update name if not already saved
+  if (!data.displayName && user.displayName) {
+    await set(ref(db, "users/" + uid + "/displayName"), user.displayName);
+  }
+
+  await set(ref(db, "users/" + uid + "/lastSeen"), now);
+  await set(ref(db, "users/" + uid + "/device"), device);
 }
 // Only update UI
 userName.innerText = "Hi, " + name;if (!snapshot.exists()) {
