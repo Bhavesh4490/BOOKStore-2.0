@@ -314,33 +314,37 @@ By continuing you agree to our
 </div>
 </div>
 <script>
-function handleCredentialResponse(response) {
+async function handleCredentialResponse(response) {
 
-  const idToken = response.credential;
+  try {
 
-  // 🔥 Sign in to Firebase using Google token
-  const credential = firebase.auth.GoogleAuthProvider.credential(idToken);
+    const idToken = response.credential;
 
-  signInWithCredential(auth, credential)
-    .then(async (result) => {
+    // ✅ Correct way (MODULAR Firebase)
+    const credential = GoogleAuthProvider.credential(idToken);
 
-      const user = result.user;
+    const result = await signInWithCredential(auth, credential);
 
-      await saveUserToDatabase(user);
+    const user = result.user;
 
-      window.location.href = "home.html";
+    await saveUserToDatabase(user);
 
-    })
-    .catch((error) => {
-      console.error(error);
-      alert("Google login failed");
-    });
+    window.location.href = "home.html";
+
+  } catch (error) {
+
+    console.error("Google One Tap Error:", error);
+    alert("Google login failed: " + error.message);
+
+  }
+
 }
 </script>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { signInWithCredential } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
 getAuth,
 signInWithEmailAndPassword,
@@ -541,7 +545,10 @@ window.location.href="home.html";
 
 
 });
-
+window.auth = auth;
+window.saveUserToDatabase = saveUserToDatabase;
+window.signInWithCredential = signInWithCredential;
+window.GoogleAuthProvider = GoogleAuthProvider;
 </script>
 <script>
 function openMenu(){
@@ -592,5 +599,6 @@ document.getElementById("loginPopup").addEventListener("click",(e)=>{
 </div>
 
 <div class="g_id_signin" data-type="standard"></div>
+
 </body>
 </html>
