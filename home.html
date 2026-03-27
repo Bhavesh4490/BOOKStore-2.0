@@ -1518,29 +1518,25 @@ if (snapshot.exists()) {
   // ❗ New user → show popup
   popup.style.display = "flex";
 }
+const now = Date.now();
+
+// 🔥 GET BEST NAME
+let name = "User";
+
+if (snapshot.exists() && snapshot.val().name) {
+  name = snapshot.val().name;
+
+} else {
+  // fallback ONLY if DB empty
+  name = user.email ? user.email.split("@")[0] : "User";
+
+  // save fallback into DB
+  await set(ref(db, "users/" + uid + "/name"), name);
+}
+
 if (!snapshot.exists()) {
   await set(userRef, {
-    displayName: name, // ✅ SAVE NAME HERE
-    email: user.email || "",
-    createdAt: now,
-    lastSeen: now,
-    device: device
-  });
-} else {
-  const data = snapshot.val();
-
-  // ✅ Only update name if not already saved
-  if (!data.displayName && user.displayName) {
-    await set(ref(db, "users/" + uid + "/displayName"), user.displayName);
-  }
-
-  await set(ref(db, "users/" + uid + "/lastSeen"), now);
-  await set(ref(db, "users/" + uid + "/device"), device);
-}
-// Only update UI
-userName.innerText = "Hi, " + name;if (!snapshot.exists()) {
-  await set(userRef, {
-    
+    name: user.email ? user.email.split("@")[0] : "User",
     email: user.email || "",
     createdAt: now,
     lastSeen: now,
@@ -1550,6 +1546,10 @@ userName.innerText = "Hi, " + name;if (!snapshot.exists()) {
 
   const data = snapshot.val();
 
+  // 🔥 UPDATE NAME ONLY IF EMPTY OR "User"
+  if (!data.name || data.name === "User") {
+    await set(ref(db, "users/" + uid + "/name"), name);
+  }
 
   await set(ref(db, "users/" + uid + "/lastSeen"), now);
   await set(ref(db, "users/" + uid + "/device"), device);
