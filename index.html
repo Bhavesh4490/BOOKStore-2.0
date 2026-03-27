@@ -313,33 +313,6 @@ By continuing you agree to our
 
 </div>
 </div>
-<script>
-async function handleCredentialResponse(response) {
-
-  try {
-
-    const idToken = response.credential;
-
-    // ✅ Correct way (MODULAR Firebase)
-    const credential = GoogleAuthProvider.credential(idToken);
-
-    const result = await signInWithCredential(auth, credential);
-
-    const user = result.user;
-
-    await saveUserToDatabase(user);
-
-    window.location.href = "home.html";
-
-  } catch (error) {
-
-    console.error("Google One Tap Error:", error);
-    alert("Google login failed: " + error.message);
-
-  }
-
-}
-</script>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -549,6 +522,30 @@ window.auth = auth;
 window.saveUserToDatabase = saveUserToDatabase;
 window.signInWithCredential = signInWithCredential;
 window.GoogleAuthProvider = GoogleAuthProvider;
+window.handleCredentialResponse = async function(response) {
+
+  try {
+
+    const idToken = response.credential;
+
+    const credential = GoogleAuthProvider.credential(idToken);
+
+    const result = await signInWithCredential(auth, credential);
+
+    const user = result.user;
+
+    await saveUserToDatabase(user);
+
+    window.location.href = "home.html";
+
+  } catch (error) {
+
+    console.error("Google One Tap Error:", error);
+    alert("Google login failed: " + error.message);
+
+  }
+
+};
 </script>
 <script>
 function openMenu(){
