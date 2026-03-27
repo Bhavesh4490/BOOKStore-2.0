@@ -1525,17 +1525,28 @@ let name = "User";
 if (snapshot.exists()) {
   const data = snapshot.val();
 
-  // Use ONLY DB name
-  if (data.name) {
+  // ✅ Priority: DB name
+  if (data.name && data.name !== "User") {
     name = data.name;
+  } 
+  // ✅ If DB name missing → use Google name
+  else if (user.displayName) {
+    name = user.displayName;
+
+    // 🔥 Save Google name into DB
+    await set(ref(db, "users/" + uid + "/name"), name);
+  }
+  // fallback
+  else {
+    name = user.email ? user.email.split("@")[0] : "User";
   }
 
 } else {
-  // New user → create entry WITHOUT displayName
-  name = user.email ? user.email.split("@")[0] : "User";
+  // ✅ New user → prefer Google name
+  name = user.displayName || (user.email ? user.email.split("@")[0] : "User");
 
   await set(ref(db, "users/" + uid), {
-    name: name,
+    name: name, // 🔥 SAVED HERE
     email: user.email || "",
     createdAt: now,
     lastSeen: now,
