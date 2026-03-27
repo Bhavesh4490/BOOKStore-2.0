@@ -1523,15 +1523,19 @@ const now = Date.now();
 // 🔥 GET BEST NAME
 let name = "User";
 
+// 🔥 PRIORITY 1: Google Name
+if (user.displayName) {
+  name = user.displayName;
+}
+
+// 🔥 PRIORITY 2: DB Name
 if (snapshot.exists() && snapshot.val().name) {
   name = snapshot.val().name;
+}
 
-} else {
-  // fallback ONLY if DB empty
-  name = user.email ? user.email.split("@")[0] : "User";
-
-  // save fallback into DB
-  await set(ref(db, "users/" + uid + "/name"), name);
+// 🔥 SAVE GOOGLE NAME IF NOT EXISTS
+if (!snapshot.exists() || !snapshot.val().name || snapshot.val().name === "User") {
+  await set(ref(db, "users/" + uid + "/name"), user.displayName || name);
 }
 
 if (!snapshot.exists()) {
