@@ -1520,24 +1520,35 @@ if (snapshot.exists()) {
 }
 const now = Date.now();
 
-// 🔥 GET BEST NAME
 let name = "User";
 
-// 🔥 PRIORITY 1: Google Name
-if (user.displayName) {
-  name = user.displayName;
+if (snapshot.exists()) {
+  const data = snapshot.val();
+
+  // Use ONLY DB name
+  if (data.name) {
+    name = data.name;
+  }
+
+} else {
+  // New user → create entry WITHOUT displayName
+  name = user.email ? user.email.split("@")[0] : "User";
+
+  await set(ref(db, "users/" + uid), {
+    name: name,
+    email: user.email || "",
+    createdAt: now,
+    lastSeen: now,
+    device: device
+  });
 }
 
-// 🔥 PRIORITY 2: DB Name
-if (snapshot.exists() && snapshot.val().name) {
-  name = snapshot.val().name;
-}
+// Update last seen + device
+await set(ref(db, "users/" + uid + "/lastSeen"), now);
+await set(ref(db, "users/" + uid + "/device"), device);
 
-// 🔥 SAVE GOOGLE NAME IF NOT EXISTS
-if (!snapshot.exists() || !snapshot.val().name || snapshot.val().name === "User") {
-  await set(ref(db, "users/" + uid + "/name"), user.displayName || name);
-}
-
+// UI update
+userName.innerText = "Hi, " + name;
 if (!snapshot.exists()) {
   await set(userRef, {
     name: user.email ? user.email.split("@")[0] : "User",
