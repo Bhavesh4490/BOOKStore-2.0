@@ -1522,38 +1522,30 @@ const now = Date.now();
 
 let name = "User";
 
-if (snapshot.exists()) {
-  const data = snapshot.val();
+// ✅ Always prioritize Google displayName
+if (user.displayName) {
+  name = user.displayName;
 
-  // ✅ Priority: DB name
-  if (data.name && data.name !== "User") {
-    name = data.name;
-  } 
-  // ✅ If DB name missing → use Google name
-  else if (user.displayName) {
-    name = user.displayName;
+  // 🔥 Sync to Firebase Auth (just in case)
+  if (auth.currentUser.displayName !== name) {
+    await updateProfile(auth.currentUser, {
+      displayName: name
+    });
+  }
 
-    // 🔥 Save Google name into DB
-    await set(ref(db, "users/" + uid + "/name"), name);
-  }
-  // fallback
-  else {
-    name = user.email ? user.email.split("@")[0] : "User";
-  }
+  // 🔥 Optional: Save to DB as backup
+  await set(ref(db, "users/" + uid + "/displayname"), name);
 
 } else {
-  // ✅ New user → prefer Google name
-  name = user.displayName || (user.email ? user.email.split("@")[0] : "User");
+  // fallback if Google name missing
+  name = user.email ? user.email.split("@")[0] : "User";
 
-  await set(ref(db, "users/" + uid), {
-    name: name, // 🔥 SAVED HERE
-    email: user.email || "",
-    createdAt: now,
-    lastSeen: now,
-    device: device
+  await updateProfile(auth.currentUser, {
+    displayName: name
   });
-}
 
+  await set(ref(db, "users/" + uid + "/displayname"), name);
+}
 // Update last seen + device
 await set(ref(db, "users/" + uid + "/lastSeen"), now);
 await set(ref(db, "users/" + uid + "/device"), device);
@@ -1574,7 +1566,7 @@ if (!snapshot.exists()) {
 
   // 🔥 UPDATE NAME ONLY IF EMPTY OR "User"
   if (!data.name || data.name === "User") {
-    await set(ref(db, "users/" + uid + "/name"), name);
+    await set(ref(db, "users/" + uid + "/displayname"), name);
   }
 
   await set(ref(db, "users/" + uid + "/lastSeen"), now);
