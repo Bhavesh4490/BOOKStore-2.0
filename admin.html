@@ -1592,11 +1592,11 @@ overlay.onclick = () => {
     const uid = user.uid;
     const adminUIDs = [
   "F9UxJ3W6CVUVIIgwByuHQxscQab2",
-  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1"
 ];
 const adminLink = document.getElementById("adminLink");
 
-if(uid === adminUID){
+if(adminUIDs.includes(uid)){
   adminLink.style.display = "flex";
 }
 const userRef = ref(db, "users/" + uid);
@@ -1623,8 +1623,8 @@ document.getElementById("totalUsers").innerText = totalUsers;
   "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
 ];
     // 🔥 1. Admin always on top
-    if (uidA === adminUID) return -1;
-    if (uidB === adminUID) return 1;
+    if (adminUIDs.includes(uidA)) return -1;
+if (adminUIDs.includes(uidB)) return 1;
 
     // 🔥 2. Sort by lastSeen (latest first)
     const lastSeenA = dataA?.lastSeen || 0;
@@ -1646,7 +1646,7 @@ sortedUsers.forEach(([uidKey, userData]) => {
         const goal = userData?.goals ? goalMap[userData.goals] : "No Goal";
         const device = userData?.device || "Unknown";
         const xp = userData?.xp || 0; // default XP
-        const isAdmin = uidKey === adminUID;
+        const isAdmin = adminUIDs.includes(uidKey);
 
         const card = document.createElement("div");
         card.className = "user-card";
