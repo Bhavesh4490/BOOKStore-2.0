@@ -2046,7 +2046,9 @@ const firebaseConfig = {
   apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
   authDomain: "bookstore-6ab08.firebaseapp.com",
   projectId: "bookstore-6ab08",
-  databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/"
+  databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/",
+   messagingSenderId: "102226032749",  
+  appId: "1:102226032749:web:f7090175d2e53c2f522764" 
 };
 
 /* 🔥 INIT */
@@ -2058,7 +2060,13 @@ const coursesContainer = document.querySelector(".courses");
 /* 🔥 INIT CONTAINERS */
 const booksContainer = document.querySelector(".courses"); // First one
 const batchesContainer = document.getElementById("batchesContainer");
-const messaging = getMessaging(app);
+let messaging = null;
+
+try {
+  messaging = getMessaging(app);
+} catch (err) {
+  console.log("Messaging not supported:", err);
+}
 const notifList = document.getElementById("notifList");
 const notifBadge = document.querySelector(".notification .badge");
 /* 🔔 LOCAL STORAGE HANDLING */
@@ -2665,7 +2673,10 @@ notifPopup.onclick = (e) => {
 
 
 async function subscribeUser() {
-  await Notification.requestPermission();
+  if ("Notification" in window) {
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") return;
+}
   try {
     const token = await getToken(messaging, {
       vapidKey: "BD31uroN-F9627afZGo9uSwTCPzVbwdvXnmTEPU7_4tGfEz1Y6p6OIOR8gtZweQMTGQMK2IxjUp_maoE2iL1Pqs"
@@ -2686,13 +2697,12 @@ async function subscribeUser() {
     console.error("Error getting token:", err);
   }
 }
-onMessage(messaging, (payload) => {
-  console.log("Message received:", payload);
-
-  // 🔔 Show custom popup or alert
-  alert(payload.notification.title + "\n" + payload.notification.body);
-});
-navigator.serviceWorker.register("/firebase-messaging-sw.js");
+if (messaging) {
+  onMessage(messaging, (payload) => {
+    console.log("Message received:", payload);
+    alert(payload.notification.title + "\n" + payload.notification.body);
+  });
+}or.serviceWorker.register("/firebase-messaging-sw.js");
 
 /* 📄 VIEWER */
 const viewer = document.getElementById("viewerPane");
