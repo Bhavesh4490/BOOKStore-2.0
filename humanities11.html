@@ -2018,8 +2018,11 @@ if(snapshot.exists()){
 
 const data = snapshot.val();
 
-if(data.name){
-userName.innerText = "Hi, " + data.name;
+// ✅ Use displayName instead of name
+if(data.displayName){
+  userName.innerText = "Hi, " + data.displayName;
+} else {
+  userName.innerText = "Hi, User";
 }
 
 }
