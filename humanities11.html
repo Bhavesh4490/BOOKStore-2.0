@@ -1769,10 +1769,14 @@ document.body.style.display="block";
 const uid = user.uid;
 
 // 🔒 ADMIN CONTROL
-const isAdmin = adminUIDs.includes(uidKey);
 const adminLink = document.getElementById("adminLink");
 const adminActions = document.getElementById("adminActions");
-if (adminUIDs.includes(uid)) {
+const adminUIDs = [
+  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1"
+];
+
+if(adminUIDs.includes(uid)){
   adminLink.style.display = "flex";
   adminActions.style.display = "flex"; 
 }
@@ -2008,10 +2012,6 @@ if(snapshot.exists()){
 // ✅ NORMAL FLOW CONTINUES
 loadBooks();
 
-
-if(uid === adminUID){
-  adminLink.style.display = "flex";
-}
 get(userRef).then((snapshot)=>{
 
 if(snapshot.exists()){
