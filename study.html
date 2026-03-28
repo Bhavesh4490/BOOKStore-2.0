@@ -2086,116 +2086,79 @@ function markAllAsRead(ids){
   localStorage.setItem("readNotifs", JSON.stringify(ids));
 }
 /* 🔔 LOAD NOTIFICATIONS */
-async function loadNotifications() {
+let notifListenerAttached = false;
+
+function loadNotifications() {
+  if (notifListenerAttached) return; // 🚫 prevent duplicate listener
+  notifListenerAttached = true;
+
   const notifRef = ref(db, "notifications");
 
   onValue(notifRef, (snapshot) => {
+    notifList.innerHTML = "";
 
-  notifList.innerHTML = "";
-
-  if(!snapshot.exists()){
-    notifBadge.innerText = 0;
-    return;
-  }
-
-  const data = snapshot.val();
-
-  /* 🔥 CONVERT TO ARRAY */
-  const notifArray = Object.keys(data).map(id => ({
-    id,
-    ...data[id]
-  }));
-window.notifArrayGlobal = notifArray;
-  /* 🔥 SORT BY DATE (LATEST FIRST) */
-  notifArray.sort((a, b) => {
-    const [d1, m1, y1] = a.date.split("/");
-    const [d2, m2, y2] = b.date.split("/");
-
-    const dateA = new Date(`${y1}-${m1}-${d1}`);
-    const dateB = new Date(`${y2}-${m2}-${d2}`);
-
-    return dateB - dateA; // newest first
-  });
-
-
-  const readNotifs = getReadNotifications();
-let unreadCount = 0;
-let allIds = [];
-
-notifArray.forEach(notif => {
-
-  allIds.push(notif.id);
-
-  const isRead = readNotifs.includes(notif.id);
-  if(!isRead) unreadCount++;
-
-  const item = document.createElement("div");
-  item.className = "notif-item";
-
-  if(!isRead){
-    item.style.background = "#eef2ff"; // highlight unread
-  }
-
-  item.dataset.title = notif.head;
-  item.dataset.content = notif.body;
-
-  item.innerHTML = `
-  <div class="notif-icon">
-    <i class="ph ph-megaphone"></i>
-  </div>
-
-  <div class="notif-content">
-    <div class="notif-title">${notif.head}</div>
-    <div class="notif-desc">
-      ${notif.body.substring(0, 60)}...
-    </div>
-  </div>
-
-  <div class="notif-date">${formatDate(notif.date)}</div>
-
-  ${isEditMode ? `
-    <div class="delete-icon" data-id="${notif.id}">
-      <i class="ph ph-trash"></i>
-    </div>
-  ` : ""}
-`;
-
-// 🗑 DELETE CLICK
-const deleteBtn = item.querySelector(".delete-icon");
-
-if(deleteBtn){
-  deleteBtn.onclick = async (e) => {
-    e.stopPropagation(); // prevent opening popup
-
-    if(confirm("Delete this notification?")){
-      const notifRef = ref(db, "notifications/" + deleteBtn.dataset.id);
-      await set(notifRef, null); // delete from Firebase
-      loadNotifications();
+    if (!snapshot.exists()) {
+      notifBadge.innerText = 0;
+      return;
     }
-  };
-}
 
-  /* 🔥 CLICK = MARK AS READ */
-  item.onclick = () => {
+    const data = snapshot.val();
 
-    markAsRead(notif.id);
+    const notifArray = Object.keys(data).map(id => ({
+      id,
+      ...data[id]
+    }));
 
-    popupTitle.innerText = notif.head;
-    popupContent.innerText = notif.body;
+    window.notifArrayGlobal = notifArray;
 
-    notifPopup.style.display = "flex";
-    document.body.classList.add("popup-active");
+    notifArray.sort((a, b) => {
+      const [d1, m1, y1] = a.date.split("/");
+      const [d2, m2, y2] = b.date.split("/");
 
-    loadNotifications(); // refresh UI + badge
-  };
+      return new Date(`${y2}-${m2}-${d2}`) - new Date(`${y1}-${m1}-${d1}`);
+    });
 
-  notifList.appendChild(item);
-});
+    const readNotifs = getReadNotifications();
+    let unreadCount = 0;
 
-/* 🔔 UPDATE BADGE */
-notifBadge.innerText = unreadCount;
+    notifArray.forEach(notif => {
 
-});
+      const isRead = readNotifs.includes(notif.id);
+      if (!isRead) unreadCount++;
+
+      const item = document.createElement("div");
+      item.className = "notif-item";
+
+      if (!isRead) item.style.background = "#eef2ff";
+
+      item.innerHTML = `
+        <div class="notif-icon">
+          <i class="ph ph-megaphone"></i>
+        </div>
+
+        <div class="notif-content">
+          <div class="notif-title">${notif.head}</div>
+          <div class="notif-desc">${notif.body.substring(0, 60)}...</div>
+        </div>
+
+        <div class="notif-date">${formatDate(notif.date)}</div>
+      `;
+
+      item.onclick = () => {
+        markAsRead(notif.id);
+
+        popupTitle.innerText = notif.head;
+        popupContent.innerText = notif.body;
+
+        notifPopup.style.display = "flex";
+        document.body.classList.add("popup-active");
+      };
+
+      notifList.appendChild(item);
+    });
+
+    notifBadge.innerText = unreadCount;
+  });
 }
 function formatDate(dateStr){
   const [day, month, year] = dateStr.split("/");
@@ -2267,7 +2230,7 @@ confirmAddNotif.onclick = async () => {
   addPopup.style.display = "none";
 
   // refresh UI
-  loadNotifications();
+ 
 };
 /* ✏️ EDIT MODE TOGGLE */
 const editBtn = document.getElementById("editNotifBtn");
@@ -2284,7 +2247,7 @@ editBtn.onclick = () => {
   notifList.classList.toggle("edit-mode", isEditMode);
 
   // Re-render notifications so delete buttons appear/disappear
-  loadNotifications();
+
 };
 /* 🔥 LOAD EVERYTHING */
 async function loadPageData(goal) {
@@ -2424,14 +2387,13 @@ onAuthStateChanged(auth, async (user) => {
   window.location.href = "index.html";
   return;
 }
-
+loadNotifications();
 // ✅ run after login
 subscribeUser();
 
   document.body.style.display = "block";
 
   const uid = user.uid;
-loadNotifications();
   /* 🔒 ADMIN */
   const adminUIDs = [
   "F9UxJ3W6CVUVIIgwByuHQxscQab2",
@@ -2621,7 +2583,6 @@ notifBtn.onclick = (e) => {
 
   markAllAsRead(ids);
 
-  loadNotifications();
 };
 
 closeNotif.onclick = () => {
@@ -2698,10 +2659,15 @@ async function subscribeUser() {
 }
 if (messaging) {
   onMessage(messaging, (payload) => {
-  new Notification(payload.notification.title, {
-    body: payload.notification.body,
-    icon: "/logo.png"
-  });
+  console.log("Foreground message:", payload);
+
+  // 🔥 ONLY SHOW IF PAGE IS ACTIVE
+  if (document.visibilityState === "visible") {
+    new Notification(payload.notification.title, {
+      body: payload.notification.body,
+      icon: "/logo.png"
+    });
+  }
 });
 }if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/firebase-messaging-sw.js')
