@@ -1568,10 +1568,13 @@ onAuthStateChanged(auth, (user) => {
     document.body.style.display = "block";
 
     const uid = user.uid;
-    const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
+    const adminUIDs = [
+  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+];
 const adminLink = document.getElementById("adminLink");
 
-if(uid === adminUID){
+if (adminUIDs.includes(uid)) {
   adminLink.style.display = "flex";
 }
     const userRef = ref(db, "users/" + uid);
