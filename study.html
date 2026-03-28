@@ -2433,8 +2433,12 @@ subscribeUser();
   const uid = user.uid;
 loadNotifications();
   /* 🔒 ADMIN */
-  const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
-  if(uid === adminUID){
+  const adminUIDs = [
+  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+];
+  
+if (adminUIDs.includes(uid)) {
     adminLink.style.display = "flex";
   }
 const notifAdminBar = document.getElementById("notifAdminBar");
