@@ -1630,13 +1630,13 @@ document.getElementById("totalUsers").innerText = totalUsers;
     }
 
     // 🔥 3. If same lastSeen → alphabetical
-    const nameA = (dataA?.name || "").toLowerCase();
-    const nameB = (dataB?.name || "").toLowerCase();
+    const nameA = (dataA?.displayName || "").toLowerCase();
+const nameB = (dataB?.displayName || "").toLowerCase();
 
     return nameA.localeCompare(nameB);
 });
 sortedUsers.forEach(([uidKey, userData]) => {
-        const name = userData?.name || "User";
+        const name = userData?.displayName || "User";
         const email = userData?.email || "No Email";
         const goal = userData?.goals ? goalMap[userData.goals] : "No Goal";
         const device = userData?.device || "Unknown";
@@ -1751,7 +1751,7 @@ input.className = "edit-input";
         input.onblur = () => {
             const newName = input.value.trim() || "User";
 
-            set(ref(db, "users/" + uidKey + "/name"), newName)
+            set(ref(db, "users/" + uidKey + "/displayName"), newName)
             .then(() => {
                 const newSpan = document.createElement("span");
                 newSpan.className = "name-text";
@@ -1833,7 +1833,7 @@ get(userRef).then((snapshot) => {
     const data = snapshot.exists() ? snapshot.val() : {};
 
     // ✅ FIX NAME
-    const name = data.name || user.name || "User";
+    const name = data.displayName || user.displayName || "User";
     document.getElementById("userName").innerText = "Hi, " + name;
 
     // ✅ FIX GOAL LOAD
@@ -1871,7 +1871,7 @@ get(userRef).then((snapshot) => {
             const newName = document.getElementById("modalName").value.trim();
             if(newName === "") return alert("Name cannot be empty.");
 
-            set(ref(db, "users/" + uid + "/name"), newName)
+            set(ref(db, "users/" + uid + "/displayName"), newName)
             
             .then(() => {
                 // Update profile UI
@@ -2111,4 +2111,4 @@ const userMenu = document.getElementById("userMenu");
 
 </script>
 </body>
-</html>
+</html
