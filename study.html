@@ -2687,7 +2687,7 @@ async function subscribeUser() {
       const user = auth.currentUser;
 
       // 🔥 Save token in Firebase
-      await set(ref(db, "fcmTokens/" + user.uid), token);
+      await push(ref(db, "fcmTokens/" + user.uid), token);
 
     } else {
       console.log("No token available");
@@ -2698,9 +2698,11 @@ async function subscribeUser() {
 }
 if (messaging) {
   onMessage(messaging, (payload) => {
-    console.log("Message received:", payload);
-    alert(payload.notification.title + "\n" + payload.notification.body);
+  new Notification(payload.notification.title, {
+    body: payload.notification.body,
+    icon: "/logo.png"
   });
+});
 }if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/firebase-messaging-sw.js')
     .then(reg => console.log("Service Worker Registered"))
