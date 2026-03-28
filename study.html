@@ -2701,8 +2701,11 @@ if (messaging) {
     console.log("Message received:", payload);
     alert(payload.notification.title + "\n" + payload.notification.body);
   });
-}or.serviceWorker.register("/firebase-messaging-sw.js");
-
+}if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then(reg => console.log("Service Worker Registered"))
+    .catch(err => console.error("SW Error:", err));
+}
 /* 📄 VIEWER */
 const viewer = document.getElementById("viewerPane");
 const frame = document.getElementById("pdfFrame");
