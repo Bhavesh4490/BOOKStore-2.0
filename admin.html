@@ -1590,7 +1590,10 @@ overlay.onclick = () => {
     document.body.style.display = "block";
 
     const uid = user.uid;
-    const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
+    const adminUIDs = [
+  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+];
 const adminLink = document.getElementById("adminLink");
 
 if(uid === adminUID){
@@ -1615,8 +1618,10 @@ document.getElementById("totalUsers").innerText = totalUsers;
     const [uidA, dataA] = a;
     const [uidB, dataB] = b;
 
-    const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";
-
+    const adminUIDs = [
+  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+];
     // 🔥 1. Admin always on top
     if (uidA === adminUID) return -1;
     if (uidB === adminUID) return 1;
@@ -2111,4 +2116,4 @@ const userMenu = document.getElementById("userMenu");
 
 </script>
 </body>
-</html
+</html>
