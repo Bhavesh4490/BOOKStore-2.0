@@ -2019,6 +2019,7 @@ body.popup-active #notificationPanel{
 
 /* 🔥 IMPORTS */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
 import { 
   getAuth, 
   onAuthStateChanged, 
@@ -2029,13 +2030,17 @@ import {
   getDatabase, 
   ref, 
   get, 
-  set 
+  set, 
+  push,
+  onValue
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
 import { 
   getMessaging, 
   getToken, 
   onMessage 
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
 /* 🔥 CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
@@ -2053,7 +2058,6 @@ const coursesContainer = document.querySelector(".courses");
 /* 🔥 INIT CONTAINERS */
 const booksContainer = document.querySelector(".courses"); // First one
 const batchesContainer = document.getElementById("batchesContainer");
-import { onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 const messaging = getMessaging(app);
 const notifList = document.getElementById("notifList");
 const notifBadge = document.querySelector(".notification .badge");
@@ -2075,7 +2079,6 @@ function markAllAsRead(ids){
 }
 /* 🔔 LOAD NOTIFICATIONS */
 async function loadNotifications() {
-window.notifArrayGlobal = notifArray;
   const notifRef = ref(db, "notifications");
 
   onValue(notifRef, (snapshot) => {
@@ -2094,7 +2097,7 @@ window.notifArrayGlobal = notifArray;
     id,
     ...data[id]
   }));
-
+window.notifArrayGlobal = notifArray;
   /* 🔥 SORT BY DATE (LATEST FIRST) */
   notifArray.sort((a, b) => {
     const [d1, m1, y1] = a.date.split("/");
@@ -2192,9 +2195,6 @@ function formatDate(dateStr){
   return `${day} ${months[month-1]}`;
 }
 
-import { push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-import { getMessaging, getToken, onMessage } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 /* ELEMENTS */
 const addNotifBtn = document.getElementById("addNotifBtn");
 const addPopup = document.getElementById("addNotifPopup");
@@ -2413,10 +2413,12 @@ document.body.style.display = "none";
 onAuthStateChanged(auth, async (user) => {
 
   if(!user){
-    window.location.href = "index.html";
-    return;
-    subscribeUser(); // 🔥 ADD THIS
-  }
+  window.location.href = "index.html";
+  return;
+}
+
+// ✅ run after login
+subscribeUser();
 
   document.body.style.display = "block";
 
@@ -2453,8 +2455,10 @@ if(snap.exists()){
 
   /* 👤 NAME */
   if(data.name){
-    userName.innerText = "Hi, " + data.name;
-  }
+  userName.innerText = "Hi, " + data.name;
+} else {
+  userName.innerText = "Hi, User";
+}
 
   /* ⭐ XP LOAD */
   if(data.xp !== undefined){
