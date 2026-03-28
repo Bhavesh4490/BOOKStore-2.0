@@ -1523,46 +1523,35 @@ const now = Date.now();
 // 🔥 GET BEST NAME
 let name = "User";
 
-if (snapshot.exists() && snapshot.val().name) {
-  name = snapshot.val().name;
-
-} else {
-  // fallback ONLY if DB empty
-  name = user.email ? user.email.split("@")[0] : "User";
-
-  // save fallback into DB
-  await set(ref(db, "users/" + uid + "/name"), name);
-}
-
 let accountName = user.displayName || (user.email ? user.email.split("@")[0] : "User");
 
     if (!snapshot.exists()) {
         // NEW USER: Create full profile
         const now = Date.now();
         await set(userRef, {
-            name: accountName,
-            email: user.email || "",
-            createdAt: now,
-            lastSeen: now,
-            device: getDeviceType(),
-            goals: "" // Initialize empty goal
-        });
+    displayName: accountName, // ✅ SAVE HERE
+    email: user.email || "",
+    createdAt: now,
+    lastSeen: now,
+    device: getDeviceType(),
+    goals: ""
+});
     } else {
         // EXISTING USER: Update specific fields
         const data = snapshot.val();
 
         // Update name if it's missing or still set to default "User"
-        if (!data.name || data.name === "User") {
-            await set(ref(db, `users/${uid}/name`), accountName);
-        }
+        if (!data.displayName || data.displayName === "User") {
+    await set(ref(db, `users/${uid}/displayName`), accountName);
+}
 
         // Update activity metadata
         await set(ref(db, `users/${uid}/lastSeen`), Date.now());
         await set(ref(db, `users/${uid}/device`), getDeviceType());
     }
 // 🔥 UI UPDATE
-const finalSnapshot = await get(ref(db, `users/${uid}/name`));
-    const displayName = finalSnapshot.val() || accountName;
+const finalSnapshot = await get(ref(db, `users/${uid}/displayName`));
+const displayName = finalSnapshot.val() || accountName;
     document.getElementById("userName").innerText = "Hi, " + displayName;
 
 });
