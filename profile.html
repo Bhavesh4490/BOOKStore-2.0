@@ -1585,7 +1585,7 @@ let originalName = "";
 // After data fetch
 get(userRef).then((snapshot) => {
     const data = snapshot.exists() ? snapshot.val() : {};
-    const name = data.displayname || user.displayname || "";
+    const name = data.name || user.name || "";
 const xpElement = document.getElementById("xpValue");
 // ✅ LOAD USER'S SELECTED GOAL (NEW CODE)
 get(userRef).then((snapshot) => {
@@ -1619,7 +1619,7 @@ const saveBtn = document.getElementById("saveChangesBtn");
 // After fetching user data from Firebase
 get(userRef).then((snapshot) => {
     const data = snapshot.exists() ? snapshot.val() : {};
-    const name = data.displayname || user.displayname || "";
+    const name = data.name || user.name || "";
     
     modalName.value = name;         // fill input
     let originalName = name;         // store original
@@ -1642,7 +1642,7 @@ get(userRef).then((snapshot) => {
         if (!saveBtn.classList.contains("active")) return;
 
         const newName = modalName.value.trim();
-        set(ref(db, "users/" + user.uid + "/displayname"), newName)
+        set(ref(db, "users/" + user.uid + "/displayName"), newName)
         .then(() => {
             document.querySelector(".profile-left h3").innerText = newName;
             document.getElementById("profileName").innerText = newName;
@@ -1728,15 +1728,18 @@ modalName.addEventListener("input", () => {
 });
 
         // Navbar greeting
-        userName.innerText = "Hi, " + (data.displayname || user.displayname || "User");
+       const finalName = data.displayName || user.displayName || "User";
+
+userName.innerText = "Hi, " + finalName;
+
 
         // Profile-left name
         const profileLeftName = document.querySelector(".profile-left h3");
-        if (profileLeftName) profileLeftName.innerText = data.displayname || user.displayname || "-";
+       if (profileLeftName) profileLeftName.innerText = finalName;
 
         // Profile Details Name
         const profileNameField = document.getElementById("profileName");
-        if (profileNameField) profileNameField.innerText = data.displayname || user.displayname || "-";
+        if (profileNameField) profileNameField.innerText = finalName;
 
         // Profile Email (read-only)
         const profileEmailField = document.getElementById("profileEmail");
@@ -1746,7 +1749,7 @@ modalName.addEventListener("input", () => {
         if (modalEmail) modalEmail.value = emailToShow;
 
         // ✅ Fill modal Name input with database value
-        if(modalName) modalName.value = data.displayname || "";
+        if (modalName) modalName.value = finalName;
     });
 
     // Modal logic
@@ -1774,7 +1777,7 @@ modalName.addEventListener("input", () => {
             const newName = document.getElementById("modalName").value.trim();
             if(newName === "") return alert("Name cannot be empty.");
 
-            set(ref(db, "users/" + uid + "/displayname"), newName)
+            set(ref(db, "users/" + uid + "/displayName"), newName)
             .then(() => {
                 // Update profile UI
                 const profileLeftName = document.querySelector(".profile-left h3");
