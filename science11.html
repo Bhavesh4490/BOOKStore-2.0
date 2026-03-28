@@ -2011,10 +2011,6 @@ if(snapshot.exists()){
 // ✅ NORMAL FLOW CONTINUES
 loadBooks();
 
-
-if(uid === adminUID){
-  adminLink.style.display = "flex";
-}
 get(userRef).then((snapshot)=>{
 
 if(snapshot.exists()){
