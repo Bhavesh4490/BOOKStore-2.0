@@ -1922,7 +1922,7 @@ onAuthStateChanged(auth, async (user) => {
     if(snap.exists()){
         const data = snap.val();
 
-        if(data.name) userName.innerText = "Hi, " + data.name;
+        if(data.displayname) userName.innerText = "Hi, " + data.displayname;
         if(data.gameHighScore) highScore = data.gameHighScore;
         if(data.goals) goalText.innerText = goalMap[data.goals];
     }
