@@ -13,13 +13,8 @@ const messaging = firebase.messaging();
 
 /* 🔔 BACKGROUND NOTIFICATION */
 messaging.onBackgroundMessage(function(payload) {
-  console.log('[SW] Background message:', payload);
-
-  const title = payload.notification.title;
-  const options = {
+  self.registration.showNotification(payload.notification.title, {
     body: payload.notification.body,
     icon: "/logo.png"
-  };
-
-  self.registration.showNotification(title, options);
+  });
 });
