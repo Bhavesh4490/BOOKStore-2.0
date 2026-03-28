@@ -2031,7 +2031,11 @@ import {
   get, 
   set 
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
+import { 
+  getMessaging, 
+  getToken, 
+  onMessage 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 /* 🔥 CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
@@ -2050,7 +2054,7 @@ const coursesContainer = document.querySelector(".courses");
 const booksContainer = document.querySelector(".courses"); // First one
 const batchesContainer = document.getElementById("batchesContainer");
 import { onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
+const messaging = getMessaging(app);
 const notifList = document.getElementById("notifList");
 const notifBadge = document.querySelector(".notification .badge");
 /* 🔔 LOCAL STORAGE HANDLING */
@@ -2071,7 +2075,7 @@ function markAllAsRead(ids){
 }
 /* 🔔 LOAD NOTIFICATIONS */
 async function loadNotifications() {
-
+window.notifArrayGlobal = notifArray;
   const notifRef = ref(db, "notifications");
 
   onValue(notifRef, (snapshot) => {
@@ -2189,7 +2193,8 @@ function formatDate(dateStr){
 }
 
 import { push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
+import { getMessaging, getToken, onMessage } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 /* ELEMENTS */
 const addNotifBtn = document.getElementById("addNotifBtn");
 const addPopup = document.getElementById("addNotifPopup");
@@ -2410,6 +2415,7 @@ onAuthStateChanged(auth, async (user) => {
   if(!user){
     window.location.href = "index.html";
     return;
+    subscribeUser(); // 🔥 ADD THIS
   }
 
   document.body.style.display = "block";
@@ -2446,8 +2452,8 @@ if(snap.exists()){
   }
 
   /* 👤 NAME */
-  if(data.name){
-    userName.innerText = "Hi, " + data.name;
+  if(data.displayname){
+    userName.innerText = "Hi, " + data.displayname;
   }
 
   /* ⭐ XP LOAD */
@@ -2599,7 +2605,7 @@ notifBtn.onclick = (e) => {
 
   // 🔥 mark all as read
   const ids = Array.from(document.querySelectorAll(".notif-item"))
-                   .map((_, i) => notifArray[i]?.id)
+                   .map((_, i) => window.notifArrayGlobal[i]?.id)
                    .filter(Boolean);
 
   markAllAsRead(ids);
@@ -2652,12 +2658,38 @@ notifPopup.onclick = (e) => {
     document.body.classList.remove("popup-active");
   }
 };
-const lastReadSnap = await get(ref(db, "users/" + uid + "/lastRead"));
-const lastRead = lastReadSnap.exists() ? lastReadSnap.val() : 0;
 
-if(new Date(`${y}-${m}-${d}`).getTime() > lastRead){
-   unreadCount++;
+
+async function subscribeUser() {
+  await Notification.requestPermission();
+  try {
+    const token = await getToken(messaging, {
+      vapidKey: "BD31uroN-F9627afZGo9uSwTCPzVbwdvXnmTEPU7_4tGfEz1Y6p6OIOR8gtZweQMTGQMK2IxjUp_maoE2iL1Pqs"
+    });
+
+    if (token) {
+      console.log("FCM Token:", token);
+
+      const user = auth.currentUser;
+
+      // 🔥 Save token in Firebase
+      await set(ref(db, "fcmTokens/" + user.uid), token);
+
+    } else {
+      console.log("No token available");
+    }
+  } catch (err) {
+    console.error("Error getting token:", err);
+  }
 }
+onMessage(messaging, (payload) => {
+  console.log("Message received:", payload);
+
+  // 🔔 Show custom popup or alert
+  alert(payload.notification.title + "\n" + payload.notification.body);
+});
+navigator.serviceWorker.register("/firebase-messaging-sw.js");
+
 /* 📄 VIEWER */
 const viewer = document.getElementById("viewerPane");
 const frame = document.getElementById("pdfFrame");
