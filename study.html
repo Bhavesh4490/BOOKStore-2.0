@@ -1567,7 +1567,15 @@ body.popup-active #notificationPanel{
     box-shadow:0 8px 20px rgba(108,76,255,0.5);
     transform:translateY(-3px) scale(1.03);
 }
+/* HIDE BY DEFAULT */
+.delete-icon {
+  display: none;
+}
 
+/* SHOW ONLY IF ADMIN + EDIT MODE */
+.edit-mode.admin .delete-icon {
+  display: flex;
+}
 </style>
 </head>
 
@@ -2132,28 +2140,55 @@ function loadNotifications() {
       if (!isRead) item.style.background = "#eef2ff";
 
       item.innerHTML = `
-        <div class="notif-icon">
-          <i class="ph ph-megaphone"></i>
-        </div>
+  <div class="notif-icon">
+    <i class="ph ph-megaphone"></i>
+  </div>
 
-        <div class="notif-content">
-          <div class="notif-title">${notif.head}</div>
-          <div class="notif-desc">${notif.body.substring(0, 60)}...</div>
-        </div>
+  <div class="notif-content">
+    <div class="notif-title">${notif.head}</div>
+    <div class="notif-desc">${notif.body.substring(0, 60)}...</div>
+  </div>
 
-        <div class="notif-date">${formatDate(notif.date)}</div>
-      `;
+  <div class="notif-date">${formatDate(notif.date)}</div>
+
+  <!-- 🔥 DELETE BUTTON (ONLY ADMIN + EDIT MODE) -->
+  <div class="delete-icon" data-id="${notif.id}">
+    <i class="ph ph-trash"></i>
+  </div>
+`;
 
       item.onclick = () => {
-        markAsRead(notif.id);
 
-        popupTitle.innerText = notif.head;
-        popupContent.innerText = notif.body;
+  // ✅ mark as read in localStorage
+  markAsRead(notif.id);
 
-        notifPopup.style.display = "flex";
-        document.body.classList.add("popup-active");
-      };
+  // ✅ remove unread highlight instantly
+  item.style.background = "white";
 
+  // ✅ update badge instantly
+  let current = parseInt(notifBadge.innerText) || 0;
+  if(current > 0){
+    notifBadge.innerText = current - 1;
+  }
+
+  // ✅ show popup
+  popupTitle.innerText = notif.head;
+  popupContent.innerText = notif.body;
+
+  notifPopup.style.display = "flex";
+  document.body.classList.add("popup-active");
+};
+// 🗑️ DELETE BUTTON CLICK
+const deleteBtn = item.querySelector(".delete-icon");
+
+deleteBtn.onclick = async (e) => {
+  e.stopPropagation(); // prevent opening popup
+
+  const confirmDelete = confirm("Delete this notification?");
+  if (!confirmDelete) return;
+
+  await set(ref(db, "notifications/" + notif.id), null);
+};
       notifList.appendChild(item);
     });
 
@@ -2240,14 +2275,14 @@ let isEditMode = false;
 editBtn.onclick = () => {
   isEditMode = !isEditMode;
 
-  // Highlight button
   editBtn.classList.toggle("active", isEditMode);
 
-  // Toggle edit mode on notification list
   notifList.classList.toggle("edit-mode", isEditMode);
 
-  // Re-render notifications so delete buttons appear/disappear
-
+  // 🔥 ADD ADMIN CLASS
+  if (window.isAdminUser) {
+    notifList.classList.add("admin");
+  }
 };
 /* 🔥 LOAD EVERYTHING */
 async function loadPageData(goal) {
@@ -2399,6 +2434,7 @@ subscribeUser();
   "F9UxJ3W6CVUVIIgwByuHQxscQab2",
   "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
 ];
+window.isAdminUser = adminUIDs.includes(uid);
 const notifAdminBar = document.getElementById("notifAdminBar");
 if (adminUIDs.includes(uid)) {
   adminLink.style.display = "flex";
@@ -2577,9 +2613,7 @@ notifBtn.onclick = (e) => {
   overlay.classList.add("active");
 
   // 🔥 mark all as read
-  const ids = Array.from(document.querySelectorAll(".notif-item"))
-                   .map((_, i) => window.notifArrayGlobal[i]?.id)
-                   .filter(Boolean);
+  const ids = window.notifArrayGlobal.map(n => n.id);
 
   markAllAsRead(ids);
 
@@ -2594,28 +2628,11 @@ overlay.addEventListener("click", () => {
   notifPanel.classList.remove("active");
 });
 
-const notifItems = document.querySelectorAll(".notif-item");
 const notifPopup = document.getElementById("notifPopup");
 const popupTitle = document.getElementById("popupTitle");
 const popupContent = document.getElementById("popupContent");
 const closeNotifPopup = document.getElementById("closeNotifPopup");
 
-/* 🔔 CLICK NOTIFICATION */
-notifItems.forEach(item => {
-  item.onclick = () => {
-
-    const title = item.dataset.title;
-    const content = item.dataset.content;
-
-    popupTitle.innerText = title;
-    popupContent.innerText = content;
-
-    notifPopup.style.display = "flex";
-
-    // 🔥 Blur everything INCLUDING notif panel
-    document.body.classList.add("popup-active");
-  };
-});
 
 /* ❌ CLOSE POPUP */
 closeNotifPopup.onclick = () => {
