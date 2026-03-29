@@ -1891,13 +1891,26 @@ clearInterval(hintInterval);
 
 /* CLICK SEARCH */
 
-searchInput.addEventListener("focus",()=>{
-
-searchHint.style.opacity = 0;
-stopHintRotation();
-
+searchInput.addEventListener("input", () => {
+  if (searchInput.value.trim() !== "") {
+    searchHint.style.opacity = 0; // hide when typing
+  } else {
+    searchHint.style.opacity = 1; // show when empty
+  }
+});
+searchInput.addEventListener("focus", () => {
+  if (searchInput.value === "") {
+    searchHint.style.opacity = 0;
+  }
+  stopHintRotation();
 });
 
+searchInput.addEventListener("blur", () => {
+  if (searchInput.value === "") {
+    searchHint.style.opacity = 1;
+    startHintRotation();
+  }
+});
 /* CLICK OUTSIDE */
 
 document.addEventListener("click",(e)=>{
