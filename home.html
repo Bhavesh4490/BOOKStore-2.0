@@ -899,7 +899,54 @@ display:flex;
     color: #bbb;
     font-size: 40px;
 }
+.coach{
+  font-size:13px;
+  color:#555;
+  margin-bottom:8px;
+}
+.filters-left button,
+.class-filter button {
+    padding: 8px 16px;
+    border-radius: 50px; /* fully rounded chip */
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* space between text and icon */
+    transition: all 0.25s ease;
+}
 
+.filters-left button:hover,
+.class-filter button:hover {
+    background: #ede9fe;
+    border-color: #c7c3ff;
+}
+
+.class-filter i.ph {
+    font-size: 16px;
+    transition: transform 0.25s ease;
+}
+
+.class-filter.active i.ph {
+    transform: rotate(180deg); /* arrow points up */
+}
+/* CLEAR FILTER BUTTON */
+.clear-btn{
+    padding:8px 16px;
+    border-radius:50px;
+    border:1px solid #ff4d4d;
+    background:#fff5f5;
+    color:#ff4d4d;
+    font-weight:500;
+    cursor:pointer;
+    transition:all 0.25s ease;
+}
+
+.clear-btn:hover{
+    color:#ff4d4d;
+}
 </style>
 </head>
 
@@ -918,7 +965,7 @@ display:flex;
 <div class="dropdown" id="goalDropdown">
 
 <span id="goalText">Select Goal</span>
-<span style="margin-left:6px;">▼</span>
+<span style="margin-left:6px;"><I CLASS="PH PH-CARET-DOWN"></I></span>
 
 <div id="goalMenu" class="goal-menu">
 <div data-goal="class9th">9th Class</div>
@@ -1017,19 +1064,32 @@ display:flex;
 
     <!-- LEFT SIDE -->
     <div class="filters-left">
-        <button>Filter</button>
+    <button id="filterBtn" class="clear-btn">Clear</button>
 
-        <div class="class-filter" id="classFilter">
-            <button id="classBtn">Classes ▼</button>
-            <div class="class-menu">
-              <div data-class="class9th">9th Class</div>
-                <div data-class="board10th">Class 10th</div>
-                <div data-class="science11">11th Science</div>
-                <div data-class="commerce11">11th Commerce</div>
-                <div data-class="humanities11">11th Humanities</div>
-            </div>
+    <!-- CLASS FILTER -->
+    <div class="class-filter" id="classFilter">
+        <button id="classBtn">Classes <i class="ph ph-caret-down"></i></button>
+        <div class="class-menu">
+            <div data-class="class9th">9th Class</div>
+            <div data-class="board10th">Class 10th</div>
+            <div data-class="science11">11th Science</div>
+            <div data-class="commerce11">11th Commerce</div>
+            <div data-class="humanities11">11th Humanities</div>
         </div>
     </div>
+
+    <!-- ✅ NEW COACH FILTER -->
+    <div class="class-filter" id="coachFilter">
+        <button id="coachBtn">Coaching <i class="ph ph-caret-down"></i></button>
+        <div class="class-menu">
+            <div data-coach="BOOKStore">BOOKStore</div>
+            <div data-coach="Physics Wallah">Physics Wallah</div>
+            <div data-coach="Mission JEET">Mission JEET</div>
+            <div data-coach="Next Toppers">Next Toppers</div>
+            <div data-coach="Vibrant Academy">Vibrant Academy</div>
+        </div>
+    </div>
+</div>
 
     <!-- RIGHT SIDE (ADMIN ONLY) -->
     <div class="filters-right" id="adminActions" style="display:none;">
@@ -1130,6 +1190,14 @@ margin-bottom:10px;
 <input id="editCover" placeholder="Image URL" style="width:100%; margin-bottom:10px; padding:8px;">
 <input id="editTitle" placeholder="Title" style="width:100%; margin-bottom:10px; padding:8px;">
 <input id="editEdition" placeholder="Edition" style="width:100%; margin-bottom:10px; padding:8px;">
+<select id="editCoach" style="width:100%; margin-bottom:10px; padding:8px;">
+  <option value="">Select Coaching *</option>
+  <option value="BOOKStore">BOOKStore</option>
+  <option value="Physics Wallah">Physics Wallah</option>
+  <option value="Mission JEET">Mission JEET</option>
+  <option value="Next Toppers">Next Toppers</option>
+  <option value="Vibrant Academy">Vibrant Academy</option>
+</select>
 <select id="editLang" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="English">English</option>
     <option value="Hinglish">Hinglish</option>
@@ -1196,6 +1264,14 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 <input id="addCover" placeholder="Thumbnail URL" style="width:100%; margin-bottom:10px; padding:8px;">
 <input id="addTitle" placeholder="Title *" style="width:100%; margin-bottom:10px; padding:8px;">
 <input id="addEdition" placeholder="Year/Edition *" style="width:100%; margin-bottom:10px; padding:8px;">
+<select id="addCoach" style="width:100%; margin-bottom:10px; padding:8px;">
+  <option value="">Select Coaching *</option>
+  <option value="BOOKStore">BOOKStore</option>
+  <option value="Physics Wallah">Physics Wallah</option>
+  <option value="Mission JEET">Mission JEET</option>
+  <option value="Next Toppers">Next Toppers</option>
+  <option value="Vibrant Academy">Vibrant Academy</option>
+</select>
 <select id="addLang" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="English">English</option>
     <option value="Hinglish">Hinglish</option>
@@ -1358,6 +1434,8 @@ Add
 <!-- FIREBASE LOGIN PROTECTION -->
 
 <script type="module">
+  let selectedClassFilter = "all";
+let selectedCoachFilter = "all";
   let currentEditPath = ""; 
 let currentDeletePath = "";
 import { updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -1595,6 +1673,7 @@ function createCard(data, categoryKey) {
       <div class="category">${categoryMap[categoryKey] || categoryKey}</div>
       <div class="title">${data.title || ""}</div>
       <div class="date">${data.year || ""}</div>
+<div class="coach">by ${data.coach || "unknown"}</div>
       <div class="price">
         ₹0
         ${data.price ? `<span class="old-price">₹${data.price}</span>` : ""}
@@ -1626,6 +1705,7 @@ editIcon.onclick = (e) => {
     document.getElementById("editTitle").value = data.title || "";
     document.getElementById("editLang").value = data.lang || ""; 
     document.getElementById("editEdition").value = data.year || "";
+    document.getElementById("editCoach").value = data.coach || "";
     document.getElementById("editCover").value = data.cover || "";
     document.getElementById("editView").value = data.link || "";
     document.getElementById("editPrice").value = data.price || ""; // <-- Add this line
@@ -1659,6 +1739,7 @@ window.saveEdit = async () => {
         title: document.getElementById("editTitle").value,
         lang: document.getElementById("editLang").value,
         year: document.getElementById("editEdition").value,
+        coach: document.getElementById("editCoach").value,
         cover: coverValue || "", // <-- Optional, default to empty string
         link: document.getElementById("editView").value,
         price: document.getElementById("editPrice").value
@@ -1892,6 +1973,48 @@ document.getElementById("courseCount").innerText=count;
 }
 
 window.addEventListener("DOMContentLoaded",updateCourseCount);
+
+// FILTER BUTTON → SHOW ALL COURSES
+const filterBtn = document.getElementById("filterBtn");
+
+filterBtn.onclick = () => {
+
+    searchInput.value = "";
+
+    selectedClassFilter = "all";
+    selectedCoachFilter = "all";
+
+    classBtn.innerHTML = 'Classes <i class="ph ph-caret-down"></i>';
+    coachBtn.innerHTML = 'Coaching <i class="ph ph-caret-down"></i>';
+
+    applyFilters();
+};
+
+function applyFilters() {
+    const cards = document.querySelectorAll(".card");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const cardClass = card.dataset.class;
+        const coachText = card.querySelector(".coach").innerText.toLowerCase();
+
+        const matchClass =
+            selectedClassFilter === "all" || cardClass === selectedClassFilter;
+
+        const matchCoach =
+            selectedCoachFilter === "all" ||
+            coachText.includes(selectedCoachFilter.toLowerCase());
+
+        if (matchClass && matchCoach) {
+            card.style.display = "block";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    document.getElementById("courseCount").innerText = visibleCount;
+}
 /* CLASS FILTER DROPDOWN */
 
 const classFilter=document.getElementById("classFilter");
@@ -1947,23 +2070,25 @@ window.addBook = async () => {
     const price = document.getElementById("addPrice").value.trim();
     const link = document.getElementById("addView").value.trim();
     const classKey = document.getElementById("addClass").value;
+    const coach = document.getElementById("addCoach").value;
 
-    if (!title || !edition || !link || !classKey) {
-        alert("Please fill all required fields.");
-        return;
-    }
+    if (!title || !edition || !link || !classKey || !coach) {
+    alert("Please fill all required fields.");
+    return;
+}
 
     const dbRef = ref(db, `batches/${classKey}`);
     const newBookRef = ref(db, `batches/${classKey}/${Date.now()}`); // unique key
 
     const bookData = {
-        title,
-        year: edition,
-        lang,
-        cover, // optional
-        price,
-        link
-    };
+    title,
+    year: edition,
+    lang,
+    cover,
+    price,
+    link,
+    coach 
+};
 
     try {
         await set(newBookRef, bookData);
@@ -1986,7 +2111,7 @@ addBtn.onclick = () => {
 
 /* SELECT CLASS */
 
-document.querySelectorAll(".class-menu div").forEach(item=>{
+document.querySelectorAll("#classFilter .class-menu div").forEach(item=>{
 
 item.onclick=(e)=>{
 
@@ -1994,7 +2119,7 @@ e.stopPropagation();
 
 const selected=item.innerText;
 
-classBtn.innerText=selected+" ▼";
+classBtn.innerText=selected+ " <i class=\"ph ph-caret-down\"></i>";
 
 classFilter.classList.remove("active");
 
@@ -2049,37 +2174,80 @@ updateCourseCount();
 
 /* CLASS FILTER */
 
-document.querySelectorAll(".class-menu div").forEach(item => {
+document.querySelectorAll("#classFilter .class-menu div").forEach(item => {
+    item.addEventListener("click", (e) => {
+        e.stopPropagation();
 
-item.addEventListener("click", () => {
+        selectedClassFilter = item.dataset.class;
+        classBtn.innerHTML = item.innerText + ' <i class="ph ph-caret-down"></i>';
 
-const selectedClass = item.dataset.class;
-const cards = document.querySelectorAll(".card");
+        classFilter.classList.remove("active");
 
-cards.forEach(card => {
+        applyFilters(); // ✅ important
+    });
+});
+});
 
-const category = card.querySelector(".category").innerText.toLowerCase();
+/* --- COACHING FILTER LOGIC --- */
 
-if(
-selectedClass === "board10th" && category.includes("10th") ||
-selectedClass === "science11" && category.includes("science") ||
-selectedClass === "commerce11" && category.includes("commerce") ||
-selectedClass === "humanities11" && category.includes("human") ||
-selectedClass === "class9th" && category.includes("9th")
-){
-card.style.display = "block";
-}else{
-card.style.display = "none";
+// Function to filter by Coaching
+function filterByCoach(selectedCoach) {
+    const cards = document.querySelectorAll('.card');
+    let visibleCount = 0;
+
+    cards.allCards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        // Find the coach text inside the card (we use .coach class)
+        const coachText = card.querySelector('.coach').innerText.toLowerCase();
+        const targetCoach = selectedCoach.toLowerCase();
+
+        // Check if the coach matches or if "All" is implied
+        if (selectedCoach === "all" || coachText.includes(targetCoach)) {
+            card.style.display = "block";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    // Update the course count display
+    document.getElementById("courseCount").innerText = visibleCount;
+    
+    // Update button text to show active filter
+    const coachBtn = document.getElementById("coachBtn");
+    coachBtn.innerHTML = (selectedCoach === "all" ? "Coaching" : selectedCoach) + "<i class=\"ph ph-caret-down\"></i>";
 }
 
+// Event Listeners for Coaching Menu
+document.querySelectorAll('#coachFilter .class-menu div').forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        selectedCoachFilter = item.dataset.coach;
+
+        document.getElementById("coachBtn").innerHTML =
+            item.innerText + ' <i class="ph ph-caret-down"></i>';
+
+        document.getElementById('coachFilter').classList.remove('active');
+
+        applyFilters(); // ✅ important
+    });
 });
 
-updateCourseCount();
-
+// Toggle Coaching Dropdown
+document.getElementById('coachBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('coachFilter').classList.toggle('active');
+    // Close other dropdowns if open
+    document.getElementById('classFilter').classList.remove('active');
 });
 
+// Close dropdown when clicking outside
+window.addEventListener('click', () => {
+    document.getElementById('coachFilter').classList.remove('active');
 });
-});
+
 import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 /* USER DROPDOWN */
