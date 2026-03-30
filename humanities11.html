@@ -1131,6 +1131,49 @@ background:#dfe3ea;
 .edit-mode .delete-icon {
     display: flex;
 }
+.filters-left button,
+.class-filter button {
+    padding: 8px 16px;
+    border-radius: 50px; /* fully rounded chip */
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* space between text and icon */
+    transition: all 0.25s ease;
+}
+
+.filters-left button:hover,
+.class-filter button:hover {
+    background: #ede9fe;
+    border-color: #c7c3ff;
+}
+
+.class-filter i.ph {
+    font-size: 16px;
+    transition: transform 0.25s ease;
+}
+
+.class-filter.active i.ph {
+    transform: rotate(180deg); /* arrow points up */
+}
+/* CLEAR FILTER BUTTON */
+.clear-btn{
+    padding:8px 16px;
+    border-radius:50px;
+    border:1px solid #ff4d4d;
+    background:#fff5f5;
+    color:#ff4d4d;
+    font-weight:500;
+    cursor:pointer;
+    transition:all 0.25s ease;
+}
+
+.clear-btn:hover{
+    color:#ff4d4d;
+}
 </style>
 </head>
 
@@ -1149,7 +1192,7 @@ background:#dfe3ea;
 <div class="dropdown" id="goalDropdown">
 
 <span id="goalText">Select Goal</span>
-<span style="margin-left:6px;">▼</span>
+<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
 
 <div id="goalMenu" class="goal-menu">
 <div data-goal="class9th">9th Class</div>
@@ -1246,10 +1289,10 @@ background:#dfe3ea;
 
     <!-- LEFT SIDE -->
     <div class="filters-left">
-        <button>Filter</button>
+         <button id="filterBtn" class="clear-btn">Clear</button>
 
         <div class="class-filter" id="classFilter">
-            <button id="classBtn">Subject ▼</button>
+            <button id="classBtn">Subject <i class="ph ph-caret-down"></i></button>
             <div class="class-menu">
                 <div data-subject="accountancy">Accountancy</div>
                 <div data-subject="business-studies">Business Studies</div>
@@ -2198,6 +2241,29 @@ document.getElementById("courseCount").innerText=count;
 }
 
 window.addEventListener("DOMContentLoaded",updateCourseCount);
+
+// FILTER BUTTON → SHOW ALL COURSES
+const filterBtn = document.getElementById("filterBtn");
+
+filterBtn.onclick = () => {
+
+  // Clear search
+  searchInput.value = "";
+
+  // Reset class button text
+  classBtn.innerHTML = 'Classes <i class="ph ph-caret-down"></i>';
+
+  // Show all cards
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    card.style.display = "block";
+  });
+
+  // Update count
+  updateCourseCount();
+};
+
 /* CLASS FILTER DROPDOWN */
 
 const classFilter=document.getElementById("classFilter");
@@ -2218,8 +2284,8 @@ item.onclick=(e)=>{
 e.stopPropagation();
 
 const selected=item.innerText;
+classBtn.innerHTML=selected+' <i class="ph ph-caret-down"></i>';
 
-classBtn.innerText=selected+" ▼";
 
 classFilter.classList.remove("active");
 
@@ -2248,7 +2314,8 @@ document.querySelectorAll(".class-menu div").forEach(item => {
 item.addEventListener("click", () => {
 
 activeSubject = item.dataset.subject;
-classBtn.innerText = item.innerText + " ▼";
+classBtn.innerHTML = item.innerText + ' <i class="ph ph-caret-down"></i>';
+
 
 filterBooks();
 
@@ -2288,8 +2355,8 @@ item.addEventListener("click", () => {
 
 const subject = item.dataset.subject;
 const cards = document.querySelectorAll(".card");
+classBtn.innerHTML = item.innerText + ' <i class="ph ph-caret-down"></i>';
 
-classBtn.innerText = item.innerText + " ▼";
 
 cards.forEach(card => {
 
