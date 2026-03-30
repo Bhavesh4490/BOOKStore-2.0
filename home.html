@@ -965,7 +965,7 @@ display:flex;
 <div class="dropdown" id="goalDropdown">
 
 <span id="goalText">Select Goal</span>
-<span style="margin-left:6px;"><I CLASS="PH PH-CARET-DOWN"></I></span>
+<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
 
 <div id="goalMenu" class="goal-menu">
 <div data-goal="class9th">9th Class</div>
@@ -1898,19 +1898,7 @@ searchInput.addEventListener("input", () => {
     searchHint.style.opacity = 1; // show when empty
   }
 });
-searchInput.addEventListener("focus", () => {
-  if (searchInput.value === "") {
-    searchHint.style.opacity = 0;
-  }
-  stopHintRotation();
-});
 
-searchInput.addEventListener("blur", () => {
-  if (searchInput.value === "") {
-    searchHint.style.opacity = 1;
-    startHintRotation();
-  }
-});
 /* CLICK OUTSIDE */
 
 document.addEventListener("click",(e)=>{
