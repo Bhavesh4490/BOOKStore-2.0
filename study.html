@@ -1594,7 +1594,7 @@ body.popup-active #notificationPanel{
 <div class="dropdown" id="goalDropdown">
 
 <span id="goalText">Select Goal</span>
-<span style="margin-left:6px;">▼</span>
+<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
 
 <div id="goalMenu" class="goal-menu">
 <div data-goal="class9th">9th Class</div>
@@ -2343,10 +2343,27 @@ function renderCard(container, item, category, isBook) {
     const card = document.createElement("div");
     card.className = isBook ? "book-card" : "batch-card";
 
-   const footerInfo = isBook 
-    ? `Edition: ${item.edition}` 
-    : `${item.year}`;
+   let footerInfo = "";
 
+if(isBook){
+    // ✅ Show edition ONLY if it exists
+    if(item.edition && item.edition.trim() !== ""){
+        footerInfo = `Edition: ${item.edition}`;
+    }
+
+    // ✅ Add coach (if exists)
+    if(item.coach && item.coach.trim() !== ""){
+        footerInfo += (footerInfo ? " • " : "") + `By ${item.coach}`;
+    }
+
+} else {
+    // For batches
+    footerInfo = item.year || "";
+
+    if(item.coach && item.coach.trim() !== ""){
+        footerInfo += (footerInfo ? " • " : "") + `By ${item.coach}`;
+    }
+}
     /* 🔥 PRICE LOGIC FOR BATCH */
     let priceHTML = "";
 
