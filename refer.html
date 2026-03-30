@@ -882,7 +882,7 @@ opacity:0.9;
 <div class="dropdown" id="goalDropdown">
 
 <span id="goalText">Select Goal</span>
-<span style="margin-left:6px;">▼</span>
+<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
 
 <div id="goalMenu" class="goal-menu">
 <div data-goal="class9th">9th Class</div>
@@ -1525,7 +1525,7 @@ e.stopPropagation();
 
 const selected=item.innerText;
 
-classBtn.innerText=selected+" ▼";
+classBtn.innerHTML=selected+' <i class="ph ph-caret-down"></i>';
 
 classFilter.classList.remove("active");
 
