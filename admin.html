@@ -1292,6 +1292,14 @@ input:checked + .slider:before {
     color: #999;
     font-size: 18px;
 }
+#popupImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  image-rendering: auto; /* smooth scaling */
+  -webkit-font-smoothing: antialiased;
+}
 </style>
 </head>
 
@@ -1448,6 +1456,36 @@ input:checked + .slider:before {
     <div id="usersContainer" class="users-grid"></div>
 </div>
 </div>
+<!-- IMAGE POPUP -->
+<div id="imagePopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.384);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+">
+
+  <span id="closeImagePopup" style="
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-size:30px;
+    color:white;
+    cursor:pointer;
+  ">✕</span>
+
+  <img id="popupImage" style="
+  width: 80%;
+  height: 80%;
+  object-fit: contain; /* keeps image ratio */
+  border-radius: 5px;
+">
+</div>
 <!-- LOGOUT CONFIRM POPUP -->
 <div id="logoutPopup" style="
   position:fixed;
@@ -1507,6 +1545,7 @@ input:checked + .slider:before {
 
   </div>
 </div>
+
 <!-- FIREBASE LOGIN PROTECTION -->
 
 <script type="module">
@@ -1607,7 +1646,7 @@ const usersContainer = document.getElementById("usersContainer");
 const usersRef = ref(db, "users");
 
 onValue(usersRef, (snapshot) => {
-
+console.log("DATA:", snapshot.val());
     const usersData = snapshot.val() || {};
 const totalUsers = Object.keys(usersData).length;
 
@@ -1643,6 +1682,10 @@ const nameB = (dataB?.displayName || "").toLowerCase();
 sortedUsers.forEach(([uidKey, userData]) => {
         const name = userData?.displayName || "User";
         const email = userData?.email || "No Email";
+        const photoURL = userData?.photoURL || "";
+const avatar = photoURL 
+  ? photoURL 
+  : `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`;
         const goal = userData?.goals ? goalMap[userData.goals] : "No Goal";
         const device = userData?.device || "Unknown";
         const xp = userData?.xp || 0; // default XP
@@ -1653,7 +1696,9 @@ sortedUsers.forEach(([uidKey, userData]) => {
 
        card.innerHTML = `
     <div class="user-top">
-        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}">
+       <img src="${avatar}" 
+     class="${photoURL ? 'clickable-photo' : ''}" 
+     data-img="${photoURL}">
         <div>
             <div class="user-name" data-uid="${uidKey}">
     <span class="name-text">${name}</span>
@@ -1698,8 +1743,41 @@ sortedUsers.forEach(([uidKey, userData]) => {
     </div>
 `;
         usersContainer.appendChild(card);
+        // IMAGE CLICK POPUP
+document.querySelectorAll(".clickable-photo").forEach(img => {
+    img.addEventListener("click", () => {
+    let url = img.dataset.img;
+
+    if (!url) return;
+
+    // 🔥 Force high resolution
+    url = url.replace("=s96", "=s800");
+
+    document.getElementById("popupImage").src = url;
+    document.getElementById("imagePopup").style.display = "flex";
+    document.body.classList.add("modal-open");
+});
+});
     });
-document.querySelectorAll(".copy-btn").forEach(btn => {
+
+const imagePopup = document.getElementById("imagePopup");
+const closeImagePopup = document.getElementById("closeImagePopup");
+
+closeImagePopup.onclick = () => {
+    imagePopup.style.display = "none";
+    document.getElementById("popupImage").src = "";
+    document.body.classList.remove("modal-open");
+};
+
+// click outside image to close
+imagePopup.onclick = (e) => {
+    if (e.target === imagePopup) {
+        imagePopup.style.display = "none";
+        document.getElementById("popupImage").src = "";
+        document.body.classList.remove("modal-open");
+    }
+};
+    document.querySelectorAll(".copy-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         const uid = btn.dataset.uid;
         navigator.clipboard.writeText(uid)
@@ -1812,18 +1890,6 @@ function computeLastSeen(timestamp) {
 
     return new Date(timestamp).toLocaleDateString(); // 🔥 better than N/A
 }
-// Update Last Seen in real-time
-onValue(usersRef, (snapshot) => {
-    snapshot.forEach((child) => {
-        const uidKey = child.key;
-        const userData = child.val();
-
-        const lastSeenEl = document.querySelector(`.last-seen[data-uid="${uidKey}"]`);
-        if (lastSeenEl) {
-            lastSeenEl.innerText = "Last Seen: " + computeLastSeen(userData?.lastSeen);
-        }
-    });
-});
 // Add this inside your script, ideally after the onValue(usersRef, ...) block
 const userSearch = document.getElementById("userSearch");
 
