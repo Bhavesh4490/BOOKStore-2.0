@@ -1788,27 +1788,38 @@ document.querySelectorAll(".user-block input").forEach(toggle => {
 });
 // Compute human-readable Last Seen
 function computeLastSeen(timestamp) {
-    if (!timestamp) return "N/A";  // If lastSeen is null or undefined
+    if (!timestamp) return "N/A";
+
+    timestamp = Number(timestamp); // 🔥 IMPORTANT FIX
 
     const now = Date.now();
     const diff = now - timestamp;
 
+    if (isNaN(diff)) return "N/A"; // safety
+
     const seconds = Math.floor(diff / 1000);
-    if (seconds < 60) return "Just Now";  // If less than 1 minute
+    if (seconds < 60) return "Just Now";
+
     const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return minutes + " Min ago";  // If less than 1 hour
+    if (minutes < 60) return minutes + " Min ago";
+
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) return hours + " Hr ago";  // If less than 24 hours
+    if (hours < 24) return hours + " Hr ago";
+
     const days = Math.floor(hours / 24);
-    if (days === 1) return "1 Day Ago";  // If 1 day
-    if (days < 7) return days + " Days Ago";  // Less than 7 days
-    return "N/A";  // For anything older or unknown
+    if (days === 1) return "1 Day Ago";
+    if (days < 7) return days + " Days Ago";
+
+    return new Date(timestamp).toLocaleDateString(); // 🔥 better than N/A
 }
 // Update Last Seen in real-time
 onValue(usersRef, (snapshot) => {
-    snapshot.forEach(([uidKey, userData]) => {
+    snapshot.forEach((child) => {
+        const uidKey = child.key;
+        const userData = child.val();
+
         const lastSeenEl = document.querySelector(`.last-seen[data-uid="${uidKey}"]`);
-        if(lastSeenEl){
+        if (lastSeenEl) {
             lastSeenEl.innerText = "Last Seen: " + computeLastSeen(userData?.lastSeen);
         }
     });
@@ -1834,6 +1845,7 @@ userSearch.addEventListener("input", function() {
 }, (error) => {
     console.error("❌ Firebase Error:", error);
 });
+
 get(userRef).then((snapshot) => {
     const data = snapshot.exists() ? snapshot.val() : {};
 
