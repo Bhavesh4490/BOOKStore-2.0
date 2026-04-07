@@ -1501,6 +1501,8 @@ if (!user) {
 document.body.style.display = "block";
 
 const uid = user.uid;
+const photoURL = user.photoURL || "";
+const provider = user.providerData[0]?.providerId || "";
 const device = getDeviceType();
 // 🔒 ADMIN ACCESS CONTROL
 const adminLink = document.getElementById("adminLink");
@@ -1611,8 +1613,9 @@ let accountName = user.displayName || (user.email ? user.email.split("@")[0] : "
         // NEW USER: Create full profile
         const now = Date.now();
         await set(userRef, {
-    displayName: accountName, // ✅ SAVE HERE
+    displayName: accountName,
     email: user.email || "",
+    photoURL: photoURL || "",
     createdAt: now,
     lastSeen: now,
     device: getDeviceType(),
@@ -1626,14 +1629,20 @@ let accountName = user.displayName || (user.email ? user.email.split("@")[0] : "
         if (!data.displayName || data.displayName === "User") {
     await set(ref(db, `users/${uid}/displayName`), accountName);
 }
+// ✅ Save profile image if Google user and not already saved
+if (provider === "google.com" && (!data.photoURL || data.photoURL === "")) {
+    await set(ref(db, `users/${uid}/photoURL`), photoURL);
+}
 
         // Update activity metadata
         await set(ref(db, `users/${uid}/lastSeen`), Date.now());
         await set(ref(db, `users/${uid}/device`), getDeviceType());
     }
+  
 // 🔥 UI UPDATE
 const finalSnapshot = await get(ref(db, `users/${uid}/displayName`));
 const displayName = finalSnapshot.val() || accountName;
+
     document.getElementById("userName").innerText = "Hi, " + displayName;
 
 });
