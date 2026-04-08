@@ -1576,6 +1576,125 @@ body.popup-active #notificationPanel{
 .edit-mode.admin .delete-icon {
   display: flex;
 }
+/* 🏆 PANEL */
+#leaderboardPanel{
+  position:fixed;
+  top:0;
+  right:-380px;
+  width:360px;
+  height:100%;
+  background:white;
+  box-shadow:-6px 0 25px rgba(0,0,0,0.2);
+  z-index:99999;
+  transition:0.35s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+/* OPEN */
+#leaderboardPanel.active{
+  right:0;
+}
+
+/* HEADER */
+.leaderboard-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px;
+  font-size:18px;
+  font-weight:500;
+  border-bottom:1px solid #eee;
+}
+
+.leaderboard-header i{
+  cursor:pointer;
+  font-size:20px;
+}
+
+/* NOTE */
+.leaderboard-note{
+  background:#fff4d6;
+  padding:10px 14px;
+  font-size:13px;
+  color:#6b5d00;
+}
+
+/* LIST */
+.leaderboard-list{
+  overflow-y:auto;
+  flex:1;
+  padding:10px;
+}
+
+/* ITEM */
+.leaderboard-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px;
+  border-radius:10px;
+  background:#f9fafc;
+  margin-bottom:10px;
+  transition:0.2s;
+}
+
+.leaderboard-item:hover{
+  background:#eef2ff;
+}
+
+/* TOP USER */
+.leaderboard-item.top{
+  border:2px solid #5c4cff;
+  background:#eef2ff;
+}
+
+/* RANK */
+.rank{
+  background:#fbbf24;
+  color:white;
+  font-weight:600;
+  padding:4px 8px;
+  border-radius:8px;
+}
+
+/* NAME */
+.name{
+  flex:1;
+  margin-left:10px;
+}
+
+/* XP */
+.xp{
+  font-weight:600;
+  color:#555;
+}
+.leaderboard-item.you {
+  background: #eef2ff;
+  border: 2px solid #6c63ff;
+  font-weight: 600;
+}
+.leaderboard-note{
+  position: relative;
+  background: #fff8e1;
+  padding: 12px 40px 12px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 10px;
+}
+
+.leaderboard-note .close-note{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+}
+
+.leaderboard-note .close-note:hover{
+  color: #000;
+}
 </style>
 </head>
 
@@ -1697,7 +1816,7 @@ body.popup-active #notificationPanel{
       </div>
 
       <!-- XP -->
-      <div class="xp-box">
+      <div class="xp-box" id="xpBox">
         <img src="https://static.pw.live/images/xp-icon_20250107145335.png" alt="xp">
         <span id="xpValue">0</span>
       </div>
@@ -1960,6 +2079,28 @@ body.popup-active #notificationPanel{
     </div>
 
   </div>
+</div>
+
+<!-- 🏆 LEADERBOARD PANEL -->
+<div id="leaderboardPanel">
+
+  <!-- HEADER -->
+  <div class="leaderboard-header">
+    <span>Leaderboard</span>
+    <i class="ph ph-x" id="closeLeaderboard"></i>
+  </div>
+
+  <!-- NOTE -->
+ <div class="leaderboard-note" id="leaderboardNote">
+  <span>
+    ⚠️ Don’t worry if there’s a small calculation error. Any missing points will be verified & added soon!
+  </span>
+  <i class="ph ph-x close-note" id="closeNote"></i>
+</div>
+
+  <!-- LIST -->
+  <div class="leaderboard-list" id="leaderboardList"></div>
+
 </div>
 
 <!-- LOGOUT CONFIRM POPUP -->
@@ -2618,6 +2759,123 @@ overlay.onclick = () => {
   sidebar.classList.remove("active");
   overlay.classList.remove("active");
 };
+const xpBox = document.getElementById("xpBox");
+const leaderboardPanel = document.getElementById("leaderboardPanel");
+const closeLeaderboard = document.getElementById("closeLeaderboard");
+const leaderboardList = document.getElementById("leaderboardList");
+
+/* OPEN PANEL */
+xpBox.onclick = () => {
+  leaderboardPanel.classList.add("active");
+  overlay.classList.add("active"); // reuse your overlay
+  loadLeaderboard();
+};
+
+/* CLOSE */
+closeLeaderboard.onclick = () => {
+  leaderboardPanel.classList.remove("active");
+  overlay.classList.remove("active");
+};
+
+/* CLOSE ON OVERLAY */
+overlay.addEventListener("click", () => {
+  leaderboardPanel.classList.remove("active");
+});
+/* NOTE CLOSE */
+const closeNote = document.getElementById("closeNote");
+const leaderboardNote = document.getElementById("leaderboardNote");
+
+closeNote.onclick = () => {
+  leaderboardNote.style.display = "none";
+};
+/* LOAD LEADERBOARD */
+async function loadLeaderboard(){
+
+  const leaderboardList = document.getElementById("leaderboardList");
+  leaderboardList.innerHTML = "<p>Loading...</p>";
+
+  const usersRef = ref(db, "users");
+  const snap = await get(usersRef);
+
+  if(!snap.exists()){
+    leaderboardList.innerHTML = "<p>No data</p>";
+    return;
+  }
+
+  const data = snap.val();
+  const currentUser = auth.currentUser;
+
+  let currentUserData = null;
+
+  // 🔥 BUILD USERS
+  let users = Object.keys(data).map(uid => {
+
+    const userObj = {
+      uid: uid,
+      name: data[uid].displayName || "User",
+      xp: data[uid].xp || 0
+    };
+
+    if(uid === currentUser.uid){
+      currentUserData = userObj;
+    }
+
+    return userObj;
+  });
+
+  // 🔥 REMOVE 0 XP USERS (except current user)
+  let filteredUsers = users.filter(u => u.xp > 0);
+
+  // 🔥 SORT
+  filteredUsers.sort((a,b) => b.xp - a.xp);
+
+  leaderboardList.innerHTML = "";
+
+  let currentUserRank = null;
+
+  // 🔥 RENDER LIST
+  filteredUsers.forEach((user, index) => {
+
+    const rank = index + 1;
+
+    // ✅ Check if current user is here
+    if(user.uid === currentUser.uid){
+      currentUserRank = rank;
+    }
+
+    const div = document.createElement("div");
+    div.className = "leaderboard-item";
+
+    // 🔥 Highlight ONLY YOU
+    if(user.uid === currentUser.uid){
+      div.classList.add("you");
+    }
+
+    div.innerHTML = `
+      <span class="rank">${rank}</span>
+      <span class="name">${user.name}${user.uid === currentUser.uid ? " (You)" : ""}</span>
+      <span class="xp">${user.xp} XP</span>
+    `;
+
+    leaderboardList.appendChild(div);
+  });
+
+  // 🔥 IF USER HAS 0 XP → SHOW AT BOTTOM
+  if(currentUserData && currentUserData.xp === 0){
+
+    const div = document.createElement("div");
+    div.className = "leaderboard-item you";
+
+    div.innerHTML = `
+      <span class="rank">—</span>
+      <span class="name">${currentUserData.name} (You)</span>
+      <span class="xp">0 XP</span>
+    `;
+
+    leaderboardList.appendChild(div);
+  }
+}
+
 
 const notifBtn = document.getElementById("notifBtn");
 const notifPanel = document.getElementById("notificationPanel");
@@ -2815,6 +3073,7 @@ window.downloadPDF = function(){
 
     window.open(downloadUrl, "_blank");
 }
+
 </script>
 </body>
 </html>
