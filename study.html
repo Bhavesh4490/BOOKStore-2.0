@@ -1695,6 +1695,11 @@ body.popup-active #notificationPanel{
 .leaderboard-note .close-note:hover{
   color: #000;
 }
+.rank-img{
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
 </style>
 </head>
 
@@ -2850,12 +2855,25 @@ async function loadLeaderboard(){
     if(user.uid === currentUser.uid){
       div.classList.add("you");
     }
+let badgeHTML = "";
 
+if(rank === 1){
+  badgeHTML = `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYsVFsYXJbFFrbkLQm3Ngb_vR1DZHlieAeeQ&s" class="rank-img">`;
+}
+else if(rank === 2){
+  badgeHTML = `<img src="https://png.pngtree.com/png-vector/20220731/ourmid/pngtree-silver-medal-2nd-place-award-icon-png-image_6093704.png" class="rank-img">`;
+}
+else if(rank === 3){
+  badgeHTML = `<img src="https://png.pngtree.com/png-clipart/20220823/original/pngtree-3rd-place-bronze-medal-award-icon-png-image_8476660.png" class="rank-img">`;
+}
+else{
+  badgeHTML = `<span class="rank">${rank}</span>`;
+}
     div.innerHTML = `
-      <span class="rank">${rank}</span>
-      <span class="name">${user.name}${user.uid === currentUser.uid ? " (You)" : ""}</span>
-      <span class="xp">${user.xp} XP</span>
-    `;
+  ${badgeHTML}
+  <span class="name">${user.name}${user.uid === currentUser.uid ? " (You)" : ""}</span>
+  <span class="xp">${user.xp} XP</span>
+`;
 
     leaderboardList.appendChild(div);
   });
