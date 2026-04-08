@@ -1700,6 +1700,50 @@ body.popup-active #notificationPanel{
   height: 38px;
   object-fit: contain;
 }
+.xp {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.xp-icon {
+  width: 18px;
+  height: 18px;
+}
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.info-icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.xp-info-popup {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: #111;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: none;
+  z-index: 999;
+  width: 200px;
+}
+
+.xp-info-popup img {
+  width: 16px;
+  vertical-align: middle;
+}
+
+.xp-row {
+  margin-bottom: 8px;
+}
 </style>
 </head>
 
@@ -2091,9 +2135,23 @@ body.popup-active #notificationPanel{
 
   <!-- HEADER -->
   <div class="leaderboard-header">
-    <span>Leaderboard</span>
-    <i class="ph ph-x" id="closeLeaderboard"></i>
+  <span>Leaderboard</span>
+
+  <div class="header-actions">
+    <i class="ph ph-info info-icon" id="xpInfo"></i>
+    <i class="ph ph-x close-btn" id="closeLeaderboard"></i>
   </div>
+</div>
+
+<!-- INFO POPUP -->
+<div class="xp-info-popup" id="xpInfoPopup">
+  <div class="xp-row">
+    Earn 10 <img src="https://static.pw.live/images/xp-icon_20250107145335.png"> by refering
+  </div>
+  <div class="xp-row">
+    Earn 20 <img src="https://static.pw.live/images/xp-icon_20250107145335.png"> by JOSH GAME
+  </div>
+</div>
 
   <!-- NOTE -->
  <div class="leaderboard-note" id="leaderboardNote">
@@ -2793,6 +2851,16 @@ const leaderboardNote = document.getElementById("leaderboardNote");
 closeNote.onclick = () => {
   leaderboardNote.style.display = "none";
 };
+const xpInfo = document.getElementById("xpInfo");
+const xpInfoPopup = document.getElementById("xpInfoPopup");
+
+xpInfo.addEventListener("mouseenter", () => {
+  xpInfoPopup.style.display = "block";
+});
+
+xpInfo.addEventListener("mouseleave", () => {
+  xpInfoPopup.style.display = "none";
+});
 /* LOAD LEADERBOARD */
 async function loadLeaderboard(){
 
@@ -2872,7 +2940,9 @@ else{
     div.innerHTML = `
   ${badgeHTML}
   <span class="name">${user.name}${user.uid === currentUser.uid ? " (You)" : ""}</span>
-  <span class="xp">${user.xp} XP</span>
+ <span class="xp">
+  ${user.xp} <img src="https://static.pw.live/images/xp-icon_20250107145335.png" class="xp-icon">
+</span>
 `;
 
     leaderboardList.appendChild(div);
@@ -2887,7 +2957,9 @@ else{
     div.innerHTML = `
       <span class="rank">—</span>
       <span class="name">${currentUserData.name} (You)</span>
-      <span class="xp">0 XP</span>
+      <span class="xp">
+  0<img src="https://static.pw.live/images/xp-icon_20250107145335.png" class="xp-icon">
+</span>
     `;
 
     leaderboardList.appendChild(div);
