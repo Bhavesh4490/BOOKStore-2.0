@@ -1868,12 +1868,12 @@ async function endGame(win) {
                 currentXP = snap.val().xp;
             }
 
-            const newXP = currentXP + 5;
+            const newXP = currentXP + 20;
 
             await update(userRef, { xp: newXP });
 
             document.getElementById("xpEarned").innerText =
-                `✨ You earned +5 XP (Total: ${newXP})`;
+                `✨ You earned +20 XP (Total: ${newXP})`;
         }
 
         document.getElementById("winHighScore").innerText =
