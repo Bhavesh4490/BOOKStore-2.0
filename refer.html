@@ -564,19 +564,23 @@ padding:10px 0;
 border-bottom:1px solid #e5e7eb;
 }
 .refer-grid{
-display:flex;
-flex-direction:column;
-gap:20px;
-max-width:700px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+
+    max-width:900px;   /* 🔥 increased width */
+    margin:30px auto;  /* center + spacing */
+    padding:0 10px;
 }
 
 /* COMMON CARD */
 .refer-card{
-border-radius:18px;
-padding:22px;
-position:relative;
-box-shadow:0 8px 24px rgba(0,0,0,0.08);
-transition:all 0.3s ease;
+    border-radius:20px;
+    padding:30px;   /* 🔥 bigger padding */
+    position:relative;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.10);
+    transition:all 0.35s ease;
 }
 
 /* HOVER EFFECT */
@@ -592,11 +596,10 @@ border:1px solid #e5e7eb;
 }
 
 .refer-text h3{
-font-size:19px;
-font-weight:600;
-color:#111827;
-line-height:1.5;
-max-width:75%;
+    font-size:24px;   /* 🔥 bigger */
+    font-weight:600;
+    line-height:1.6;
+    max-width:75%;
 }
 
 /* COIN */
@@ -624,6 +627,12 @@ cursor:pointer;
 font-weight:500;
 transition:all 0.25s ease;
 }
+.refer-btn{
+    margin-top:30px;
+    padding:14px 22px;   /* 🔥 bigger */
+    font-size:15px;
+    border-radius:12px;
+}
 
 .refer-btn:hover{
 transform:scale(1.04);
@@ -635,7 +644,13 @@ background:linear-gradient(135deg,#1f2a33,#2c3a45);
 background:linear-gradient(135deg,#efe4d2,#e4d3b3);
 border:1px solid #e0d2b8;
 }
+.refer-left{
+    background:linear-gradient(135deg,#f8fafc,#eef2ff);
+}
 
+.refer-right{
+    background:linear-gradient(135deg,#fef3c7,#fde68a);
+}
 /* XP HEADER */
 .xp-header{
 font-size:15px;
@@ -651,10 +666,9 @@ margin-top:6px;
 color:#2d2d2d;
 }
 
-.xp-value span{
-font-size:14px;
-font-weight:500;
-color:#7a6a58;
+.xp-value{
+    font-size:40px;   /* 🔥 bigger number */
+    font-weight:700;
 }
 
 /* XP ICON */
@@ -664,6 +678,18 @@ right:18px;
 top:18px;
 width:42px;
 opacity:0.9;
+}
+.xp-value{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:40px;
+    font-weight:700;
+}
+
+.xp-img{
+    width:28px;   /* adjust if needed */
+    height:auto;
 }
 /* MOBILE NAVBAR */
 .menu-btn{
@@ -863,6 +889,10 @@ opacity:0.9;
   opacity:1;
   pointer-events:auto;
 }
+.wa-icon{
+    width:18px;
+    height:18px;
+}
 </style>
 </head>
 
@@ -985,7 +1015,7 @@ opacity:0.9;
         <img src="https://refer-and-earn-mf.pw.live/static/image/RsCoin.395991cf.webp" class="refer-coin">
 
         <button class="refer-btn" id="referBtn">
-    <i class="ph ph-whatsapp-logo"></i>
+    <img src="data:image/webp;base64,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" class="wa-icon">
     Refer your friends
 </button>
     </div>
@@ -996,10 +1026,10 @@ opacity:0.9;
             <span>My XP</span>
         </div>
 
-        <div class="xp-value"><span id="xpValue">N/A</span> <span>xp</span></div>
-
-        <img src="https://static.pw.live/images/xp-icon_20250107145335.png" class="xp-icon">
-    </div>
+        <div class="xp-value">
+  <span id="xpValue">0</span>
+  <img src="https://static.pw.live/images/xp-icon_20250107145335.png" class="xp-img">
+</div>
 
 </div>
 
