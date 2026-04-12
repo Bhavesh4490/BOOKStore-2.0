@@ -1802,6 +1802,7 @@ Object.keys(category).forEach(courseKey => {
     const card = createCard(course, categoryKey);
     coursesContainer.appendChild(card);
 });
+applySearchAndSort(); // ✅ ADD THIS
 });
     updateCourseCount();
 
@@ -1813,7 +1814,6 @@ loadCourses();
 /* SAVE GOAL FROM POPUP */
 
 document.querySelectorAll(".goal-card").forEach(card=>{
-
 card.onclick=()=>{
 
 const goal=card.dataset.goal;
@@ -1823,6 +1823,9 @@ const user=auth.currentUser;
 set(ref(db,"users/"+user.uid+"/goals"),goal);
 
 goalText.innerText=goalMap[goal];
+
+currentGoal = goal; // ✅ ADD THIS
+applySearchAndSort(); // ✅ ADD THIS
 
 popup.style.display="none";
 
@@ -1857,6 +1860,9 @@ const user=auth.currentUser;
 set(ref(db,"users/"+user.uid+"/goals"),goal);
 
 goalText.innerText=goalMap[goal];
+
+currentGoal = goal; // ✅ ADD
+applySearchAndSort(); // ✅ ADD
 
 dropdown.classList.remove("active");
 
@@ -1915,21 +1921,22 @@ searchInput.addEventListener("input", () => {
 function applySearchAndSort() {
   const value = searchInput.value.toLowerCase();
   const cards = Array.from(document.querySelectorAll(".card"));
+  const container = document.querySelector(".courses");
 
-  let priority1 = []; // BOOKStore + goal
-  let priority2 = []; // other + goal
-  let priority3 = []; // rest
+  let p1 = []; // BOOKStore + Goal
+  let p2 = []; // Other + Goal
+  let p3 = []; // Others
 
   cards.forEach(card => {
     const text = card.innerText.toLowerCase();
     const cardClass = card.dataset.class;
     const coach = card.querySelector(".coach").innerText.toLowerCase();
 
-    const matchesSearch = text.includes(value);
+    const matchSearch = text.includes(value);
     const isGoal = cardClass === currentGoal;
     const isBookstore = coach.includes("bookstore");
 
-    if (!matchesSearch) {
+    if (!matchSearch) {
       card.style.display = "none";
       return;
     }
@@ -1937,23 +1944,20 @@ function applySearchAndSort() {
     card.style.display = "block";
 
     if (isGoal && isBookstore) {
-      priority1.push(card);
+      p1.push(card);
     } else if (isGoal) {
-      priority2.push(card);
+      p2.push(card);
     } else {
-      priority3.push(card);
+      p3.push(card);
     }
   });
 
-  const container = document.querySelector(".courses");
   container.innerHTML = "";
 
-  [...priority1, ...priority2, ...priority3].forEach(card => {
-    container.appendChild(card);
-  });
+  [...p1, ...p2, ...p3].forEach(card => container.appendChild(card));
 
   document.getElementById("courseCount").innerText =
-    priority1.length + priority2.length + priority3.length;
+    p1.length + p2.length + p3.length;
 }
 // START INIT
 startHintRotation();
@@ -2192,6 +2196,9 @@ closeBtn.onclick = () => {
 /* COURSE SEARCH */
 
 const searchInput = document.getElementById("searchInput");
+
+
+
 updateCourseCount();
 
 });
