@@ -1436,6 +1436,7 @@ Add
 <script type="module">
   let selectedClassFilter = "all";
 let selectedCoachFilter = "all";
+let currentGoal = "";
   let currentEditPath = ""; 
 let currentDeletePath = "";
 import { updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -2191,24 +2192,6 @@ closeBtn.onclick = () => {
 /* COURSE SEARCH */
 
 const searchInput = document.getElementById("searchInput");
-
-searchInput.addEventListener("input", function () {
-
-const value = searchInput.value.toLowerCase();
-const cards = document.querySelectorAll(".card");
-
-cards.forEach(card => {
-
-const text = card.innerText.toLowerCase();
-
-if(text.includes(value)){
-card.style.display = "block";
-}else{
-card.style.display = "none";
-}
-
-});
-
 updateCourseCount();
 
 });
