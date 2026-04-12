@@ -1862,67 +1862,99 @@ dropdown.classList.remove("active");
 };
 
 });
+const searchInput = document.getElementById("searchInput");
 const searchHint = document.getElementById("searchHint");
-/* HINT TEXTS */
 
 const hints = [
-"Search for 11th Sci",
-"Search for 10th Boards",
-"Search for 11th Commerce",
-"Search for 11th Humanities"
+  "Search for 11th Sci",
+  "Search for 10th Boards",
+  "Search for 11th Commerce",
+  "Search for 11th Humanities"
 ];
+
 let hintIndex = 0;
 let hintInterval;
-/* START HINT ROTATION */
 
+// START ROTATION
 function startHintRotation(){
+  stopHintRotation();
 
-hintInterval = setInterval(()=>{
+  hintInterval = setInterval(()=>{
+    if(searchInput.value.trim() !== "") return; // ❗ STOP if typing
 
-hintIndex = (hintIndex + 1) % hints.length;
+    hintIndex = (hintIndex + 1) % hints.length;
 
-searchHint.style.opacity = 0;
+    searchHint.style.opacity = 0;
 
-setTimeout(()=>{
-searchHint.innerText = hints[hintIndex];
-searchHint.style.opacity = 1;
-},300);
+    setTimeout(()=>{
+      searchHint.innerText = hints[hintIndex];
+      searchHint.style.opacity = 1;
+    },300);
 
-},2500);
-
+  },2500);
 }
 
-/* STOP ROTATION */
-
+// STOP ROTATION
 function stopHintRotation(){
-clearInterval(hintInterval);
+  clearInterval(hintInterval);
 }
 
-/* CLICK SEARCH */
-
+// INPUT LOGIC (MAIN FIX)
 searchInput.addEventListener("input", () => {
   if (searchInput.value.trim() !== "") {
-    searchHint.style.opacity = 0; // hide when typing
+    searchHint.style.opacity = 0; // hide instantly
+    stopHintRotation(); // ❗ stop rotation
   } else {
-    searchHint.style.opacity = 1; // show when empty
+    searchHint.style.opacity = 1;
+    startHintRotation(); // restart
   }
+
+  applySearchAndSort(); // 🔥 new function
 });
+function applySearchAndSort() {
+  const value = searchInput.value.toLowerCase();
+  const cards = Array.from(document.querySelectorAll(".card"));
 
-/* CLICK OUTSIDE */
+  let priority1 = []; // BOOKStore + goal
+  let priority2 = []; // other + goal
+  let priority3 = []; // rest
 
-document.addEventListener("click",(e)=>{
+  cards.forEach(card => {
+    const text = card.innerText.toLowerCase();
+    const cardClass = card.dataset.class;
+    const coach = card.querySelector(".coach").innerText.toLowerCase();
 
-if(!searchInput.contains(e.target) && searchInput.value===""){
+    const matchesSearch = text.includes(value);
+    const isGoal = cardClass === currentGoal;
+    const isBookstore = coach.includes("bookstore");
 
-searchHint.style.opacity = 1;
-startHintRotation();
+    if (!matchesSearch) {
+      card.style.display = "none";
+      return;
+    }
 
+    card.style.display = "block";
+
+    if (isGoal && isBookstore) {
+      priority1.push(card);
+    } else if (isGoal) {
+      priority2.push(card);
+    } else {
+      priority3.push(card);
+    }
+  });
+
+  const container = document.querySelector(".courses");
+  container.innerHTML = "";
+
+  [...priority1, ...priority2, ...priority3].forEach(card => {
+    container.appendChild(card);
+  });
+
+  document.getElementById("courseCount").innerText =
+    priority1.length + priority2.length + priority3.length;
 }
-
-});
-
-/* START ON LOAD */
-
+// START INIT
 startHintRotation();
 function updateSearchHint(goal){
 
