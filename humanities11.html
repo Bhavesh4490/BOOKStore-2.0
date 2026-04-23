@@ -878,8 +878,16 @@ background:#dfe3ea;
 
   /* HIDE "Hi, User" TEXT */
   #userName{
-    display:none;
-  }
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -1174,6 +1182,15 @@ background:#dfe3ea;
 .clear-btn:hover{
     color:#ff4d4d;
 }
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
 </style>
 </head>
 
@@ -1253,6 +1270,11 @@ background:#dfe3ea;
 
 
 <h4>MORE</h4>
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
+
+
 
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
@@ -1289,14 +1311,14 @@ background:#dfe3ea;
 
     <!-- LEFT SIDE -->
     <div class="filters-left">
-         <button id="filterBtn" class="clear-btn">Clear</button>
+        <button id="filterBtn" class="clear-btn">Clear</button>
 
         <div class="class-filter" id="classFilter">
             <button id="classBtn">Subject <i class="ph ph-caret-down"></i></button>
             <div class="class-menu">
-                <div data-subject="accountancy">Accountancy</div>
-                <div data-subject="business-studies">Business Studies</div>
-                <div data-subject="economics">Economics</div>
+                <div data-subject="history">History</div>
+                <div data-subject="political-science">Political Science</div>
+                <div data-subject="geography">Geography</div>
             </div>
         </div>
     </div>
@@ -1323,7 +1345,7 @@ width:100%;
 text-align:center;
 margin-top:40px;
 ">
-    <img src="https://static.pw.live/react-batches/assets/coming-soon.png" style="
+    <img src="soon.png" style="
     width:300px;
     max-width:90%;
     opacity:0.9;
@@ -1527,10 +1549,9 @@ margin-bottom:10px;
 
 <select id="addSubject" style="width:100%; margin-bottom:10px; padding:8px;">
 <option value="">Select Subject *</option>
-<option value="Accountancy">Accountancy</option>
-    <option value="Business Studies">Business Studies</option>
-    <option value="Economics">Economics</option>
-    <option value="Mathematics">Mathematics</option>
+<option value="History">History</option>
+    <option value="Political Science">Political Science</option>
+    <option value="Geography">Geography</option>
 
 </select>
 
@@ -1743,10 +1764,9 @@ if(!snapshot.exists()){
 const subjects = snapshot.val();
 
 const subjectMap = {
-    "Accountancy":"accountancy",
-    "Business Studies":"business-studies",
-    "Economics":"economics",
-    "Mathematics":"maths"
+    "History":"history",
+    "Political Science":"political-science",
+    "Geography":"geography"
 };
 
 Object.keys(subjects).forEach(subject=>{
@@ -2062,10 +2082,13 @@ if(snapshot.exists()){
 const data = snapshot.val();
 
 // ✅ Use displayName instead of name
-if(data.displayName){
-  userName.innerText = "Hi, " + data.displayName;
+let name = data.displayName ? data.displayName : "User";
+
+// Check subscription
+if(data.subscribed === true){
+  userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${name} `;
 } else {
-  userName.innerText = "Hi, User";
+  userName.innerText = "Hi, " + name;
 }
 
 }
@@ -2263,7 +2286,6 @@ filterBtn.onclick = () => {
   // Update count
   updateCourseCount();
 };
-
 /* CLASS FILTER DROPDOWN */
 
 const classFilter=document.getElementById("classFilter");
@@ -2284,8 +2306,8 @@ item.onclick=(e)=>{
 e.stopPropagation();
 
 const selected=item.innerText;
-classBtn.innerHTML=selected+' <i class="ph ph-caret-down"></i>';
 
+classBtn.innerHTML=selected+' <i class="ph ph-caret-down"></i>';
 
 classFilter.classList.remove("active");
 
@@ -2315,8 +2337,6 @@ item.addEventListener("click", () => {
 
 activeSubject = item.dataset.subject;
 classBtn.innerHTML = item.innerText + ' <i class="ph ph-caret-down"></i>';
-
-
 filterBooks();
 
 });
@@ -2355,8 +2375,8 @@ item.addEventListener("click", () => {
 
 const subject = item.dataset.subject;
 const cards = document.querySelectorAll(".card");
-classBtn.innerHTML = item.innerText + ' <i class="ph ph-caret-down"></i>';
 
+classBtn.innerHTML = item.innerText + ' <i class="ph ph-caret-down"></i>';
 
 cards.forEach(card => {
 
