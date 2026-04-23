@@ -985,21 +985,18 @@ font-size:18px;
     font-size:13px;
   }
 
-  /* SIDEBAR HIDDEN BY DEFAULT */
-  .sidebar{
-    transform:translateX(-100%);
-    transition:0.3s;
-  }
 
-  /* SHOW SIDEBAR WHEN ACTIVE */
-  .sidebar.active{
-    transform:translateX(0);
-  }
 
   /* REMOVE LEFT MARGIN FROM MAIN */
   .main{
     margin-left:0;
   }
+    /* SIDEBAR HIDDEN BY DEFAULT */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:0.3s;
+  }
+
    .sidebar{
     position:fixed;
     top:65px;
@@ -1029,10 +1026,7 @@ font-size:18px;
     z-index:1100;
   }
 
-  /* OPTIONAL: keep sidebar above viewer */
-  .sidebar{
-    z-index:1200;
-  }
+  
 }
 
 #overlay{
@@ -1042,7 +1036,6 @@ font-size:18px;
   width:100%;
   height:100%;
   background:rgba(0,0,0,0.4);
-  backdrop-filter:blur(3px);
   opacity:0;
   pointer-events:none;
   transition:0.3s ease;
@@ -1676,14 +1669,7 @@ padding:20px 25px; /* spacing here instead */
 #faqBtn:hover {
 background:rgb(241, 241, 241);
 }
-/* FIX Z-INDEX STACK */
-.sidebar{
-  z-index:1201; /* above overlay */
-}
 
-#overlay{
-  z-index:1200;
-}
 @media (max-width:768px){
 
   #faqPanel{
@@ -2839,12 +2825,15 @@ if (confirmSub) {
     };
 }
 
-// CLICK OUTSIDE
-subscribePopup.onclick = (e) => {
-  if (e.target === subscribePopup) {
-    subscribePopup.style.display = "none";
-  }
-};
+// CLICK OUTSIDE (guarded - subscribePopup may not exist)
+const subscribePopup = document.getElementById("subscribePopup");
+if (subscribePopup) {
+  subscribePopup.onclick = (e) => {
+    if (e.target === subscribePopup) {
+      subscribePopup.style.display = "none";
+    }
+  };
+}
 /* 📱 SIDEBAR */
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.querySelector(".sidebar");
