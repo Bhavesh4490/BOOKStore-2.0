@@ -1031,7 +1031,7 @@ body.modal-open .main {
     border-radius: 6px;
     padding: 2px 6px;
 }
-/* VIP Toggle Switch */
+/* SUBSCRIBED Toggle Switch */
 .switch {
   position: relative;
   display: inline-block;
@@ -1067,7 +1067,7 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(24px);
 }
-.vip-label {
+.subscribed-label {
   font-size: 13px;
   color: #555;
   margin-left: 8px;
@@ -1077,7 +1077,7 @@ input:checked + .slider:before {
   color: #888;
   margin-top: 6px;
 }
-/* VIP Toggle Switch */
+/* SUBSCRIBED Toggle Switch */
 .switch {
   position: relative;
   display: inline-block;
@@ -1113,7 +1113,7 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(24px);
 }
-.vip-label {
+.subscribed-label {
   font-size: 13px;
   color: #555;
   margin-left: 8px;
@@ -1201,8 +1201,16 @@ input:checked + .slider:before {
 
   /* HIDE "Hi, User" TEXT */
   #userName{
-    display:none;
-  }
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -1300,6 +1308,15 @@ input:checked + .slider:before {
   image-rendering: auto; /* smooth scaling */
   -webkit-font-smoothing: antialiased;
 }
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
 </style>
 </head>
 
@@ -1380,6 +1397,9 @@ input:checked + .slider:before {
 
 
 <h4>MORE</h4>
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
 
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
@@ -1724,19 +1744,19 @@ const avatar = photoURL
         <span class="xp-value">${xp}</span>
     </div>
 
-    <div class="user-vip" style="margin-top:10px; display:flex; align-items:center;">
+    <div class="user-subscribed" style="margin-top:10px; display:flex; align-items:center;">
         <label class="switch">
-            <input type="checkbox" ${userData?.vip ? 'checked' : ''} data-uid="${uidKey}">
+            <input type="checkbox" ${userData?.subscribed ? 'checked' : ''} data-uid="${uidKey}">
             <span class="slider round"></span>
         </label>
-        <span class="vip-label">VIP</span>
+        <span class="subscribed-label">Subscribed</span>
     </div>
 <div class="user-block" style="margin-top:10px; display:flex; align-items:center;">
     <label class="switch">
         <input type="checkbox" ${userData?.block ? 'checked' : ''} data-uid="${uidKey}" ${isAdmin ? 'disabled' : ''}>
         <span class="slider round"></span>
     </label>
-    <span class="vip-label" style="color:red;">Blocked</span>
+    <span class="subscribed-label" style="color:red;">Blocked</span>
 </div>
     <div class="last-seen" data-uid="${uidKey}">
         Last Seen: ${computeLastSeen(userData?.lastSeen)}
@@ -1845,13 +1865,13 @@ input.className = "edit-input";
         };
     };
 });
-// VIP toggle listener
-document.querySelectorAll(".user-vip input").forEach(toggle => {
+// SUBSCRIBED toggle listener
+document.querySelectorAll(".user-subscribed input").forEach(toggle => {
     toggle.addEventListener("change", (e) => {
         const uidKey = e.target.dataset.uid;
-        const isVIP = e.target.checked;
-        set(ref(db, "users/" + uidKey + "/vip"), isVIP)
-          .catch(err => alert("Error updating VIP: " + err.message));
+        const isSubscribed = e.target.checked;
+        set(ref(db, "users/" + uidKey + "/subscribed"), isSubscribed)
+          .catch(err => alert("Error updating Subscribed: " + err.message));
     });
 });
 // BLOCK toggle listener
@@ -1917,7 +1937,11 @@ get(userRef).then((snapshot) => {
 
     // ✅ FIX NAME
     const name = data.displayName || user.displayName || "User";
-    document.getElementById("userName").innerText = "Hi, " + name;
+const isPro = data.subscribed === true; // or use data.subscribed if that's your field
+
+const badge = isPro ? `<span class="pro-badge">PRO</span>` : "";
+
+document.getElementById("userName").innerHTML = `${badge} Hi, ${name} `;
 
     // ✅ FIX GOAL LOAD
     const userGoal = data.goals;
