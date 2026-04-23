@@ -1,0 +1,2918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XP Mart - BOOKStore</title>
+<link rel="icon" type="image/png" href="book.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+ :root {
+  --success: #2ecc71;
+  --error: #e74c3c;
+  --info: #3498db;
+  --light: #f3f3f3;
+  --dark: #333;
+}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+background:#f5f6fa;
+padding-top:65px;
+}
+/* TOP NAVBAR */
+
+.navbar{
+height:65px;
+background:#111a22;
+color:white;
+display:flex;
+align-items:center;
+padding:0 20px;
+gap:20px;
+
+/* NEW */
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+.dropdown{
+margin-left:10px;
+background:#1f2a33;
+padding:6px 14px;
+border-radius:6px;
+font-size:14px;
+white-space:nowrap;
+}
+#goalDropdown{
+position:relative;
+cursor:pointer;
+}
+
+.goal-menu{
+position:absolute;
+top:40px;
+left:0;
+background:white;
+color:#333;
+border-radius:8px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+width:200px;
+overflow:hidden;
+}
+
+.goal-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.goal-menu div:hover{
+background:#f2f2ff;
+}
+
+#goalDropdown.active .goal-menu{
+display:block;
+}
+
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+/* LAYOUT */
+
+.container{
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#efefef;
+height:calc(100vh - 65px);
+padding:20px;
+
+/* NEW */
+position:fixed;
+top:65px;
+left:0;
+overflow-y:auto;
+}
+.sidebar h4{
+font-size:12px;
+margin-top:15px;
+margin-bottom:8px;
+color:#777;
+}
+
+.sidebar a{
+display:block;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:4px;
+}
+
+.sidebar a.active{
+background:#dcd6ff;
+color:#5c4cff;
+font-weight:500;
+}
+/* SIDEBAR BUTTONS */
+
+.sidebar a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:11px 12px;
+border-radius:10px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:6px;
+transition:all 0.25s ease;
+position:relative;
+}
+
+/* ICON */
+
+.sidebar a i{
+font-size:18px;
+color:#6b7280;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.sidebar a:hover{
+background:#f3f4ff;
+color:#5c4cff;
+transform:translateX(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ICON COLOR CHANGE */
+
+.sidebar a:hover i{
+color:#5c4cff;
+}
+
+/* LEFT ACTIVE BAR */
+
+.sidebar a::before{
+content:"";
+position:absolute;
+left:-10px;
+top:50%;
+transform:translateY(-50%);
+width:4px;
+height:0;
+background:#5c4cff;
+border-radius:4px;
+transition:0.25s;
+}
+
+
+/* ACTIVE PAGE */
+
+.sidebar a.active{
+background:#ece9ff;
+color:#5c4cff;
+font-weight:500;
+}
+
+.sidebar a.active i{
+color:#5c4cff;
+}
+
+.sidebar a.active::before{
+height:70%;
+}
+/* MAIN */
+
+.main{
+flex:1;
+padding:5px;
+
+/* NEW */
+margin-left:230px;
+height:calc(100vh - 65px);
+overflow-y:auto;
+}
+
+.main h2{
+margin-bottom:10px;
+}
+
+.small{
+font-size:14px;
+color:#777;
+margin-bottom:20px;
+}
+
+/* FILTERS */
+
+.filters{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filters button{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+}
+
+/* COURSE GRID */
+
+.courses{
+display:grid;
+grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+gap:20px;
+margin-top: 5px;
+margin-left: 5px;
+}
+
+
+.banner{
+width:100%;
+aspect-ratio:16/9; /* 🔥 perfect 16:9 ratio */
+background-size:cover; /* fill nicely */
+background-position:center;
+background-repeat:no-repeat;
+position:relative;
+padding:12px;
+display:flex;
+align-items:flex-end;
+justify-content:flex-start;
+overflow:hidden;
+}
+
+.language{
+position:absolute;
+top:10px;
+right:10px;
+background:white;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+}
+
+.card-content{
+padding:14px;
+}
+
+.category{
+font-size:12px;
+color:#ff6a00;
+margin-bottom:6px;
+}
+
+.title{
+font-weight:600;
+margin-bottom:4px;
+font-size:15px;
+}
+
+.date{
+font-size:12px;
+color:#666;
+margin-bottom:8px;
+line-height:1.4;
+}
+
+.price{
+font-weight:600;
+}
+
+.discount{
+color:green;
+font-size:13px;
+}
+
+.explore{
+margin-top:10px;
+width:100%;
+padding:9px;
+border-radius:8px;
+border:none;
+font-size:14px;
+font-weight:500;
+color:white;
+background:linear-gradient(135deg,#5c4cff,#7a73ff);
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+transition:all .25s ease;
+}
+
+.explore:hover{
+background:linear-gradient(135deg,#4a3cff,#6a63ff);
+}
+
+/* POPUP BACKGROUND */
+
+#goalPopup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none; /* hidden by default */
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+/* POPUP BOX */
+
+.goal-box{
+width:600px;
+background:white;
+border-radius:12px;
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+
+.goal-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.goal-header h2{
+flex:1;
+text-align:center;
+font-weight:500;
+}
+
+/* GRID */
+
+.goal-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+/* CARDS */
+
+.goal-card{
+padding:18px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+background:#fafafa;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.goal-card:hover{
+border:2px solid #6c63ff;
+background:#f4f3ff;
+transform:translateY(-2px);
+}
+/* CLASS FILTER */
+
+.class-filter{
+position:relative;
+}
+
+.class-menu{
+position:absolute;
+top:42px;
+left:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+min-width:180px;
+overflow:hidden;
+z-index:10;
+}
+
+.class-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.class-menu div:hover{
+background:#f2f2ff;
+}
+
+.class-filter.active .class-menu{
+display:block;
+}
+/* USER DROPDOWN */
+
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+}
+
+.user-avatar{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+.dropdown-icon{
+font-size:16px;
+color:#ccc;
+}
+
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index:100;
+}
+
+.user-menu a,
+.user-menu button{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+font-size:14px;
+border:none;
+background:none;
+text-decoration:none;
+color:#333;
+cursor:pointer;
+width:100%;
+}
+
+.user-menu a:hover{
+background:#f3f3ff;
+}
+
+#logoutBtn{
+color:red;
+}
+
+#logoutBtn:hover{
+background:#ffecec;
+}
+
+.user.active .user-menu{
+display:flex;
+}
+
+
+@media (max-width:900px){
+.courses{
+grid-template-columns: repeat(2,1fr);
+}
+}
+
+@media (max-width:600px){
+.courses{
+grid-template-columns: 1fr;
+}
+}
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:linear-gradient(135deg,#ff7a18,#ffb347);
+color:white;
+font-size:11px;
+font-weight:500;
+padding:4px 8px;
+border-radius:6px;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+ border:1px solid transparent;
+}
+
+.card{
+  position:relative;
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+transition:all .25s ease;
+cursor:pointer;
+border:1px solid transparent; /* important */
+}
+
+.card:hover{
+border:1px solid #303030;
+}
+/* VIEWER */
+
+#viewerPane{
+display:none;
+position:relative;
+width:100%;
+height:calc(100vh - 120px);
+background:#f1f3f7;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 8px 24px rgba(0,0,0,0.15);
+}
+
+.viewer-actions button{
+border:none;
+background:white;
+padding:6px 10px;
+border-radius:6px;
+margin-left:6px;
+cursor:pointer;
+}
+
+.viewer-actions button:hover{
+background:#ecefff;
+}
+
+#closeViewer{
+border:none;
+background:white;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+#pdfFrame{
+width:100%;
+height:100%;
+border:none;
+}
+/* PDF VIEWER */
+
+#viewerPane{
+display:none;
+position:fixed;
+top:65px;
+left:230px;
+width:calc(100% - 230px);
+height:calc(100vh - 65px);
+background:#e5e7eb;
+z-index:100;
+}
+
+.viewer-header{
+height:50px;
+display:flex;
+align-items:center;
+padding:0 15px;
+border-bottom:1px solid #ddd;
+background:white;
+}
+
+#closeViewer{
+background:none;
+border:none;
+font-size:16px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+#pdfFrame{
+width:100%;
+height:calc(100% - 50px);
+border:none;
+}
+/* VIEWER FULL */
+
+#viewerPane{
+display:none;
+position:fixed;
+top:65px;
+left:230px;
+width:calc(100% - 230px);
+height:calc(100vh - 65px);
+background:#dfe3ea;
+z-index:200;
+}
+
+/* TOOLBAR */
+
+.viewer-toolbar{
+height:50px;
+background:#e5e7eb;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 15px;
+border-bottom:1px solid #cfd4db;
+}
+
+/* LEFT */
+
+.viewer-left{
+font-size:20px;
+cursor:pointer;
+}
+
+/* CENTER */
+
+.viewer-center{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.viewer-center button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+.page-indicator{
+font-size:14px;
+color:#333;
+}
+
+.zoom-text{
+font-size:14px;
+width:50px;
+text-align:center;
+}
+
+.divider{
+width:1px;
+height:20px;
+background:#cfd4db;
+margin:0 5px;
+}
+
+/* RIGHT */
+
+.viewer-right{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.viewer-right button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+/* PDF */
+
+#pdfFrame{
+width:100%;
+height:calc(100% - 50px);
+border:none;
+background:white;
+}
+/* ICON BUTTONS */
+
+.viewer-center button,
+.viewer-right button,
+.viewer-left i{
+position:relative;
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:6px;
+border-radius:50%;
+transition:0.2s;
+}
+
+/* PURPLE HOVER BUBBLE */
+
+.viewer-center button:hover,
+.viewer-right button:hover,
+.viewer-left i:hover{
+background:#ede9fe;
+color:#6c4cff;
+}
+
+
+.viewer-center button:hover::after,
+.viewer-right button:hover::after,
+.viewer-left i:hover::after{
+opacity:1;
+}
+#pageSidebar{
+position:absolute;
+left:0;
+top:50px;
+width:120px;
+height:calc(100% - 50px);
+background:white;
+border-right:1px solid #ddd;
+overflow-y:auto;
+display:none;
+}
+
+.pageList{
+padding:10px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.pageThumb{
+background:#f3f4f6;
+border-radius:6px;
+padding:10px;
+text-align:center;
+cursor:pointer;
+font-size:13px;
+border:1px solid transparent;
+}
+
+.pageThumb:hover{
+border:1px solid #6c4cff;
+background:#f4f3ff;
+}
+#pdfFrame{
+margin-left:0;
+transition:0.25s;
+}
+
+#viewerPane.withSidebar #pdfFrame{
+margin-left:120px;
+}
+#pdfContainer{
+position:absolute;
+top:95px;
+left:0;
+width:100%;
+height:calc(100% - 50px);
+overflow:auto;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+background:#dfe3ea;
+}
+
+#pdfFrame{
+width:900px;
+height:1200px;
+border:none;
+background:white;
+transform-origin:top center;
+transition:transform 0.2s ease;
+}
+
+.viewer-toolbar{
+position:absolute;
+top:45px;
+left:0;
+width:100%;
+height:50px;
+background:#e5e7eb;
+z-index:999;
+}
+/* ZOOM INDICATOR */
+
+.zoom-indicator{
+background:white;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:500;
+color:#333;
+border:1px solid #d1d5db;
+min-width:60px;
+text-align:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+transition:0.2s;
+}
+
+/* TOOLBAR LAYOUT IMPROVEMENT */
+
+.viewer-toolbar{
+height:50px;
+background:#eef1f6;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+border-bottom:1px solid #d6d9df;
+}
+
+/* CENTER CONTROLS */
+
+.viewer-center{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* RIGHT SIDE BUTTONS */
+
+.viewer-right{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* BUTTON IMPROVEMENT */
+
+.viewer-center button,
+.viewer-right button{
+width:34px;
+height:34px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:8px;
+font-size:18px;
+transition:0.2s;
+}
+
+.viewer-center button:hover,
+.viewer-right button:hover{
+background:#ede9fe;
+color:#6c4cff;
+transform:scale(1.05);
+}
+/* VIEW BOOK HEADER */
+
+.viewer-topbar{
+height:45px;
+display:flex;
+align-items:center;
+gap:10px;
+padding:0 18px;
+background:#ffffff;
+border-bottom:1px solid #e5e7eb;
+font-size:15px;
+font-weight:500;
+color:#333;
+}
+
+.viewer-topbar button{
+border:none;
+background:transparent;
+display:flex;
+align-items:center;
+gap:6px;
+font-size:15px;
+cursor:pointer;
+color:#333;
+padding:6px 8px;
+border-radius:6px;
+transition:0.2s;
+}
+
+.viewer-topbar button:hover{
+background:#f3f4f6;
+}
+
+.viewer-topbar i{
+font-size:18px;
+}
+/* MOBILE NAVBAR */
+.menu-btn{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* MOBILE STYLES */
+@media (max-width:768px){
+
+  .navbar{
+    padding:0 12px;
+    justify-content:space-between;
+  }
+
+  /* SHOW MENU ICON */
+  .menu-btn{
+    display:block;
+    color:white;
+  }
+
+  /* HIDE LOGO */
+  .logo{
+    display:none;
+  }
+
+  /* HIDE "Hi, User" TEXT */
+#userName{
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
+
+  /* KEEP ONLY AVATAR */
+  .user{
+    gap:0;
+  }
+
+  /* OPTIONAL: SMALLER DROPDOWN */
+  .dropdown{
+    padding:5px 10px;
+    font-size:13px;
+  }
+
+  /* SIDEBAR HIDDEN BY DEFAULT */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:0.3s;
+  }
+
+  /* SHOW SIDEBAR WHEN ACTIVE */
+  .sidebar.active{
+    transform:translateX(0);
+  }
+
+  /* REMOVE LEFT MARGIN FROM MAIN */
+  .main{
+    margin-left:0;
+  }
+   .sidebar{
+    position:fixed;
+    top:65px;
+    left:0;
+    width:260px;
+    height:calc(100vh - 65px);
+    background:#ffffff;
+    transform:translateX(-100%);
+    transition:transform 0.35s ease;
+    z-index:1001;
+    box-shadow:4px 0 20px rgba(0,0,0,0.15);
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+  }
+
+  .sidebar.active{
+    transform:translateX(0);
+  }
+.sidebar a:hover{
+  transform:translateX(6px);
+}
+#viewerPane{
+    top:65px;
+    left:0;                 /* remove sidebar offset */
+    width:100%;             /* full width */
+    height:calc(100vh - 65px);
+    z-index:1100;
+  }
+
+  /* OPTIONAL: keep sidebar above viewer */
+  .sidebar{
+    z-index:1200;
+  }
+}
+
+#overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s ease;
+  z-index:1000;
+}
+
+#overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+/* MOVE USER TO RIGHT */
+.user {
+    margin-left: auto; /* Pushes the user profile to the far right */
+}
+
+/* NEW SEARCH BAR STYLING */
+.search-box-container {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 400px; /* Limits width so it doesn't span the whole screen */
+}
+
+.search-box-container input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus {
+    border-color: #5c4cff;
+    box-shadow: 0 0 0 3px rgba(92, 76, 255, 0.1);
+}
+
+.search-box-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+}
+
+/* SEARCH HINT */
+#searchHint {
+    position: absolute;
+    left: 42px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus + #searchHint,
+.search-box-container input:not(:placeholder-shown) + #searchHint {
+    opacity: 0;
+}
+
+.filters{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+/* LEFT GROUP */
+.filters-left{
+    display:flex;
+    gap:10px;
+}
+
+/* RIGHT GROUP */
+.filters-right{
+    display:flex;
+    gap:10px;
+}
+
+/* ICON BUTTON STYLE */
+.icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:18px;
+    transition:0.25s ease;
+}
+
+/* HOVER EFFECT */
+.icon-btn:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+    border-color:#c7c3ff;
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(0,0,0,0.1);
+}
+
+
+.edit-icon{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:32px;
+    height:32px;
+    background:white;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    cursor:pointer;
+    font-size:16px;
+    color:#333;
+    display:none; /* hidden by default */
+    transition:0.2s;
+}
+
+.edit-icon:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+}
+
+/* SHOW ICON WHEN EDIT MODE ACTIVE */
+.edit-mode .edit-icon{
+    display:flex;
+}
+.icon-btn.active {
+    background:#6c4cff;
+    color:white;
+    border-color:#6c4cff;
+    box-shadow:0 6px 16px rgba(108,76,255,0.4);
+    transform:translateY(-2px);
+}
+/* Update Edit Icon to be on the left of Delete */
+.edit-mode .edit-icon {
+    display: flex;
+    right: 50px; /* Shifted left to make room for delete */
+}
+
+/* Delete Icon Styling */
+.delete-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    font-size: 16px;
+    color: #ff4d4d; /* Red color for delete */
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.delete-icon:hover {
+    background: #ffecec;
+    color: #e60000;
+}
+
+/* Show Delete Icon in Edit Mode */
+.edit-mode .delete-icon {
+    display: flex;
+}
+/* 🔥 PROFILE STICKY HEADER */
+.profile-sticky-header{
+position:sticky;
+top:0;
+background:#f5f6fa;
+z-index:50;
+padding:10px 0;
+border-bottom:1px solid #e5e7eb;
+}
+
+.page-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between; /* 🔥 IMPORTANT */
+  gap:10px;
+  font-size:16px;
+  font-weight:500;
+  color:#111;
+  padding:0 20px;
+}
+
+/* back button */
+.back-btn{
+font-size:20px;
+cursor:pointer;
+opacity:0.7;
+transition:0.2s;
+}
+
+.back-btn:hover{
+opacity:1;
+transform:translateX(-2px);
+}.profile-page{
+max-width:1000px;
+margin:auto;
+padding:20px 25px; /* spacing here instead */
+}
+.notifications {
+  position: fixed;
+  top: 30px;
+  right: 20px;
+  z-index: 1100;
+}
+.notifications :where(.toast, .column) {
+  display: flex;
+  align-items: center;
+}
+.notifications .toast {
+  width: 400px;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  border-radius: 4px;
+  padding: 16px 17px;
+  margin-bottom: 10px;
+  background: var(--light);
+  justify-content: space-between;
+  animation: show_toast 0.3s ease forwards;
+}
+@keyframes show_toast {
+  0% {
+    transform: translateX(100%);
+  }
+  40% {
+    transform: translateX(-5%);
+  }
+  80% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+.notifications .toast.hide {
+  animation: hide_toast 0.3s ease forwards;
+}
+@keyframes hide_toast {
+  0% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(0%);
+  }
+  80% {
+    transform: translateX(-5%);
+  }
+  100% {
+    transform: translateX(calc(100% + 20px));
+  }
+}
+.toast::before {
+  position: absolute;
+  content: "";
+  height: 3px;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
+  animation: progress 5s linear forwards;
+}
+@keyframes progress {
+  100% {
+    width: 0%;
+  }
+}
+.toast.success::before, .btn#success {
+  background: var(--success);
+}
+.toast.error::before, .btn#error {
+  background: var(--error);
+}
+.toast.info::before, .btn#info {
+  background: var(--info);
+}
+.toast .column i {
+  font-size: 1.75rem;
+}
+.toast.success .column i {
+  color: var(--success);
+}
+.toast.error .column i {
+  color: var(--error);
+}
+.toast.info .column i {
+  color: var(--info);
+}
+.toast .column span {
+  font-size: 1.07rem;
+  margin-left: 12px;
+}
+.toast i:last-child {
+  color: #aeb0d7;
+  cursor: pointer;
+}
+.toast i:last-child:hover {
+  color: var(--dark);
+}
+
+@media screen and (max-width: 530px) {
+  .notifications {
+    width: 95%;
+  }
+  .notifications .toast {
+    width: 100%;
+    font-size: 1rem;
+    margin-left: 20px;
+  }
+}
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
+/* 🎟️ COUPON BOX */
+.coupon-box{
+  background:white;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:15px;
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.coupon-box:hover{
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* TOP */
+.coupon-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* LEFT */
+.coupon-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.coupon-left i{
+  font-size:22px;
+  color:#6c63ff;
+}
+
+/* TEXT */
+.coupon-title{
+  font-size:14px;
+  font-weight:500;
+}
+
+.coupon-sub{
+  font-size:12px;
+  color:#888;
+}
+
+
+/* BOTTOM */
+.coupon-bottom{
+  margin-top:10px;
+  font-size:13px;
+  color:#555;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+/* 🎉 COUPON SUCCESS ANIMATION */
+.coupon-success {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: white;
+  padding: 25px 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 100000;
+  opacity: 0;
+  transition: 0.4s ease;
+}
+
+.coupon-success.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.coupon-success i {
+  font-size: 50px;
+  color: #2ecc71;
+  margin-bottom: 10px;
+}
+
+.coupon-success h2 {
+  font-size: 18px;
+}
+.title{
+  display:flex;
+  align-items:center;
+  gap:4px; /* control spacing here */
+}
+
+.pro-badge{
+  margin-left:-3px; /* remove extra spacing */
+}
+
+.faq-item{
+  border:1px solid #eee;
+  border-radius:8px;
+  margin-top:10px;
+  overflow:hidden;
+}
+
+.faq-q{
+  padding:12px;
+  background:#f9f9f9;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.faq-a{
+  display:none;
+  padding:12px;
+  font-size:13px;
+  color:#555;
+}
+
+.faq-item.active .faq-a{
+  display:block;
+}
+/* PANEL */
+#faqPanel{
+  position:fixed;
+  top:65px;
+  left:230px;
+  width:calc(100% - 230px);
+  height:calc(100vh - 65px);
+  background:#f9fafc;
+  z-index:9999;
+  display:none;
+  flex-direction:column;
+  animation:fadeIn 0.3s ease;
+}
+
+/* OPEN STATE */
+#faqPanel.active{
+  display:flex;
+}
+
+/* HEADER */
+.faq-header{
+  height:60px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 20px;
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  font-size:17px;
+  font-weight:500;
+}
+
+/* CONTENT */
+.faq-content{
+  padding:25px;
+  overflow:auto;
+}
+
+/* TITLE */
+.faq-content h2{
+  font-size:22px;
+  margin-bottom:12px;
+}
+.faq-content h3{
+  margin-bottom:12px;
+}
+/* FAQ CARD */
+.faq-box{
+  background:white;
+  border-radius:12px;
+  margin-bottom:12px;
+  border:1px solid #eee;
+  transition:0.25s;
+}
+
+/* QUESTION */
+.faq-q{
+  background:#f1f5fe;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  font-weight:500;
+  border-radius:10px;
+}
+.faq-q:hover{
+  background:#ddebf8;
+}
+
+/* ICON ROTATE */
+.faq-q i{
+  transition:0.25s;
+}
+
+/* ANSWER */
+.faq-a{
+  display:none;
+  padding:0 16px 16px;
+  font-size:14px;
+  color:#555;
+  line-height:1.6;
+}
+
+
+.faq-box.active .faq-a{
+  display:block;
+}
+
+.faq-box.active .faq-q i{
+  transform:rotate(180deg);
+}
+/* QUESTION */
+.faq-q{
+  padding:14px;
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
+  font-weight:500;
+}
+
+/* ANSWER */
+.faq-a{
+  display:none;
+  padding:14px;
+  font-size:14px;
+  color:#555;
+  background:#f8f8f8;
+}
+
+/* ACTIVE */
+.faq-box.active .faq-a{
+  display:block;
+}
+.faq-features{
+  list-style:none;
+  padding:0;
+  margin-bottom:50px;
+}
+
+.faq-features li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  margin-bottom:10px;
+  color:#333;
+}
+
+.faq-features i{
+  color:#2ecc71;
+  font-size:18px;
+}
+/* 🔒 BUY BUTTON LOCKED STATE */
+#buyNowBtn.processing {
+  background: #9ca3af !important; /* grey */
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
+}
+/* RIGHT HEADER ICONS */
+.header-icons{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+/* XP BOX */
+.xp-box{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:white;
+  padding:6px 10px;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  font-weight:500;
+}
+
+.xp-box img{
+  width:20px;
+  height:20px;
+}
+#faqBtn{
+  width:42px;
+    height:42px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    background:#f8f9fb;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    transition:0.2s;
+    margin-bottom:-10px;
+}
+#faqBtn:hover {
+background:rgb(241, 241, 241);
+}
+/* FIX Z-INDEX STACK */
+.sidebar{
+  z-index:1201; /* above overlay */
+}
+
+#overlay{
+  z-index:1200;
+}
+@media (max-width:768px){
+
+  #faqPanel{
+    left:0;
+    width:100%;
+    height:calc(100vh - 65px);
+  }
+
+}
+@media (max-width:768px){
+
+  #checkoutPage{
+    left:0 !important;
+    width:100% !important;
+    padding:15px;
+  }
+
+}
+@media (max-width:768px){
+  #checkoutPage > div{
+    flex-direction:column !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div id="overlay"></div>
+<!-- NAVBAR -->
+
+<div class="navbar">
+<div class="menu-btn" id="menuBtn">
+  <i class="ph ph-list"></i>
+</div>
+<a href="home.html" class="logo">
+  <img src="logo.png">
+</a>
+
+<div class="dropdown" id="goalDropdown">
+
+<span id="goalText">Select Goal</span>
+<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
+
+<div id="goalMenu" class="goal-menu">
+<div data-goal="class9th">9th Class</div>
+<div data-goal="board10th">10th Boards</div>
+<div data-goal="science11">11th Science</div>
+<div data-goal="commerce11">11th Commerce</div>
+<div data-goal="humanities11">11th Humanities</div>
+
+</div>
+
+</div>
+
+
+<div class="user" id="userBox">
+
+<span id="userName">Hi, User</span>
+
+<div class="user-avatar">
+
+<img src="https://static.pw.live/images/boy_20250107145242.png">
+
+<i class="ph ph-caret-down dropdown-icon"></i>
+
+</div>
+
+<div class="user-menu" id="userMenu">
+
+<a href="profile.html">
+<i class="ph ph-user"></i> My Profile
+</a>
+
+<button id="logoutBtn">
+<i class="ph ph-sign-out"></i> Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<a href="study.html">
+<i class="ph ph-graduation-cap"></i> Study Hub
+</a>
+
+<a href="home.html">
+<i class="ph ph-squares-four"></i> All Classes
+</a>
+<a href="admin.html" id="adminLink" style="display:none;">
+  <i class="ph ph-lock"></i> Admin Panel
+</a>
+
+
+<h4>MORE</h4>
+<a class="active">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
+
+
+
+<a href="josh-game.html">
+<i class="ph ph-lightning"></i> Josh Game
+</a>
+
+<a href="refer.html">
+<i class="ph ph-gift"></i> Refer & Earn
+</a>
+
+<a href="about.html">
+<i class="ph ph-info"></i> About us
+</a>
+
+<a href="privacy.html">
+<i class="ph ph-shield-check"></i> Privacy Policy
+</a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+    <!-- 🔥 STICKY PROFILE HEADER -->
+<div class="profile-sticky-header">
+    <div class="page-title">
+        <!-- LEFT -->
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="ph ph-arrow-left back-btn" onclick="history.back()"></i>
+      <span>XP Mart</span>
+    </div>
+
+    <!-- RIGHT ICONS -->
+    <div class="header-icons">
+
+        <!-- XP -->
+      <div class="xp-box" id="xpBox">
+        <img src="https://static.pw.live/images/xp-icon_20250107145335.png" alt="xp">
+        <span id="xpValue">0</span>
+      </div>
+      </div>
+    </div>
+</div>
+    <div class="courses">
+
+ <div class="card">
+  <div class="banner" style="background-image:url('bookstore-pro-banner.png');">
+  
+  </div>
+
+  <div class="card-content">
+    <div class="category">SUBSCRIPTION</div>
+    <div class="title" style="display:flex; align-items:center; gap:6px;">
+  BOOKStore
+  <span class="pro-badge">PRO</span>
+</div>
+
+    <div class="date">
+      Unlock premium features, exclusive content, and future upgrades.
+    </div>
+
+    <div style="font-size:13px; margin-top:6px; color:#666; display:flex; align-items:center; gap:6px;">
+  <i class="ph ph-calendar"></i>
+  <span id="validityText">90 Days</span>
+</div>
+
+   <div style="display:flex; gap:8px; align-items:center;">
+
+  <!-- MAIN SUBSCRIBE BUTTON -->
+  <button class="explore" id="subscribeBtn" style="
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+  ">
+    Checking...
+  </button>
+
+  <!-- 👉 FAQ BUTTON (>) -->
+  <button id="faqBtn">
+    ›
+  </button>
+
+</div>
+  </div>
+</div>
+
+</div>
+</div>
+<div id="faqPanel">
+
+  <!-- HEADER -->
+  <div class="faq-header">
+    <i class="ph ph-arrow-left" id="closeFaq"></i>
+    <div class="title" style="display:flex; align-items:center; gap:6px;">
+  BOOKStore
+  <span class="pro-badge">PRO</span>
+</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="faq-content">
+
+    <h2>One Subscription For All Platforms</h2>
+
+    <ul class="faq-features">
+  <li><i class="ph ph-check"></i> Access high quality Video Lectures</li>
+  <li><i class="ph ph-check"></i> Learn without distractions from top educators</li>
+  <li><i class="ph ph-check"></i> One subscription for all platforms</li>
+</ul>
+
+    <h3>Frequently Asked Questions</h3>
+
+    <!-- FAQ ITEMS -->
+    <div class="faq-box">
+      <div class="faq-q">
+        What are the benefits of BOOKStore Pro subscription?
+        <i class="ph ph-caret-down"></i>
+      </div>
+      <div class="faq-a">
+        With a BOOKStore Pro Subscription, you gain access to:- Unlimited ad-free lectures 
+        from top educators in one place.
+      </div>
+    </div>
+
+    <div class="faq-box">
+      <div class="faq-q">
+        How many free batches are available on BOOKStore?
+        <i class="ph ph-caret-down"></i>
+      </div>
+      <div class="faq-a">
+Some batches are always available for free. In addition, you can watch all locked batches with BOOKStore Pro.
+      </div>
+    </div>
+
+    <div class="faq-box">
+      <div class="faq-q">
+        How long is the BOOKStore Pro subscription valid?
+        <i class="ph ph-caret-down"></i>
+      </div>
+      <div class="faq-a">
+       Your BOOKStore Pro Subscription remains active 90 Days.</div>
+    </div>
+
+  </div>
+
+</div>
+<!-- 🔥 CHECKOUT PAGE -->
+<div id="checkoutPage" style="
+  display:none;
+  position:fixed;
+  top:65px;
+  left:230px;
+  width:calc(100% - 230px);
+  height:calc(100vh - 65px);
+  background:#f5f6fa;
+  z-index:9999;
+  padding:20px;
+  overflow:auto;
+">
+
+  <h2 style="margin-bottom:20px;">Order Summary</h2>
+
+  <div style="display:flex; gap:20px;">
+
+    <!-- LEFT -->
+    <div style="flex:2; height:20%; background:white; padding:20px; border-radius:12px;">
+      <h3>Items in Cart</h3>
+
+      <div style="display:flex; gap:15px; margin-top:15px;">
+        <div style="
+  width:140px;
+  aspect-ratio:16/9;
+  background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9axGyj5hU3XkMNh0vsMEPSUJ666mIG_JAXQ&s');
+  background-size:cover;
+  background-position:center;
+  border-radius:10px;
+"></div>
+        <div>
+          <div class="title" style="display:flex; align-items:center; gap:6px;">
+  BOOKStore
+  <span class="pro-badge">PRO</span>
+</div>
+          <div style="font-size:14px; color:#777;">90 Days Subscription</div>
+          <div style="margin-top:5px;"><b>100 <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:16px; vertical-align:middle;"></b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div style="flex:1; background:white; padding:20px; border-radius:12px;">
+<!-- 🎟️ APPLY COUPON -->
+<div class="coupon-box">
+
+  <div class="coupon-top">
+    <div class="coupon-left">
+      <i class="ph ph-ticket"></i>
+      <div>
+        <div class="coupon-title">Apply Code/Coupon</div>
+        <div class="coupon-sub">no coupons available</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="coupon-bottom">
+    Apply Coupon Code <i class="ph ph-caret-right"></i>
+  </div>
+
+</div>
+      <h3>Payment Summary</h3>
+
+      <div style="margin-top:15px; font-size:14px;">
+<div style="display:flex; justify-content:space-between;">
+  <span>Price</span>
+  <span id="priceText">
+    100 <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:14px;">
+  </span>
+</div>
+
+<div style="display:flex; justify-content:space-between;">
+  <span>Discount</span>
+  <span id="discountText" style="color:green;">-0</span>
+</div>
+
+<hr style="margin:10px 0;">
+
+<div style="display:flex; justify-content:space-between; font-weight:600;">
+  <span>Total</span>
+  <span id="totalText">
+    100 <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:14px;">
+  </span>
+</div>
+      </div>
+
+      <button id="buyNowBtn" style="
+        margin-top:20px;
+        width:100%;
+        padding:12px;
+        border:none;
+        border-radius:8px;
+        background:#6c63ff;
+        color:white;
+        font-weight:500;
+        cursor:pointer;
+      ">
+        PROCEED TO BUY
+      </button>
+<!-- 🔴 BUY ERROR TEXT -->
+<div id="buyError" style="
+  font-size:13px;
+  color:#e74c3c;
+  margin-top:10px;
+  display:none;
+  align-items:center;
+  gap:6px;
+">
+  <i class="ph ph-x-circle"></i>
+  <span id="buyErrorText">Not enough XP</span>
+</div>
+      <button onclick="closeCheckout()" style="
+        margin-top:10px;
+        width:100%;
+        padding:10px;
+        border-radius:8px;
+        border:1px solid #ddd;
+        background:white;
+        cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<!-- 🎟️ COUPON POPUP -->
+<div id="couponPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+">
+
+  <div style="
+    width:350px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  ">
+
+    <h3 style="margin-bottom:10px;">Apply Coupon</h3>
+
+    <input id="couponInput" placeholder="Enter coupon code" style="
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      outline:none;
+      margin-bottom:15px;
+    ">
+<!-- 🔴 ERROR TEXT -->
+<div id="couponError" style="
+  font-size:13px;
+  color:#e74c3c;
+  margin-top:-10px;
+  margin-bottom:10px;
+  display:none;
+  align-items:center;
+  gap:6px;
+">
+  <i class="ph ph-x-circle"></i>
+  <span>This coupon code is either invalid or has expired</span>
+</div>
+    <button id="applyCouponBtn" type="button" style="
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#6c63ff;
+  color:white;
+  cursor:pointer;
+">
+  Apply
+</button>
+
+    <button onclick="closeCoupon()" style="
+      margin-top:10px;
+      width:100%;
+      padding:8px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      background:white;
+      cursor:pointer;
+    ">
+      Cancel
+    </button>
+
+  </div>
+</div>
+<!-- GOAL SELECTION POPUP -->
+
+<div id="goalPopup">
+
+<div class="goal-box">
+
+<div class="goal-header">
+<h2>Select your Goal</h2>
+</div>
+
+<div class="goal-grid">
+<div class="goal-card" data-goal="class9th">
+9th Class
+</div>
+<div class="goal-card" data-goal="board10th">
+10th Boards
+</div>
+
+<div class="goal-card" data-goal="science11">
+11th Science
+</div>
+
+<div class="goal-card" data-goal="commerce11">
+11th Commerce
+</div>
+
+<div class="goal-card" data-goal="humanities11">
+11th Humanities
+</div>
+
+</div>
+
+</div>
+
+</div>
+<ul class="notifications"></ul>
+<!-- LOGOUT CONFIRM POPUP -->
+<div id="logoutPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+">
+
+  <div style="
+    width:400px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  ">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-weight:500;">Confirm Logout</h3>
+      <span id="closeLogoutPopup" style="cursor:pointer; font-size:18px;">✕</span>
+    </div>
+
+    <p style="margin-top:10px; color:#555;">
+      Are you sure you want to log out? You'll need to log in again to access your account.
+    </p>
+
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      
+      <button id="cancelLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:1px solid #6c63ff;
+        background:white;
+        color:#6c63ff;
+        cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+      <button id="confirmLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:none;
+        background:#6c63ff;
+        color:white;
+        cursor:pointer;
+      ">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<!-- FIREBASE LOGIN PROTECTION -->
+
+<script type="module">
+let discountAmount = 0;
+let finalPrice = 100;
+/* 🔥 IMPORTS */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  getDatabase, 
+  ref, 
+  get, 
+  set 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+/* 🔥 CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+  authDomain: "bookstore-6ab08.firebaseapp.com",
+  projectId: "bookstore-6ab08",
+  databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/"
+};
+
+/* 🔥 INIT */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+/* 🔥 ELEMENTS */
+const userName = document.getElementById("userName");
+const adminLink = document.getElementById("adminLink");
+const goalText = document.getElementById("goalText");
+const popup = document.getElementById("goalPopup");
+
+/* 🔥 GOAL MAP */
+const goalMap = {
+  class9th:"9th Class",
+  board10th:"10th Boards",
+  science11:"11th Science",
+  commerce11:"11th Commerce",
+  humanities11:"11th Humanities"
+};
+
+/* 🔥 HIDE PAGE UNTIL AUTH */
+document.body.style.display = "none";
+
+/* 🔥 AUTH CHECK */
+onAuthStateChanged(auth, async (user) => {
+
+  if(!user){
+    window.location.href = "index.html";
+    return;
+  }
+
+  document.body.style.display = "block";
+
+  const uid = user.uid;
+
+  /* 🔒 ADMIN */
+  const adminUIDs = [
+  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+];
+if (adminUIDs.includes(uid)) {
+    adminLink.style.display = "flex";
+  }
+
+  /* 🔥 USER DATA */
+  const userRef = ref(db, "users/" + uid);
+  const snap = await get(userRef);
+const xpValue = document.getElementById("xpValue");
+
+if(snap.exists()){
+  const data = snap.val();
+
+  // 🔥 SET XP VALUE
+  xpValue.innerText = data.xp || 0;
+}
+  if(snap.exists()){
+    const data = snap.val();
+// 🔥 AUTO EXPIRE CHECK (FIXED)
+if (data.subscribed === true && data.subscriptionExpiry) {
+    const now = Date.now();
+
+    if (now > data.subscriptionExpiry) {
+        // ❌ Expired → reset in Firebase
+        await set(ref(db, "users/" + uid + "/subscribed"), false);
+        await set(ref(db, "users/" + uid + "/subscriptionExpiry"), null);
+
+        // 🔥 IMPORTANT: update local data also
+        data.subscribed = false;
+    }
+}
+    /* 🚫 BLOCK CHECK */
+    if(data.block === true){
+      document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🚫 You are blocked</h2>";
+      return;
+    }
+
+    if(data.displayName){
+
+  if(data.subscribed === true){
+    userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${data.displayName} `;
+  } else {
+    userName.innerText = "Hi, " + data.displayName;
+  }
+
+} 
+const subscribeBtn = document.getElementById("subscribeBtn");
+
+// ✅ Use this instead of manual innerHTML logic
+const notifications = document.querySelector(".notifications"),
+buttons = document.querySelectorAll(".buttons .btn");
+
+const toastDetails = {
+    timer: 5000,
+    success: {
+        icon: 'fa-circle-check',
+        text: 'Success: This is a success toast.',
+    },
+    error: {
+        icon: 'fa-circle-xmark',
+        text: 'Error: This is an error toast.',
+    },
+    info: {
+        icon: 'fa-circle-info',
+        text: 'Info: This is an information toast.',
+    }
+}
+
+const removeToast = (toast) => {
+    toast.classList.add("hide");
+    if(toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+    setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+}
+
+const createToast = (type, message) => {
+
+    const icons = {
+        success: "ph-check-circle",
+        error: "ph-x-circle",
+        info: "ph-info"
+    };
+
+    const toast = document.createElement("li");
+    toast.className = `toast ${type}`;
+
+   toast.innerHTML = `
+    <div class="column">
+        <i class="ph ${icons[type]}"></i>
+        <span>${message}</span>
+    </div>
+    <i class="ph ph-x close-toast"></i>
+`;
+
+    notifications.appendChild(toast);
+
+    toast.timeoutId = setTimeout(() => removeToast(toast), 4000);
+    toast.querySelector(".close-toast").onclick = () => removeToast(toast);
+};
+if(snap.exists()){
+  const data = snap.val();
+
+  // ✅ Check subscribe
+  if(data.subscribed === true){
+  subscribeBtn.innerHTML = '<i class="ph ph-check-circle"></i> Already Subscribed';
+  subscribeBtn.style.background = "#2ecc71";
+  subscribeBtn.disabled = true; // 🔥 better UX
+} else {
+  subscribeBtn.innerHTML = 'Subscribe 100 <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:16px;">';
+  subscribeBtn.onclick = async () => {
+  const user = auth.currentUser;
+  const snap = await get(ref(db, "users/" + user.uid));
+
+  if (!snap.exists()) return;
+
+  let data = snap.val();
+  let xp = data.xp || 0;
+
+  // ✅ only open popup if enough XP
+  openCheckout();
+};
+}
+}
+  }
+
+window.buySubscription = async function () {
+  const user = auth.currentUser;
+  const userRef = ref(db, "users/" + user.uid);
+
+  const snap = await get(userRef);
+  if (!snap.exists()) return;
+
+  let data = snap.val();
+  let xp = data.xp || 0;
+
+  if (xp < 100) {
+    createToast("error", "Not enough XP");
+    return;
+  }
+
+  // 🔥 Deduct XP + subscribe
+  await set(ref(db, "users/" + user.uid + "/xp"), xp - 100);
+  await set(ref(db, "users/" + user.uid + "/subscribed"), true);
+
+  createToast("success", "Subscribed Successfully!");
+
+  const subscribeBtn = document.getElementById("subscribeBtn");
+
+  // ✅ Replace button
+  subscribeBtn.innerHTML = '<i class="ph ph-check-circle"></i> Already Subscribed';
+  subscribeBtn.style.background = "#2ecc71";
+  subscribeBtn.disabled = true;
+};
+window.burnXP = function () {
+  const user = auth.currentUser;
+  const userRef = ref(db, "users/" + user.uid);
+
+  get(userRef).then(snap => {
+    if (!snap.exists()) return;
+
+    let data = snap.val();
+    let xp = data.xp || 0;
+
+    if (xp < 100) {
+      createToast("error", "Not enough XP");
+      return;
+    }
+
+    // 🔥 Deduct XP + unlock chat
+    set(ref(db, "users/" + user.uid + "/xp"), xp - 100);
+    set(ref(db, "users/" + user.uid + "/subscribed"), true);
+
+    createToast("success", "Chat Unlocked!");
+
+    const subscribeBtn = document.getElementById("subscribeBtn");
+    adminBtn.innerHTML = '<i class="ph ph-chat-circle-dots"></i> Connect';
+    adminBtn.onclick = () => connectAdmin();
+  });
+};
+
+/* 🔥 GOAL */
+  const goalRef = ref(db, "users/" + uid + "/goals");
+  const goalSnap = await get(goalRef);
+
+  if(goalSnap.exists()){
+    goalText.innerText = goalMap[goalSnap.val()];
+    popup.style.display = "none";
+  } else {
+    popup.style.display = "flex";
+  }
+const validityText = document.getElementById("validityText");
+
+if (snap.exists()) {
+  const data = snap.val();
+
+  if (data.subscribed === true && data.subscriptionExpiry) {
+
+    const expiryDate = new Date(data.subscriptionExpiry);
+
+    // 🔥 subtract 1 day (so 21 April → 20 July)
+    expiryDate.setDate(expiryDate.getDate() - 1);
+
+    // format date (DD Month YYYY)
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const formattedDate = expiryDate.toLocaleDateString('en-IN', options);
+
+    validityText.innerText = `Valid Till ${formattedDate}`;
+
+  } else {
+    validityText.innerText = "90 Days";
+  }
+}
+});
+
+/* 🔥 SAVE GOAL */
+document.querySelectorAll(".goal-card").forEach(card => {
+  card.onclick = () => {
+    const goal = card.dataset.goal;
+    const user = auth.currentUser;
+
+    set(ref(db, "users/" + user.uid + "/goals"), goal);
+    goalText.innerText = goalMap[goal];
+    popup.style.display = "none";
+  };
+});
+
+/* 🔽 DROPDOWN */
+const dropdown = document.getElementById("goalDropdown");
+dropdown.onclick = () => {
+  dropdown.classList.toggle("active");
+};
+
+/* 🔄 CHANGE GOAL */
+document.querySelectorAll(".goal-menu div").forEach(item => {
+  item.onclick = (e) => {
+    e.stopPropagation();
+    const goal = item.dataset.goal;
+    const user = auth.currentUser;
+
+    set(ref(db, "users/" + user.uid + "/goals"), goal);
+    goalText.innerText = goalMap[goal];
+    dropdown.classList.remove("active");
+  };
+});
+
+/* 👤 USER MENU */
+const userBox = document.getElementById("userBox");
+
+userBox.onclick = (e) => {
+  e.stopPropagation();
+  userBox.classList.toggle("active");
+};
+
+
+const faqBtn = document.getElementById("faqBtn");
+const faqPanel = document.getElementById("faqPanel");
+const closeFaq = document.getElementById("closeFaq");
+
+// OPEN FULLSCREEN
+faqBtn.onclick = () => {
+  faqPanel.classList.add("active");
+};
+
+// CLOSE
+closeFaq.onclick = () => {
+  faqPanel.classList.remove("active");
+};
+
+// ACCORDION (only one open at a time)
+document.querySelectorAll(".faq-q").forEach(q => {
+  q.onclick = () => {
+
+    const currentBox = q.parentElement;
+
+    // 🔥 Close all other boxes
+    document.querySelectorAll(".faq-box").forEach(box => {
+      if (box !== currentBox) {
+        box.classList.remove("active");
+      }
+    });
+
+    // 🔥 Toggle current one
+    currentBox.classList.toggle("active");
+  };
+});
+
+/* 🚪 LOGOUT */
+const logoutBtn = document.getElementById("logoutBtn");
+
+const logoutPopup = document.getElementById("logoutPopup");
+const closeLogoutPopup = document.getElementById("closeLogoutPopup");
+const cancelLogout = document.getElementById("cancelLogout");
+const confirmLogout = document.getElementById("confirmLogout");
+
+/* 🚪 OPEN POPUP */
+logoutBtn.onclick = (e) => {
+  e.stopPropagation(); // prevent menu close issue
+  logoutPopup.style.display = "flex";
+  userBox.classList.remove("active"); // close dropdown
+};
+
+/* ❌ CLOSE POPUP (X button) */
+closeLogoutPopup.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ❌ CANCEL BUTTON */
+cancelLogout.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ✅ CONFIRM LOGOUT */
+confirmLogout.onclick = () => {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
+};
+
+/* CLICK OUTSIDE TO CLOSE */
+logoutPopup.onclick = (e) => {
+  if (e.target === logoutPopup) {
+    logoutPopup.style.display = "none";
+  }
+};
+const checkoutPage = document.getElementById("checkoutPage");
+
+window.openCheckout = () => {
+  checkoutPage.style.display = "block";
+};
+
+window.closeCheckout = () => {
+  checkoutPage.style.display = "none";
+};
+const couponPopup = document.getElementById("couponPopup");
+
+document.querySelector(".coupon-box").onclick = () => {
+
+  if (discountAmount > 0) {
+    createToast("info", "Coupon already applied");
+    return; // ❌ stop opening popup
+  }
+
+  couponPopup.style.display = "flex";
+};
+
+window.closeCoupon = () => {
+  couponPopup.style.display = "none";
+};
+
+/* ✅ APPLY COUPON LOGIC (Updated to call the UI update) */
+const couponInput = document.getElementById("couponInput");
+const applyCouponBtn = document.getElementById("applyCouponBtn");
+const couponError = document.getElementById("couponError");
+
+applyCouponBtn.addEventListener("click", () => {
+  let code = couponInput.value.trim().toLowerCase();
+
+  // reset error
+  couponError.style.display = "none";
+
+  if (!code) {
+    couponError.style.display = "flex";
+    couponInput.style.border = "2px solid #e74c3c";
+    return;
+  }
+
+  if (discountAmount > 0) {
+    createToast("info", "Coupon already applied");
+    return;
+  }
+
+  const basePrice = 100;
+
+  // ✅ VALID
+  if (code === "nandani90") {
+
+    discountAmount = Math.floor(basePrice * 0.9);
+    finalPrice = basePrice - discountAmount;
+
+    updatePaymentSummary();
+
+    document.querySelector(".coupon-title").innerText = "NANDANI90 Applied!";
+    document.querySelector(".coupon-sub").innerText = `${discountAmount} XP saved 🎉`;
+    document.querySelector(".coupon-sub").style.color = "#2ecc71";
+
+    couponError.style.display = "none";
+    couponInput.style.border = "1px solid #ddd";
+
+    closeCoupon();
+    showCouponSuccess();
+    createToast("success", "Coupon Applied 🎉");
+
+    applyCouponBtn.disabled = true;
+    couponInput.disabled = true;
+
+  } else {
+    // ❌ INVALID (THIS IS WHAT YOU WANT)
+    couponError.style.display = "flex";
+    couponInput.style.border = "2px solid #e74c3c";
+  }
+});
+
+
+function showCouponSuccess() {
+  const box = document.createElement("div");
+  box.className = "coupon-success";
+
+  box.innerHTML = `
+    <i class="ph ph-check-circle"></i>
+    <h2>Coupon Applied Successfully</h2>
+  `;
+
+  document.body.appendChild(box);
+
+  setTimeout(() => box.classList.add("show"), 50);
+
+  setTimeout(() => {
+    box.classList.remove("show");
+    setTimeout(() => box.remove(), 400);
+  }, 2000);
+}
+
+/* ✅ PROCEED TO BUY / BUY NOW LOGIC */
+const buyNowBtn = document.getElementById("buyNowBtn");
+
+let isProcessing = false;
+
+buyNowBtn.addEventListener("click", async () => {
+
+    // 🚫 HARD BLOCK (double click protection)
+    if (isProcessing) return;
+    isProcessing = true;
+
+    // 🔒 LOCK BUTTON UI
+    buyNowBtn.disabled = true;
+    buyNowBtn.classList.add("processing");
+    buyNowBtn.innerHTML = `<i class="ph ph-spinner"></i> Processing...`;
+
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const userRef = ref(db, "users/" + user.uid);
+
+    try {
+        const snap = await get(userRef);
+        if (!snap.exists()) throw new Error("User not found");
+
+        let data = snap.val();
+        let xp = data.xp || 0;
+
+       const buyError = document.getElementById("buyError");
+const buyErrorText = document.getElementById("buyErrorText");
+
+// ❌ NOT ENOUGH XP
+if (xp < finalPrice) {
+
+    // 👉 SHOW ERROR TEXT
+    buyError.style.display = "flex";
+    buyErrorText.innerText = `Not enough XP`;
+
+    createToast("error", `Not enough XP`);
+
+    // 🔓 UNLOCK BUTTON
+    isProcessing = false;
+    buyNowBtn.disabled = false;
+    buyNowBtn.classList.remove("processing");
+    buyNowBtn.innerHTML = "PROCEED TO BUY";
+
+    return;
+}
+
+        // ✅ PROCESS PAYMENT
+        const expiry = Date.now() + (90 * 24 * 60 * 60 * 1000);
+
+        await set(ref(db, "users/" + user.uid + "/xp"), xp - finalPrice);
+        await set(ref(db, "users/" + user.uid + "/subscribed"), true);
+        await set(ref(db, "users/" + user.uid + "/subscriptionExpiry"), expiry);
+
+        // Step 1: Processing
+buyNowBtn.innerHTML = `<i class="ph ph-spinner"></i> Processing...`;
+
+// Step 2: Success after delay
+setTimeout(() => {
+    buyNowBtn.innerHTML = `<i class="ph ph-check-circle"></i> Success `;
+}, 1000);
+
+// Step 3: Reload
+setTimeout(() => {
+    window.location.reload();
+}, 2200);
+
+    } catch (err) {
+        console.error(err);
+        createToast("error", "Transaction failed");
+
+        // 🔓 UNLOCK ONLY ON ERROR
+        isProcessing = false;
+        buyNowBtn.disabled = false;
+        buyNowBtn.classList.remove("processing");
+        buyNowBtn.innerHTML = "PROCEED TO BUY";
+    }
+});
+
+/* ✅ CONFIRM PURCHASE LOGIC (Secondary handler if you use a modal) */
+const confirmSub = document.getElementById("confirmSub"); // Ensure this ID exists in HTML
+if (confirmSub) {
+    confirmSub.onclick = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        try {
+            const userRef = ref(db, "users/" + user.uid);
+            const snap = await get(userRef);
+            if (!snap.exists()) return;
+
+            let data = snap.val();
+            let xp = data.xp || 0;
+
+            if (xp < 100) {
+                createToast("error", "Not enough XP");
+                return;
+            }
+
+            const now = Date.now();
+            const expiry = now + (90 * 24 * 60 * 60 * 1000);
+
+            await set(ref(db, "users/" + user.uid + "/xp"), xp - 100);
+            await set(ref(db, "users/" + user.uid + "/subscribed"), true);
+            await set(ref(db, "users/" + user.uid + "/subscriptionExpiry"), expiry);
+
+            // Instant reload for the confirm button
+            location.reload();
+
+        } catch (err) {
+            console.error(err);
+            createToast("error", "Something went wrong");
+        }
+    };
+}
+
+// CLICK OUTSIDE
+subscribePopup.onclick = (e) => {
+  if (e.target === subscribePopup) {
+    subscribePopup.style.display = "none";
+  }
+};
+/* 📱 SIDEBAR */
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+  document.body.style.overflow = sidebar.classList.contains("active") ? "hidden" : "auto";
+});
+overlay.onclick = () => {
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+};
+const xpBox = document.getElementById("xpBox");
+  /* 🔥 USER DATA */
+  const xpValue = document.getElementById("xpValue");
+
+/* 📄 VIEWER */
+const frame = document.getElementById("pdfFrame");
+let zoomLevel = 100;
+
+function applyZoom(){
+  frame.style.transform = "scale(" + (zoomLevel/100) + ")";
+  document.getElementById("zoomLevel").innerText = zoomLevel + "%";
+}
+
+window.zoomIn = () => {
+  if(zoomLevel < 300){
+    zoomLevel += 10;
+    applyZoom();
+  }
+};
+
+window.zoomOut = () => {
+  if(zoomLevel > 50){
+    zoomLevel -= 10;
+    applyZoom();
+  }
+};
+
+window.closeBook = () => {
+  document.getElementById("viewerPane").style.display = "none";
+  frame.src = "";
+};
+const discountText = document.getElementById("discountText");
+const totalText = document.getElementById("totalText");
+/* ✅ UPDATE PAYMENT SUMMARY UI */
+function updatePaymentSummary() {
+  const discountText = document.getElementById("discountText");
+  const totalText = document.getElementById("totalText");
+
+  // Update Discount UI
+  discountText.innerText = `-${discountAmount}`;
+
+  // Update Total UI (keeping the XP icon)
+  totalText.innerHTML = `
+    ${finalPrice} <img src="https://static.pw.live/images/xp-icon_20250107145335.png" style="width:14px;">
+  `;
+}
+
+// close when clicking outside
+document.addEventListener("click", (e) => {
+  if (!faqPanel.contains(e.target) && e.target !== faqBtn) {
+    faqPanel.classList.remove("active");
+  }
+});
+
+</script>
+</body>
+</html>
