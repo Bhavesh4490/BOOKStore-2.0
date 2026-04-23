@@ -1118,8 +1118,16 @@ body.modal-open .main {
 
   /* HIDE "Hi, User" TEXT */
   #userName{
-    display:none;
-  }
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -1187,6 +1195,15 @@ body.modal-open .main {
   width: 200px;
 
   z-index: 9999; /* 🔥 MAIN FIX */
+}
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
 }
 </style>
 </head>
@@ -1268,6 +1285,11 @@ body.modal-open .main {
 
 
 <h4>MORE</h4>
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
+
+
 
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
@@ -1731,10 +1753,17 @@ modalName.addEventListener("input", () => {
 });
 
         // Navbar greeting
-       const finalName = data.displayName || user.displayName || "User";
+   const finalName = data.displayName || user.displayName || "User";
 
-userName.innerText = "Hi, " + finalName;
+// Check subscription
+const isPro = data.subscribed === true;
 
+// Inject badge if PRO
+if (isPro) {
+    userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${finalName} `;
+} else {
+    userName.innerText = "Hi, " + finalName;
+}
 
         // Profile-left name
         const profileLeftName = document.querySelector(".profile-left h3");
