@@ -878,8 +878,16 @@ background:#dfe3ea;
 
   /* HIDE "Hi, User" TEXT */
   #userName{
-    display:none;
-  }
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -1174,6 +1182,15 @@ background:#dfe3ea;
 .clear-btn:hover{
     color:#ff4d4d;
 }
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
 </style>
 </head>
 
@@ -1253,6 +1270,11 @@ background:#dfe3ea;
 
 
 <h4>MORE</h4>
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
+
+
 
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
@@ -1794,7 +1816,7 @@ const uid = user.uid;
 // 🔒 ADMIN CONTROL
 const adminUIDs = [
   "F9UxJ3W6CVUVIIgwByuHQxscQab2",
-  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" 
 ];
 const adminLink = document.getElementById("adminLink");
 const adminActions = document.getElementById("adminActions");
@@ -2053,10 +2075,13 @@ if(snapshot.exists()){
 const data = snapshot.val();
 
 // ✅ Use displayName instead of name
-if(data.displayName){
-  userName.innerText = "Hi, " + data.displayName;
+let name = data.displayName ? data.displayName : "User";
+
+// Check subscription
+if(data.subscribed === true){
+  userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${name} `;
 } else {
-  userName.innerText = "Hi, User";
+  userName.innerText = "Hi, " + name;
 }
 
 }
