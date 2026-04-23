@@ -725,8 +725,16 @@ opacity:0.9;
 
   /* HIDE "Hi, User" TEXT */
   #userName{
-    display:none;
-  }
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -839,8 +847,16 @@ opacity:0.9;
 
   /* HIDE "Hi, User" TEXT */
   #userName{
-    display:none;
-  }
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -892,6 +908,15 @@ opacity:0.9;
 .wa-icon{
     width:18px;
     height:18px;
+}
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
 }
 </style>
 </head>
@@ -972,6 +997,11 @@ opacity:0.9;
 </a>
 
 <h4>MORE</h4>
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
+
+
 
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
@@ -1325,7 +1355,13 @@ const data = snapshot.val();
 
 /* USER NAME */
 if(data.displayName){
-userName.innerText = "Hi, " + data.displayName;
+
+  if(data.subscribed === true){
+    userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${data.displayName} `;
+  } else {
+    userName.innerText = "Hi, " + data.displayName;
+  }
+
 }
 
 /* 🔥 XP FETCH */
