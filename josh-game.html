@@ -980,8 +980,16 @@ font-size:18px;
 
   /* HIDE "Hi, User" TEXT */
   #userName{
-    display:none;
-  }
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -1519,7 +1527,15 @@ html{
   }
 
 }
-
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
 </style>
 </head>
 
@@ -1599,6 +1615,11 @@ html{
 
 
 <h4>MORE</h4>
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
+
+
 <a class="active">
 <i class="ph ph-lightning"></i> Josh Game
 </a>
@@ -1921,12 +1942,19 @@ if(adminUIDs.includes(user.uid)){
         const data = snap.val();
 
         // Priority: displayName > name > default
+let name = "User";
+
 if(data.displayName){
-    userName.innerText = "Hi, " + data.displayName;
+    name = data.displayName;
 }else if(data.name){
-    userName.innerText = "Hi, " + data.name;
+    name = data.name;
+}
+
+// ✅ Check subscription
+if(data.subscribed === true){
+    userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${name} `;
 }else{
-    userName.innerText = "Hi, User";
+    userName.innerText = "Hi, " + name;
 }
         if(data.gameHighScore) highScore = data.gameHighScore;
         if(data.goals) goalText.innerText = goalMap[data.goals];
