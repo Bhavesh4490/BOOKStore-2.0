@@ -617,10 +617,18 @@ display:flex;
     display:none;
   }
 
-  /* HIDE "Hi, User" TEXT */
-  #userName{
-    display:none;
-  }
+    /* HIDE "Hi, User" TEXT */
+#userName{
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
 
   /* KEEP ONLY AVATAR */
   .user{
@@ -947,6 +955,38 @@ display:flex;
 .clear-btn:hover{
     color:#ff4d4d;
 }
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
+/* LOCKED (RED) */
+.locked {
+  color: #ff4d4d;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.locked i {
+  color: #ff4d4d;
+}
+
+/* UNLOCKED (GREEN) */
+.unlocked {
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unlocked i {
+  color: #22c55e;
+}
 </style>
 </head>
 
@@ -1027,7 +1067,9 @@ display:flex;
 
 
 <h4>MORE</h4>
-
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
 </a>
@@ -1075,7 +1117,8 @@ display:flex;
             <div data-class="science11">11th Science</div>
             <div data-class="commerce11">11th Commerce</div>
             <div data-class="humanities11">11th Humanities</div>
-        </div>
+        <div data-class="skills">Earners</div>
+          </div>
     </div>
 
     <!-- ✅ NEW COACH FILTER -->
@@ -1175,7 +1218,7 @@ padding:20px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 ">
 
-<h3 style="margin-bottom:15px;">Edit Class</h3>
+<h3 style="margin-bottom:15px;">Edit Course</h3>
 
 <!-- IMAGE PREVIEW -->
 <img id="previewImg" src="" style="
@@ -1205,6 +1248,9 @@ margin-bottom:10px;
 </select>
 <input id="editPrice" placeholder="Original Price (e.g. 599)" style="width:100%; margin-bottom:10px; padding:8px;">
 <input id="editView" placeholder="Link" style="width:100%; margin-bottom:10px; padding:8px;">
+<label style="font-size:14px;">
+  <input type="checkbox" id="editMembersOnly"> Members Only
+</label>
 
 
 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
@@ -1257,7 +1303,7 @@ padding:20px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 ">
 
-<h3 style="margin-bottom:15px;">Add New Class</h3>
+<h3 style="margin-bottom:15px;">Add New Course</h3>
 
 <img id="addPreview" src="" style="width:100%; height:180px; object-fit:contain; border:1px solid #ddd; border-radius:8px; margin-bottom:10px; display:none;">
 
@@ -1282,12 +1328,16 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 
 <select id="addClass" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="">Select Class *</option>
+    <option value="skills">Earners</option>
     <option value="class9th">9th Class</option>
     <option value="board10th">10th Boards</option>
     <option value="science11">11th Science</option>
     <option value="commerce11">11th Commerce</option>
     <option value="humanities11">11th Humanities</option>
 </select>
+<label style="font-size:14px;">
+  <input type="checkbox" id="addMembersOnly"> Members Only
+</label>
 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
 
 <button onclick="closeAddPopup()" style="
@@ -1434,6 +1484,7 @@ Add
 <!-- FIREBASE LOGIN PROTECTION -->
 
 <script type="module">
+  let currentGoal = "";
   let selectedClassFilter = "all";
 let selectedCoachFilter = "all";
   let currentEditPath = ""; 
@@ -1589,11 +1640,9 @@ if (snapshot.exists()) {
   const data = snapshot.val();
 
   if (data.goals) {
+    currentGoal = data.goals; // Update the global variable
     goalText.innerText = goalMap[data.goals];
 
-    // 🔥 auto sort + update UI
-    sortCoursesByGoal(data.goals);
-    updateSearchHint(data.goals);
   } else {
     // ❗ No goal → show popup
     popup.style.display = "flex";
@@ -1602,8 +1651,6 @@ if (snapshot.exists()) {
   // ❗ New user → show popup
   popup.style.display = "flex";
 }
-const now = Date.now();
-
 // 🔥 GET BEST NAME
 let name = "User";
 
@@ -1643,8 +1690,35 @@ if (provider === "google.com" && (!data.photoURL || data.photoURL === "")) {
 const finalSnapshot = await get(ref(db, `users/${uid}/displayName`));
 const displayName = finalSnapshot.val() || accountName;
 
-    document.getElementById("userName").innerText = "Hi, " + displayName;
+const userData = snapshot.val() || {};
 
+const now = Date.now();
+
+// ✅ Check expiry
+let isSubscribed = false;
+
+if (userData.subscriptionExpiry && userData.subscriptionExpiry > now) {
+  isSubscribed = true;
+} else {
+  isSubscribed = false;
+
+  // 🔥 OPTIONAL: auto-fix DB (set subscribed false if expired)
+  if (userData.subscribed === true) {
+    await set(ref(db, `users/${uid}/subscribed`), false);
+  }
+}
+if (isSubscribed) {
+  document.getElementById("userName").innerHTML =
+    ` <span class="pro-badge">PRO</span> Hi, ${displayName}`;
+} else {
+  document.getElementById("userName").innerText =
+    "Hi, " + displayName;
+}
+
+// global access
+window.userSubscribed = isSubscribed; 
+loadCourses(); // 🔥 reload cards after subscription is known
+applySearchAndSort(); // 🔥 new function
 });
 import { onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -1652,6 +1726,7 @@ const coursesContainer = document.querySelector(".courses");
 
 function createCard(data, categoryKey) {
   const categoryMap = {
+    skills: "Earners",
     class9th: "9th Class",
     board10th: "10th Boards",
     science11: "11th Science",
@@ -1662,39 +1737,72 @@ function createCard(data, categoryKey) {
   const card = document.createElement("div");
   card.className = "card";
   card.dataset.class = categoryKey;
+const isMember = data.membersOnly === true;
+const isSubscribed = window.userSubscribed === true;
 
-  card.innerHTML = `
-    <!-- EDIT ICON -->
-    <div class="edit-icon" title="Edit">
-      <i class="ph ph-pencil"></i>
-    </div>
+let priceHTML = "";
+let buttonText = "";
 
-    <!-- DELETE ICON -->
-    <div class="delete-icon" title="Delete">
-      <i class="ph ph-trash"></i>
-    </div>
-
-    <div class="banner" style="background-image: url('${data.cover || ""}')">
-  <div class="language">${data.lang || "English"}</div>
-</div>
-
-    <div class="card-content">
-      <div class="category">${categoryMap[categoryKey] || categoryKey}</div>
-      <div class="title">${data.title || ""}</div>
-      <div class="date">${data.year || ""}</div>
-<div class="coach">by ${data.coach || "unknown"}</div>
-      <div class="price">
-        ₹0
-        ${data.price ? `<span class="old-price">₹${data.price}</span>` : ""}
-      </div>
-      <div class="discount">100% OFF</div>
-      <button class="explore">Explore Now</button>
+// ✅ FINAL FIXED LOGIC
+if (isMember && !isSubscribed) {
+  priceHTML = `
+    <div class="price locked">
+      <i class="ph ph-lock"></i> Locked
     </div>
   `;
+  buttonText = "Buy BOOKStore Pro";
+
+} else if (isMember && isSubscribed) {
+  priceHTML = `
+    <div class="price unlocked">
+      <i class="ph ph-lock-open"></i> Unlocked
+    </div>
+  `;
+  buttonText = "Explore Now";
+
+} else {
+  // 🆓 Free course
+  priceHTML = `
+    <div class="price">
+      ₹0
+      ${data.price ? `<span class="old-price">₹${data.price}</span>` : ""}
+    </div>
+  `;
+  buttonText = "Explore Now";
+}
+ card.innerHTML = `
+  <div class="edit-icon" title="Edit">
+    <i class="ph ph-pencil"></i>
+  </div>
+
+  <div class="delete-icon" title="Delete">
+    <i class="ph ph-trash"></i>
+  </div>
+
+  <div class="banner" style="background-image: url('${data.cover || ""}')">
+    <div class="language">${data.lang || "English"}</div>
+  </div>
+
+  <div class="card-content">
+    <div class="category">${categoryMap[categoryKey] || categoryKey}</div>
+    <div class="title">${data.title || ""}</div>
+    <div class="date">${data.year || ""}</div>
+    <div class="coach">by ${data.coach || "unknown"}</div>
+
+    ${priceHTML}
+    ${!isMember ? `<div class="discount">100% OFF</div>` : ""}
+
+    <button class="explore">${buttonText}</button>
+  </div>
+`;
 
   // Explore button logic
   const btn = card.querySelector(".explore");
   btn.onclick = () => {
+    if (isMember && !isSubscribed) {
+    window.location.href = "xp-mart.html"; // 🔥 redirect to subscription
+    return;
+  }
     if (!data.link) return;
     const cleanLink = data.link.trim();
     if (cleanLink.endsWith(".html")) window.location.href = cleanLink;
@@ -1719,7 +1827,8 @@ editIcon.onclick = (e) => {
     document.getElementById("editView").value = data.link || "";
     document.getElementById("editPrice").value = data.price || ""; // <-- Add this line
     document.getElementById("previewImg").src = data.cover || "";
-};
+document.getElementById("editMembersOnly").checked = data.membersOnly || false;
+  };
 
   // DELETE CLICK
   deleteIcon.onclick = (e) => {
@@ -1751,7 +1860,8 @@ window.saveEdit = async () => {
         coach: document.getElementById("editCoach").value,
         cover: coverValue || "", // <-- Optional, default to empty string
         link: document.getElementById("editView").value,
-        price: document.getElementById("editPrice").value
+        price: document.getElementById("editPrice").value,
+         membersOnly: document.getElementById("editMembersOnly").checked
     };
 
     try {
@@ -1790,23 +1900,56 @@ function loadCourses() {
 
     const batches = snapshot.val();
 
+    let allCourses = [];
+
+    // 🔥 Collect all courses first
     Object.keys(batches).forEach(categoryKey => {
 
-  const category = batches[categoryKey];
+      const category = batches[categoryKey];
 
-  // Update this part inside loadCourses()
-Object.keys(category).forEach(courseKey => {
-    const course = category[courseKey];
-    course.id = courseKey; // <--- ADD THIS LINE to store the Firebase ID
-    const card = createCard(course, categoryKey);
-    coursesContainer.appendChild(card);
-});
-});
+      Object.keys(category).forEach(courseKey => {
+        const course = category[courseKey];
+
+        course.id = courseKey;
+        course.classKey = categoryKey;
+
+        allCourses.push(course);
+      });
+
+    });
+
+    // 🔥 SORT ONCE (backend style)
+    allCourses.sort((a, b) => {
+
+      const aGoal = a.classKey === currentGoal;
+      const bGoal = b.classKey === currentGoal;
+
+      const aBookstore = (a.coach || "").toLowerCase().includes("bookstore");
+      const bBookstore = (b.coach || "").toLowerCase().includes("bookstore");
+
+      // Priority 1 → goal + BOOKStore
+      if (aGoal && aBookstore && !(bGoal && bBookstore)) return -1;
+      if (bGoal && bBookstore && !(aGoal && aBookstore)) return 1;
+
+      // Priority 2 → goal only
+      if (aGoal && !bGoal) return -1;
+      if (bGoal && !aGoal) return 1;
+
+      return 0;
+    });
+
+    // 🔥 RENDER ONCE
+    allCourses.forEach(course => {
+      const card = createCard(course, course.classKey);
+      coursesContainer.appendChild(card);
+    });
+
     updateCourseCount();
 
   });
 
 }
+
 
 loadCourses();
 /* SAVE GOAL FROM POPUP */
@@ -1912,48 +2055,26 @@ searchInput.addEventListener("input", () => {
   applySearchAndSort(); // 🔥 new function
 });
 function applySearchAndSort() {
-  const value = searchInput.value.toLowerCase();
-  const cards = Array.from(document.querySelectorAll(".card"));
 
-  let priority1 = []; // BOOKStore + goal
-  let priority2 = []; // other + goal
-  let priority3 = []; // rest
+  const value = searchInput.value.toLowerCase();
+  const cards = document.querySelectorAll(".card");
+
+  let visible = 0;
 
   cards.forEach(card => {
     const text = card.innerText.toLowerCase();
-    const cardClass = card.dataset.class;
-    const coach = card.querySelector(".coach").innerText.toLowerCase();
 
-    const matchesSearch = text.includes(value);
-    const isGoal = cardClass === currentGoal;
-    const isBookstore = coach.includes("bookstore");
-
-    if (!matchesSearch) {
-      card.style.display = "none";
-      return;
-    }
-
-    card.style.display = "block";
-
-    if (isGoal && isBookstore) {
-      priority1.push(card);
-    } else if (isGoal) {
-      priority2.push(card);
+    if (text.includes(value)) {
+      card.style.display = "block";
+      visible++;
     } else {
-      priority3.push(card);
+      card.style.display = "none";
     }
   });
 
-  const container = document.querySelector(".courses");
-  container.innerHTML = "";
-
-  [...priority1, ...priority2, ...priority3].forEach(card => {
-    container.appendChild(card);
-  });
-
-  document.getElementById("courseCount").innerText =
-    priority1.length + priority2.length + priority3.length;
+  document.getElementById("courseCount").innerText = visible;
 }
+
 // START INIT
 startHintRotation();
 function updateSearchHint(goal){
@@ -1973,37 +2094,7 @@ searchHint.style.opacity=1;
 },300);
 
 }
-function sortCoursesByGoal(goal){
 
-const container = document.querySelector(".courses");
-
-if(!container) return;
-
-const cards = Array.from(container.querySelectorAll(".card"));
-
-// Separate matching + non-matching
-const matched = [];
-const others = [];
-
-cards.forEach(card=>{
-const cls = card.dataset.class;
-
-if(cls === goal){
-matched.push(card);
-}else{
-others.push(card);
-}
-});
-
-// Clear container
-container.innerHTML = "";
-
-// Add matched first, then others
-[...matched, ...others].forEach(card=>{
-container.appendChild(card);
-});
-
-}
 function updateCourseCount(){
 
 const courses=document.querySelectorAll(".card");
@@ -2089,6 +2180,7 @@ window.closeAddPopup = () => {
   document.getElementById("addClass").value = "";
   document.getElementById("addPreview").style.display = "none";
   document.getElementById("addPreview").src = "";
+  document.getElementById("addMembersOnly").checked = false;
 };
 
 // --- SHOW IMAGE PREVIEW ---
@@ -2113,7 +2205,7 @@ window.addBook = async () => {
     const link = document.getElementById("addView").value.trim();
     const classKey = document.getElementById("addClass").value;
     const coach = document.getElementById("addCoach").value;
-
+const membersOnly = document.getElementById("addMembersOnly").checked;
     if (!title || !edition || !link || !classKey || !coach) {
     alert("Please fill all required fields.");
     return;
@@ -2129,7 +2221,8 @@ window.addBook = async () => {
     cover,
     price,
     link,
-    coach 
+    coach,
+     membersOnly
 };
 
     try {
