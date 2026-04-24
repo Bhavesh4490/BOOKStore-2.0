@@ -289,13 +289,6 @@ overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
-.banner{
-height:180px;
-background-size:cover;
-background-position:center;
-position:relative;
-}
-
 .language{
 position:absolute;
 top:10px;
@@ -889,14 +882,12 @@ display:flex;
   color: #ff4d4d;
 }
 .banner {
-    height: 180px;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* PERFECT ratio */
     background-size: cover;
     background-position: center;
-    background-color: #e0e0e0; /* Fallback gray color */
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 /* Optional: Show a book icon if no image is present */
