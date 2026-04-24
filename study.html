@@ -266,15 +266,15 @@ cursor:pointer;
 /* COURSE GRID */
 
 .courses{
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+     display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
     gap:20px;
 }
 
 /* 🎓 BATCHES GRID - 3 per row */
 #batchesContainer{
 display:grid;
-grid-template-columns:repeat(3, 1fr);
+grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
 gap:20px;
 }
 
@@ -287,10 +287,12 @@ box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
 .batch-card .banner{
-height:180px;
-background-size:cover;
-background-position:center;
-position:relative;
+width: 100%;
+    aspect-ratio: 16 / 9; /* PERFECT ratio */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 .language{
@@ -900,16 +902,7 @@ display:flex;
   right: 10px;
   color: #ff4d4d;
 }
-.batch-card .banner {
-    height: 180px;
-    background-size: cover;
-    background-position: center;
-    background-color: #e0e0e0; /* Fallback gray color */
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 /* Optional: Show a book icon if no image is present */
 .batch-card .banner:empty::before {
@@ -941,13 +934,10 @@ padding:16px;
 }
 
 .book-card .banner{
- width:100%;
-    height:300px;
-    border-radius:16px;
+  width:100%;
+    aspect-ratio: 3/4;
     background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    position:relative;
+    border-radius:14px;
 }
 
 
@@ -985,7 +975,7 @@ opacity:1;
 transform:translateX(-2px);
 }
 .book-card .title{
-font-size:15px;
+font-size:12px;
     font-weight:500;
     color:#111;
     margin-bottom:4px;
@@ -2582,7 +2572,7 @@ if(isBook){
             ${priceHTML}
 
            ${!isBook ? `
-<button class="explore">Explore Batch</button>
+<button class="explore">Explore Now</button>
 ` : ""}
         </div>
     `;
