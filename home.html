@@ -977,6 +977,30 @@ display:flex;
 .unlocked i {
   color: #22c55e;
 }
+.top-banner{
+  width:100%;
+  max-height:220px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:15px;
+}
+/* Default: show PC banner */
+.pc-banner{
+  display:block;
+}
+.mobile-banner{
+  display:none;
+}
+
+/* Mobile view */
+@media (max-width:768px){
+  .pc-banner{
+    display:none;
+  }
+  .mobile-banner{
+    display:block;
+  }
+}
 </style>
 </head>
 
@@ -1082,7 +1106,10 @@ display:flex;
 <!-- MAIN -->
 
 <div class="main">
-
+<a href="xp-mart.html" target="_blank">
+  <img src="bookstore-pro-banner-pc.png" class="top-banner pc-banner">
+  <img src="bookstore-pro-banner.png" class="top-banner mobile-banner">
+</a>
 <h3>All Classes</h3>
 <div class="small"><span id="courseCount">0</span> courses available</div>
 
