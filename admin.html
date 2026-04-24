@@ -936,13 +936,18 @@ body.modal-open .main {
 }
 
 /* USER CARD */
-.user-card{
+.user-card {
     background:white;
     border-radius:14px;
     padding:18px;
     box-shadow:0 6px 18px rgba(0,0,0,0.08);
     transition:0.3s ease;
     border:1px solid #eee;
+
+    /* 🔥 KEY FIX */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .user-card:hover{
@@ -982,7 +987,17 @@ body.modal-open .main {
     color:#555;
     margin-top:8px;
 }
+.user-top {
+    flex-shrink: 0;
+}
 
+.user-info,
+.user-xp,
+.user-subscribed,
+.user-block,
+.last-seen {
+    flex-shrink: 0;
+}
 /* ROLE BADGE */
 .badge{
     display:inline-block;
@@ -1004,8 +1019,11 @@ body.modal-open .main {
 /* Limit 3 cards per row */
 .users-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
+
+    /* 🔥 IMPORTANT FIX */
+    align-items: stretch;
 }
 
 /* XP container inside card */
