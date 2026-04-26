@@ -2658,33 +2658,56 @@ applyCouponBtn.addEventListener("click", () => {
 
   const basePrice = 100;
 
-  // ✅ VALID
-  if (code === "nandani90") {
+// ✅ VALID COUPONS
+if (code === "nandani90") {
 
-    discountAmount = Math.floor(basePrice * 0.9);
-    finalPrice = basePrice - discountAmount;
+  // 🔥 90% OFF → 10 XP
+  discountAmount = Math.floor(basePrice * 0.9);
+  finalPrice = basePrice - discountAmount;
 
-    updatePaymentSummary();
+  updatePaymentSummary();
 
-    document.querySelector(".coupon-title").innerText = "NANDANI90 Applied!";
-    document.querySelector(".coupon-sub").innerText = `${discountAmount} XP saved 🎉`;
-    document.querySelector(".coupon-sub").style.color = "#2ecc71";
+  document.querySelector(".coupon-title").innerText = "NANDANI90 Applied!";
+  document.querySelector(".coupon-sub").innerText = `${discountAmount} XP saved`;
+  document.querySelector(".coupon-sub").style.color = "#2ecc71";
 
-    couponError.style.display = "none";
-    couponInput.style.border = "1px solid #ddd";
+  couponError.style.display = "none";
+  couponInput.style.border = "1px solid #ddd";
 
-    closeCoupon();
-    showCouponSuccess();
-    createToast("success", "Coupon Applied 🎉");
+  closeCoupon();
+  showCouponSuccess();
+  createToast("success", "Coupon Applied 🎉");
 
-    applyCouponBtn.disabled = true;
-    couponInput.disabled = true;
+  applyCouponBtn.disabled = true;
+  couponInput.disabled = true;
 
-  } else {
-    // ❌ INVALID (THIS IS WHAT YOU WANT)
-    couponError.style.display = "flex";
-    couponInput.style.border = "2px solid #e74c3c";
-  }
+} else if (code === "kingofpirates80") {
+
+  // 🔥 80% OFF → 20 XP
+  discountAmount = Math.floor(basePrice * 0.8);
+  finalPrice = basePrice - discountAmount;
+
+  updatePaymentSummary();
+
+  document.querySelector(".coupon-title").innerText = "KINGOFPIRATES80 Applied!";
+  document.querySelector(".coupon-sub").innerText = `${discountAmount} XP saved`;
+  document.querySelector(".coupon-sub").style.color = "#2ecc71";
+
+  couponError.style.display = "none";
+  couponInput.style.border = "1px solid #ddd";
+
+  closeCoupon();
+  showCouponSuccess();
+  createToast("success", "80% OFF Applied 🏴‍☠️");
+
+  applyCouponBtn.disabled = true;
+  couponInput.disabled = true;
+
+} else {
+  // ❌ INVALID
+  couponError.style.display = "flex";
+  couponInput.style.border = "2px solid #e74c3c";
+}
 });
 
 
