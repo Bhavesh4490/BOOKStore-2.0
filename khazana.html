@@ -1,0 +1,5459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khazana - BOOKStore</title>
+<link rel="icon" type="image/png" href="book.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+background:#f5f6fa;
+padding-top:65px;
+}
+/* TOP NAVBAR */
+
+.navbar{
+height:65px;
+background:#111a22;
+color:white;
+display:flex;
+align-items:center;
+padding:0 20px;
+gap:20px;
+
+/* NEW */
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:3000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+.dropdown{
+margin-left:10px;
+background:#1f2a33;
+padding:6px 14px;
+border-radius:6px;
+font-size:14px;
+white-space:nowrap;
+}
+#goalDropdown{
+position:relative;
+cursor:pointer;
+}
+
+.goal-menu{
+position:absolute;
+top:40px;
+left:0;
+background:white;
+color:#333;
+border-radius:8px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+width:200px;
+overflow:hidden;
+ z-index: 4000;
+}
+
+.goal-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.goal-menu div:hover{
+background:#f2f2ff;
+}
+
+#goalDropdown.active .goal-menu{
+display:block;
+}
+
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+}
+
+.user img{
+width:32px;
+height:32px;
+border-radius:50%;
+}
+/* LAYOUT */
+
+.container{
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:230px;
+background:#efefef;
+height:calc(100vh - 65px);
+padding:20px;
+
+/* NEW */
+position:fixed;
+top:65px;
+left:0;
+overflow-y:auto;
+}
+.sidebar h4{
+font-size:12px;
+margin-top:15px;
+margin-bottom:8px;
+color:#777;
+}
+
+.sidebar a{
+display:block;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:4px;
+}
+
+.sidebar a.active{
+background:#dcd6ff;
+color:#5c4cff;
+font-weight:500;
+}
+/* SIDEBAR BUTTONS */
+
+.sidebar a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:11px 12px;
+border-radius:10px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+margin-bottom:6px;
+transition:all 0.25s ease;
+position:relative;
+}
+
+/* ICON */
+
+.sidebar a i{
+font-size:18px;
+color:#6b7280;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.sidebar a:hover{
+background:#f3f4ff;
+color:#5c4cff;
+transform:translateX(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ICON COLOR CHANGE */
+
+.sidebar a:hover i{
+color:#5c4cff;
+}
+
+/* LEFT ACTIVE BAR */
+
+.sidebar a::before{
+content:"";
+position:absolute;
+left:-10px;
+top:50%;
+transform:translateY(-50%);
+width:4px;
+height:0;
+background:#5c4cff;
+border-radius:4px;
+transition:0.25s;
+}
+
+
+/* ACTIVE PAGE */
+
+.sidebar a.active{
+background:#ece9ff;
+color:#5c4cff;
+font-weight:500;
+}
+
+.sidebar a.active i{
+color:#5c4cff;
+}
+
+.sidebar a.active::before{
+height:70%;
+}
+/* MAIN */
+
+.main{
+flex:1;
+padding:5px;
+
+/* NEW */
+margin-left:230px;
+height:calc(100vh - 65px);
+overflow-y:auto;
+}
+
+.main h2{
+margin-bottom:10px;
+}
+
+.small{
+font-size:14px;
+color:#777;
+margin-bottom:20px;
+}
+
+/* FILTERS */
+
+.filters{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filters button{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid #ddd;
+background:white;
+cursor:pointer;
+}
+/* FILTER SELECT */
+
+.filter-select{
+    border:none;
+    background:white;
+    border-radius:999px;
+    padding:12px 16px;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    outline:none;
+    min-width:180px;
+    transition:0.25s;
+}
+
+.filter-select:hover{
+    background:#ede9fe;
+}
+/* COURSE GRID */
+
+.courses{
+display:grid;
+grid-template-columns: repeat(4, 1fr);
+gap:18px;
+}
+
+.card{
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+transition:all .25s ease;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 28px rgba(0,0,0,0.15);
+}
+
+.banner{
+height:240px;
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+background-color:#f9fafc;
+position:relative;
+padding:15px;
+display:flex;
+align-items:flex-end;
+justify-content:flex-start;
+overflow:hidden;
+}
+
+/* book shadow */
+.banner::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(to top, rgba(0,0,0,0.35), transparent 60%);
+opacity:0;
+transition:0.3s;
+}
+
+/* hover effect */
+.card:hover .banner::before{
+opacity:1;
+}
+
+.card:hover .banner{
+transform:scale(1.04);
+transition:0.3s;
+}
+
+.language{
+position:absolute;
+top:10px;
+right:10px;
+background:white;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+}
+
+.card-content{
+padding:16px;
+}
+
+.category{
+font-size:12px;
+color:#ff6a00;
+margin-bottom:6px;
+}
+
+.title{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.date{
+font-size:13px;
+color:#666;
+margin-bottom:10px;
+}
+
+.price{
+font-weight:600;
+}
+
+.discount{
+color:green;
+font-size:13px;
+}
+
+.explore{
+margin-top:10px;
+width:100%;
+padding:9px;
+border-radius:8px;
+border:none;
+font-size:14px;
+font-weight:500;
+color:white;
+background:linear-gradient(135deg,#5c4cff,#7a73ff);
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+transition:all .25s ease;
+}
+
+.explore:hover{
+background:linear-gradient(135deg,#4a3cff,#6a63ff);
+transform:scale(1.03);
+box-shadow:0 6px 16px rgba(0,0,0,0.2);
+}
+
+/* POPUP BACKGROUND */
+
+#goalPopup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none; /* hidden by default */
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+/* POPUP BOX */
+
+.goal-box{
+width:600px;
+background:white;
+border-radius:12px;
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+
+.goal-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.goal-header h2{
+flex:1;
+text-align:center;
+font-weight:500;
+}
+
+/* GRID */
+
+.goal-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+/* CARDS */
+
+.goal-card{
+padding:18px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+background:#fafafa;
+transition:all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+
+.goal-card:hover{
+border:2px solid #6c63ff;
+background:#f4f3ff;
+transform:translateY(-2px);
+}
+/* CLASS FILTER */
+
+.class-filter{
+position:relative;
+}
+
+.class-menu{
+position:absolute;
+top:42px;
+left:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
+display:none;
+min-width:180px;
+overflow:hidden;
+z-index:10;
+}
+
+.class-menu div{
+padding:10px 14px;
+font-size:14px;
+cursor:pointer;
+}
+
+.class-menu div:hover{
+background:#f2f2ff;
+}
+
+.class-filter.active .class-menu{
+display:block;
+}
+/* USER DROPDOWN */
+
+.user{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+}
+
+.user-avatar{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+.dropdown-icon{
+font-size:16px;
+color:#ccc;
+}
+
+.user-menu{
+position:absolute;
+top:45px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+width:180px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index: 4000;
+}
+
+.user-menu a,
+.user-menu button{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+font-size:14px;
+border:none;
+background:none;
+text-decoration:none;
+color:#333;
+cursor:pointer;
+width:100%;
+}
+
+.user-menu a:hover{
+background:#f3f3ff;
+}
+
+#logoutBtn{
+color:red;
+}
+
+#logoutBtn:hover{
+background:#ffecec;
+}
+
+.user.active .user-menu{
+display:flex;
+}
+@media (max-width:1200px){
+.courses{
+grid-template-columns: repeat(4,1fr);
+}
+}
+
+@media (max-width:900px){
+.courses{
+grid-template-columns: repeat(3,1fr);
+}
+}
+
+@media (max-width:600px){
+.courses{
+grid-template-columns: repeat(2,1fr);
+}
+}
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:linear-gradient(135deg,#ff7a18,#ffb347);
+color:white;
+font-size:11px;
+font-weight:500;
+padding:4px 8px;
+border-radius:6px;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 16px 30px rgba(0,0,0,0.15);
+}
+/* VIEWER */
+
+#viewerPane{
+display:none;
+position:relative;
+width:100%;
+height:calc(100vh - 120px);
+background:#f1f3f7;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 8px 24px rgba(0,0,0,0.15);
+}
+
+.viewer-actions button{
+border:none;
+background:white;
+padding:6px 10px;
+border-radius:6px;
+margin-left:6px;
+cursor:pointer;
+}
+
+.viewer-actions button:hover{
+background:#ecefff;
+}
+
+#closeViewer{
+border:none;
+background:white;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+#pdfFrame{
+width:100%;
+height:100%;
+border:none;
+}
+/* PDF VIEWER */
+
+#viewerPane{
+display:none;
+position:fixed;
+top:65px;
+left:230px;
+width:calc(100% - 230px);
+height:calc(100vh - 65px);
+background:#e5e7eb;
+z-index:100;
+}
+
+.viewer-header{
+height:50px;
+display:flex;
+align-items:center;
+padding:0 15px;
+border-bottom:1px solid #ddd;
+background:white;
+}
+
+#closeViewer{
+background:none;
+border:none;
+font-size:16px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+#pdfFrame{
+width:100%;
+height:calc(100% - 50px);
+border:none;
+}
+/* VIEWER FULL */
+
+#viewerPane{
+display:none;
+position:fixed;
+top:65px;
+left:230px;
+width:calc(100% - 230px);
+height:calc(100vh - 65px);
+background:#dfe3ea;
+z-index:200;
+}
+
+/* TOOLBAR */
+
+.viewer-toolbar{
+height:50px;
+background:#e5e7eb;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 15px;
+border-bottom:1px solid #cfd4db;
+}
+
+/* LEFT */
+
+.viewer-left{
+font-size:20px;
+cursor:pointer;
+}
+
+/* CENTER */
+
+.viewer-center{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.viewer-center button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+.page-indicator{
+font-size:14px;
+color:#333;
+}
+
+.zoom-text{
+font-size:14px;
+width:50px;
+text-align:center;
+}
+
+.divider{
+width:1px;
+height:20px;
+background:#cfd4db;
+margin:0 5px;
+}
+
+/* RIGHT */
+
+.viewer-right{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.viewer-right button{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:5px;
+}
+
+/* PDF */
+
+#pdfFrame{
+width:100%;
+height:calc(100% - 50px);
+border:none;
+background:white;
+}
+/* ICON BUTTONS */
+
+.viewer-center button,
+.viewer-right button,
+.viewer-left i{
+position:relative;
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:18px;
+padding:6px;
+border-radius:50%;
+transition:0.2s;
+}
+
+/* PURPLE HOVER BUBBLE */
+
+.viewer-center button:hover,
+.viewer-right button:hover,
+.viewer-left i:hover{
+background:#ede9fe;
+color:#6c4cff;
+}
+
+
+.viewer-center button:hover::after,
+.viewer-right button:hover::after,
+.viewer-left i:hover::after{
+opacity:1;
+}
+#pageSidebar{
+position:absolute;
+left:0;
+top:50px;
+width:120px;
+height:calc(100% - 50px);
+background:white;
+border-right:1px solid #ddd;
+overflow-y:auto;
+display:none;
+}
+
+.pageList{
+padding:10px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.pageThumb{
+background:#f3f4f6;
+border-radius:6px;
+padding:10px;
+text-align:center;
+cursor:pointer;
+font-size:13px;
+border:1px solid transparent;
+}
+
+.pageThumb:hover{
+border:1px solid #6c4cff;
+background:#f4f3ff;
+}
+#pdfFrame{
+margin-left:0;
+transition:0.25s;
+}
+
+#viewerPane.withSidebar #pdfFrame{
+margin-left:120px;
+}
+#pdfContainer{
+position:absolute;
+top:95px;
+left:0;
+width:100%;
+height:calc(100% - 50px);
+overflow:auto;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+background:#dfe3ea;
+}
+
+#pdfFrame{
+width:900px;
+height:1200px;
+border:none;
+background:white;
+transform-origin:top center;
+transition:transform 0.2s ease;
+}
+
+.viewer-toolbar{
+position:absolute;
+top:45px;
+left:0;
+width:100%;
+height:50px;
+background:#e5e7eb;
+z-index:999;
+}
+/* ZOOM INDICATOR */
+
+.zoom-indicator{
+background:white;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:500;
+color:#333;
+border:1px solid #d1d5db;
+min-width:60px;
+text-align:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+transition:0.2s;
+}
+
+/* TOOLBAR LAYOUT IMPROVEMENT */
+
+.viewer-toolbar{
+height:50px;
+background:#eef1f6;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+border-bottom:1px solid #d6d9df;
+}
+
+/* CENTER CONTROLS */
+
+.viewer-center{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* RIGHT SIDE BUTTONS */
+
+.viewer-right{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* BUTTON IMPROVEMENT */
+
+.viewer-center button,
+.viewer-right button{
+width:34px;
+height:34px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:8px;
+font-size:18px;
+transition:0.2s;
+}
+
+.viewer-center button:hover,
+.viewer-right button:hover{
+background:#ede9fe;
+color:#6c4cff;
+transform:scale(1.05);
+}
+/* VIEW BOOK HEADER */
+
+.viewer-topbar{
+height:45px;
+display:flex;
+align-items:center;
+gap:10px;
+padding:0 18px;
+background:#ffffff;
+border-bottom:1px solid #e5e7eb;
+font-size:15px;
+font-weight:500;
+color:#333;
+}
+
+.viewer-topbar button{
+border:none;
+background:transparent;
+display:flex;
+align-items:center;
+gap:6px;
+font-size:15px;
+cursor:pointer;
+color:#333;
+padding:6px 8px;
+border-radius:6px;
+transition:0.2s;
+}
+
+.viewer-topbar button:hover{
+background:#f3f4f6;
+}
+
+.viewer-topbar i{
+font-size:18px;
+}
+/* MOBILE NAVBAR */
+.menu-btn{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* MOBILE STYLES */
+@media (max-width:768px){
+
+  .navbar{
+    padding:0 12px;
+    justify-content:space-between;
+  }
+
+  /* SHOW MENU ICON */
+  .menu-btn{
+    display:block;
+    color:white;
+  }
+
+  /* HIDE LOGO */
+  .logo{
+    display:none;
+  }
+
+  /* HIDE "Hi, User" TEXT */
+  #userName{
+  display:flex;
+  align-items:center;
+  font-size:0;
+  gap:6px;
+}
+
+/* hide only text */
+#userName span:not(.pro-badge){
+  display:none;
+}
+
+  /* KEEP ONLY AVATAR */
+  .user{
+    gap:0;
+  }
+
+  /* OPTIONAL: SMALLER DROPDOWN */
+  .dropdown{
+    padding:5px 10px;
+    font-size:13px;
+  }
+
+  /* SIDEBAR HIDDEN BY DEFAULT */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:0.3s;
+  }
+
+  /* SHOW SIDEBAR WHEN ACTIVE */
+  .sidebar.active{
+    transform:translateX(0);
+  }
+
+  /* REMOVE LEFT MARGIN FROM MAIN */
+  .main{
+    margin-left:0;
+  }
+   .sidebar{
+    position:fixed;
+    top:65px;
+    left:0;
+    width:260px;
+    height:calc(100vh - 65px);
+    background:#ffffff;
+    transform:translateX(-100%);
+    transition:transform 0.35s ease;
+    z-index:1001;
+    box-shadow:4px 0 20px rgba(0,0,0,0.15);
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+  }
+
+  .sidebar.active{
+    transform:translateX(0);
+  }
+.sidebar a:hover{
+  transform:translateX(6px);
+}
+#viewerPane{
+    top:65px;
+    left:0;                 /* remove sidebar offset */
+    width:100%;             /* full width */
+    height:calc(100vh - 65px);
+    z-index:1100;
+  }
+
+  /* OPTIONAL: keep sidebar above viewer */
+  .sidebar{
+    z-index:1200;
+  }
+}
+
+#overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s ease;
+  z-index:1000;
+}
+
+#overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+/* MOVE USER TO RIGHT */
+.user {
+    margin-left: auto; /* Pushes the user profile to the far right */
+}
+
+/* NEW SEARCH BAR STYLING */
+.search-box-container {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 400px; /* Limits width so it doesn't span the whole screen */
+}
+
+.search-box-container input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus {
+    border-color: #5c4cff;
+    box-shadow: 0 0 0 3px rgba(92, 76, 255, 0.1);
+}
+
+.search-box-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+}
+
+/* SEARCH HINT */
+#searchHint {
+    position: absolute;
+    left: 42px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.search-box-container input:focus + #searchHint,
+.search-box-container input:not(:placeholder-shown) + #searchHint {
+    opacity: 0;
+}
+
+.filters{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+/* LEFT GROUP */
+.filters-left{
+    display:flex;
+    gap:10px;
+}
+
+/* RIGHT GROUP */
+.filters-right{
+    display:flex;
+    gap:10px;
+}
+
+/* ICON BUTTON STYLE */
+.icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:18px;
+    transition:0.25s ease;
+}
+
+/* HOVER EFFECT */
+.icon-btn:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+    border-color:#c7c3ff;
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(0,0,0,0.1);
+}
+/* EDIT MODE ICON */
+.card{
+    position:relative; /* IMPORTANT */
+}
+
+.edit-icon{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:32px;
+    height:32px;
+    background:white;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    cursor:pointer;
+    font-size:16px;
+    color:#333;
+    display:none; /* hidden by default */
+    transition:0.2s;
+}
+
+.edit-icon:hover{
+    background:#ede9fe;
+    color:#6c4cff;
+}
+
+/* SHOW ICON WHEN EDIT MODE ACTIVE */
+.edit-mode .edit-icon{
+    display:flex;
+}
+.icon-btn.active {
+    background:#6c4cff;
+    color:white;
+    border-color:#6c4cff;
+    box-shadow:0 6px 16px rgba(108,76,255,0.4);
+    transform:translateY(-2px);
+}
+/* Update Edit Icon to be on the left of Delete */
+.edit-mode .edit-icon {
+    display: flex;
+    right: 50px; /* Shifted left to make room for delete */
+}
+
+/* Delete Icon Styling */
+.delete-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    font-size: 16px;
+    color: #ff4d4d; /* Red color for delete */
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.delete-icon:hover {
+    background: #ffecec;
+    color: #e60000;
+}
+
+/* Show Delete Icon in Edit Mode */
+.edit-mode .delete-icon {
+    display: flex;
+}
+/* 🔥 PROFILE STICKY HEADER */
+.profile-sticky-header{
+position:sticky;
+top:0;
+background:#f5f6fa;
+z-index:50;
+padding:10px 0;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* reuse same title style */
+.page-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+font-weight:500;
+color:#111;
+padding:0 20px;
+}
+
+/* back button */
+.back-btn{
+font-size:20px;
+cursor:pointer;
+opacity:0.7;
+transition:0.2s;
+}
+
+.back-btn:hover{
+opacity:1;
+transform:translateX(-2px);
+}.profile-page{
+max-width:1000px;
+margin:auto;
+padding:20px 25px; /* spacing here instead */
+}
+.pro-badge{
+  background: linear-gradient(45deg,#ffcc00,#ff8800);
+  color:#000;
+  font-size:11px;
+  font-weight:600;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
+/* ✨ KHZANA HERO */
+
+.khazana-hero{
+    position:relative;
+    width:100%;
+    height:290px;
+    overflow:hidden;
+    background:
+    radial-gradient(circle at top, rgba(255,255,255,0.35), transparent 60%),
+    linear-gradient(180deg,#a7e0a4,#bde9b8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* LIGHT RAYS */
+
+.hero-rays{
+    position:absolute;
+    inset:0;
+    background:
+    repeating-conic-gradient(
+        from 0deg,
+        rgba(255,255,255,0.18) 0deg 10deg,
+        transparent 10deg 20deg
+    );
+    opacity:0.55;
+    transform:scale(1.5);
+    animation:rotateRays 40s linear infinite;
+}
+
+@keyframes rotateRays{
+    from{
+        transform:scale(1.5) rotate(0deg);
+    }
+    to{
+        transform:scale(1.5) rotate(360deg);
+    }
+}
+
+/* CONTENT */
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    text-align:center;
+}
+
+/* LAURELS */
+
+/* LEAF */
+
+.laurel{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.laurel img{
+    width:52px;
+    height:auto;
+    opacity:0.9;
+    filter:brightness(1.05);
+    animation:floatLeaf 3s ease-in-out infinite;
+}
+
+.right img{
+    transform:scaleX(-1); /* inverse right leaf */
+}
+
+.right img{
+    animation-delay:1.5s;
+}
+
+@keyframes floatLeaf{
+    0%,100%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-6px);
+    }
+}
+
+/* keep inverse while floating */
+.right img{
+    animation:floatLeafRight 3s ease-in-out infinite;
+}
+
+@keyframes floatLeafRight{
+    0%,100%{
+        transform:scaleX(-1) translateY(0px);
+    }
+    50%{
+        transform:scaleX(-1) translateY(-6px);
+    }
+}
+
+/* TITLE */
+
+.khazana-title{
+    position:relative;
+    display:inline-block;
+    font-size:76px;
+    font-weight:700;
+    font-family:Georgia, serif;
+    letter-spacing:1px;
+    line-height:1;
+    color:#2d2d2d;
+
+    /* shine only on letters */
+    background:linear-gradient(
+        65deg,
+        #2d2d2d 0%,
+        #2d2d2d 38%,
+        #ffffff 48%,
+        #2d2d2d 58%,
+        #2d2d2d 100%
+    );
+
+    background-size:220% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:textShine 4s linear infinite;
+}
+
+/* TEXT SHINE */
+
+@keyframes textShine{
+    0%{
+        background-position:-200% center;
+    }
+    100%{
+        background-position:200% center;
+    }
+}
+
+.right{
+    animation-delay:1.5s;
+}
+
+@keyframes floatLeaf{
+    0%,100%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-6px);
+    }
+}
+
+/* TITLE */
+
+.khazana-title{
+    position:relative;
+    font-size:72px;
+    font-weight:700;
+    letter-spacing:1px;
+    color:#2f2f2f;
+    line-height:1;
+    overflow:hidden;
+}
+
+/* ✨ SHINE EFFECT */
+
+
+@keyframes shineText{
+    0%{
+        left:-120%;
+    }
+    100%{
+        left:150%;
+    }
+}
+
+/* SUBTITLE */
+
+.khazana-subtitle{
+    margin-top:10px;
+    font-size:18px;
+    color:#3d3d3d;
+    font-weight:500;
+}
+
+/* STARS */
+
+.hero-stars span{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    opacity:0.9;
+    animation:twinkle 2s infinite alternate;
+}
+
+.hero-stars span:nth-child(1){
+    top:40px;
+    left:10%;
+}
+
+.hero-stars span:nth-child(2){
+    top:70px;
+    right:18%;
+    animation-delay:0.7s;
+}
+
+.hero-stars span:nth-child(3){
+    top:30px;
+    right:35%;
+    animation-delay:1.4s;
+}
+
+.hero-stars span:nth-child(4){
+    bottom:55px;
+    left:22%;
+    animation-delay:2s;
+}
+
+.hero-stars span:nth-child(5){
+    bottom:40px;
+    right:28%;
+    animation-delay:1s;
+}
+
+@keyframes twinkle{
+    from{
+        opacity:0.3;
+        transform:scale(0.8);
+    }
+    to{
+        opacity:1;
+        transform:scale(1.5);
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .khazana-hero{
+        height:240px;
+        border-radius:0 0 18px 18px;
+    }
+
+    .khazana-title{
+        font-size:52px;
+    }
+
+    .khazana-subtitle{
+        font-size:14px;
+    }
+
+    .laurel{
+        font-size:42px;
+    }
+
+}
+/* 🔥 COURSES SECTION */
+
+.courses-section{
+    padding:26px 22px 40px;
+}
+
+/* TITLE */
+
+.courses-main-title{
+    font-size:24px;
+    font-weight:700;
+    color:#1f2937;
+    margin-bottom:22px;
+}
+
+/* FILTERS */
+
+.course-filters{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:38px;
+}
+
+.filter-pill{
+    border:none;
+    background:white;
+    border-radius:999px;
+    padding:10px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    transition:0.25s;
+}
+
+.filter-pill:hover{
+    background: #ede9fe;
+    border-color: #c7c3ff;
+}
+
+.filter-count{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#f2efff;
+    color:#6c4cff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* SUBJECT ROW */
+
+.subject-row{
+    margin-bottom:42px;
+}
+
+.subject-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.subject-header h3{
+    font-size:20px;
+    font-weight:600;
+    color:#202124;
+}
+
+.subject-header a{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    text-decoration:none;
+    color:#555;
+    font-size:15px;
+    font-weight:500;
+}
+
+/* SCROLL */
+
+.batch-scroll{
+    display:flex;
+    gap:18px;
+    overflow-x:auto;
+    padding-bottom:6px;
+    scrollbar-width:none;
+}
+
+.batch-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+/* CARD */
+
+
+.batch-card{
+    width:250px;
+    min-width:250px;
+    max-width:250px;
+    height:260px; /* fixed card height */
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,0.06);
+    transition:0.3s;
+    cursor:pointer;
+    flex-shrink:0;
+
+    display:flex;
+    flex-direction:column;
+}
+
+.batch-card:hover{
+    box-shadow:0 14px 28px rgba(0,0,0,0.12);
+}
+
+/* IMAGE */
+
+.batch-image{
+    position:relative;
+    width:100%;
+    height:145px; /* fixed image area */
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.batch-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover; /* crop image perfectly */
+    object-position:center;
+    display:block;
+    transition:0.3s ease;
+}
+
+/* BACKGROUNDS */
+
+.physics-bg{
+    background:#bcc7b1;
+}
+
+.chemistry-bg{
+    background:#b7d7e3;
+}
+
+/* TAG */
+
+.batch-tag{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:#ff7e67;
+    color:white;
+    font-size:11px;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:6px;
+    z-index:2;
+}
+
+/* INFO */
+
+.batch-info{
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    overflow:hidden;
+}
+
+.batch-info h4{
+    font-size:16px;
+    font-weight:600;
+    color:#2d2d2d;
+    margin-bottom:3px;
+}
+
+.batch-info p{
+    font-size:14px;
+    color:#6b7280;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .courses-section{
+        padding:22px 14px 35px;
+    }
+
+    .courses-main-title{
+        font-size:22px;
+    }
+
+    .subject-header h3{
+        font-size:18px;
+    }
+
+    .batch-card{
+        min-width:220px;
+    }
+
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .batch-scroll{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+}
+/* 🔥 VIEW ALL PANE */
+
+#viewAllPane{
+    position:fixed;
+
+    /* KEEP INSIDE NAVBAR + SIDEBAR */
+    top:65px;
+    left:230px;
+
+    width:calc(100% - 230px);
+    height:calc(100vh - 65px);
+
+    background:#f5f5f5;
+    z-index:950;
+
+    display:none;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+/* DESKTOP NAVBAR SPACE */
+.viewall-topbar{
+    height:60px;
+    min-height:60px;
+
+    background:white;
+    display:flex;
+    align-items:center;
+
+    padding:0 22px;
+
+    border-bottom:1px solid #e5e7eb;
+
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+#closeViewAll{
+    border:none;
+    background:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:16px;
+    cursor:pointer;
+    color:#1f2937;
+    font-weight:500;
+}
+
+.viewall-content{
+    padding:28px;
+}
+
+
+#viewAllTitle{
+    font-size:34px;
+    font-weight:700;
+    color:#111827;
+}
+
+/* GRID */
+#viewAllGrid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+    margin-top:30px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    #viewAllPane{
+        left:0;
+        width:100%;
+    }
+
+    #viewAllGrid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .viewall-content{
+        padding:18px;
+    }
+
+    #viewAllTitle{
+        font-size:26px;
+    }
+
+}
+
+/* VIEW ALL SHOULD SHOW ALL CARDS */
+#viewAllGrid .batch-card{
+    display:flex !important;
+}
+
+/* DROPDOWN ROTATION */
+#goalDropdown .ph-caret-down,
+.view-all-btn i{
+    transition:transform 0.25s ease;
+}
+
+/* ROTATE GOAL DROPDOWN */
+#goalDropdown.active .ph-caret-down{
+    transform:rotate(180deg);
+}
+
+/* ROTATE VIEW ALL ARROW ON HOVER */
+.view-all-btn:hover i{
+    transform:translateX(3px);
+}
+/* 🔍 HERO SEARCH BAR */
+
+.hero-search{
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    width:calc(100% - 28px);
+    max-width:1000px;
+    height:42px;
+
+    background:#f7f7f7;
+    border:1px solid #e4e4e4;
+    border-radius:10px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 16px;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+
+    z-index:5;
+}
+
+.hero-search i{
+    font-size:20px;
+    color:#9ca3af;
+    margin-right:10px;
+}
+
+.hero-search input{
+    border:none;
+    outline:none;
+    background:transparent;
+
+    width:100%;
+    height:100%;
+
+    font-size:15px;
+    color:#333;
+}
+
+.hero-search input::placeholder{
+    color:#9ca3af;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .hero-search{
+        width:calc(100% - 20px);
+        height:40px;
+        bottom:14px;
+    }
+
+    .hero-search input{
+        font-size:14px;
+    }
+
+}
+/* 🔥 FULL SEARCH PANE */
+
+#searchPane{
+    position:fixed;
+    top:65px;
+    left:230px;
+
+    width:calc(100% - 230px);
+    height:calc(100vh - 65px);
+
+    background:#f5f5f5;
+
+    z-index:2000;
+
+    display:none;
+    flex-direction:column;
+
+    overflow-y:auto;
+}
+
+/* HEADER */
+
+.search-pane-header{
+    position:sticky;
+    top:0;
+
+    background:#f5f5f5;
+
+    padding:16px 26px 12px;
+
+    border-bottom:1px solid #e5e7eb;
+
+    z-index:5;
+}
+
+/* BACK BUTTON */
+
+#closeSearchPane{
+    border:none;
+    background:none;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    font-size:16px;
+    color:#111827;
+
+    cursor:pointer;
+
+    margin-bottom:14px;
+}
+
+#closeSearchPane i{
+    font-size:20px;
+}
+
+/* INPUT */
+
+.search-pane-input{
+    height:44px;
+
+    background:white;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 16px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+
+.search-pane-input i{
+    font-size:20px;
+    color:#6b7280;
+    margin-right:12px;
+}
+
+.search-pane-input input{
+    width:100%;
+    height:100%;
+
+    border:none;
+    outline:none;
+    background:transparent;
+
+    font-size:15px;
+}
+
+/* RECENT BOX */
+
+
+/* ITEM */
+
+.recent-search-item{
+    height:52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    border-bottom:1px solid #ececec;
+
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.recent-search-item:hover{
+    background:#fafafa;
+}
+
+.recent-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-size:16px;
+    color:#202124;
+}
+
+.recent-left i{
+    font-size:18px;
+    color:#6b7280;
+}
+
+.remove-search{
+    border:none;
+    background:none;
+
+    cursor:pointer;
+
+    color:#555;
+
+    font-size:18px;
+
+    width:34px;
+    height:34px;
+
+    border-radius:50%;
+
+    transition:0.2s;
+}
+
+.remove-search:hover{
+    background:#f3f4f6;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    #searchPane{
+        left:0;
+        width:100%;
+    }
+
+    .search-pane-header{
+        padding:14px;
+    }
+
+
+}
+/* 🔍 SEARCH PANE RESULTS */
+.search-results-wrapper{
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.search-results-title{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #111827;
+}
+
+/* 🔍 SEARCH RESULTS GRID (DESKTOP: 4 per row) */
+.search-results-grid{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+/* TABLET */
+@media (max-width: 1100px){
+    .search-results-grid{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* MOBILE */
+@media (max-width: 768px){
+    .search-results-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Use same batch card styles */
+.search-results-grid .batch-card{
+    display: flex !important;
+    width: 100%;
+    min-width: unset;
+    cursor: pointer;
+}
+
+.search-results-grid .batch-image{
+    position:relative;
+    width:100%;
+    height:145px; /* fixed image area */
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.search-results-grid .batch-info h4{
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.search-results-grid .batch-info p{
+    font-size: 13px;
+}
+
+/* Empty state (FULL CENTER) */
+.search-empty{
+    grid-column: 1 / -1;   /* spans full grid width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+    min-height: 200px;
+}
+
+/* Icon */
+.search-empty i{
+    font-size: 42px;
+    margin-bottom: 10px;
+    color: #d1d5db;
+}
+/* 🔒 UNLOCK BAR */
+
+#unlockKhazanaBar{
+  position:fixed;
+  bottom:20px;
+  left:55%;
+  transform:translateX(-50%);
+  width:calc(100% - 30px);
+  max-width:420px;
+  z-index:999999;
+  display:none;
+}
+
+#unlockKhazanaBtn{
+  width:100%;
+  height:58px;
+  border:none;
+  border-radius:25px;
+  background:linear-gradient(135deg,#6c63ff,#8b5cf6);
+  color:white;
+  font-size:17px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(108,99,255,0.35);
+  transition:0.2s;
+}
+
+#unlockKhazanaBtn:active{
+  transform:scale(0.98);
+}
+/* 🔥 KHANAZA BOTTOM SECTION */
+
+
+.khazana-bottom-content{
+    position:relative;
+
+    min-height:220px;
+
+    overflow:hidden;
+
+    padding:40px;
+
+    display:flex;
+    align-items:center;
+ margin-top:-90px;
+}
+
+/* LEFT CONTENT */
+
+.khazana-bottom-left{
+ 
+    max-width:620px;
+    z-index:2;
+}
+
+/* SUBTITLE */
+.khazana-bottom-heading{
+    margin-top:7px;
+
+    font-size:28px;
+    font-weight:800;
+
+    color:#202124;
+}
+.khazana-bottom-text{
+    margin-top:7px;
+
+    font-size:20px;
+    font-weight:400;
+
+    color:#202124;
+}
+
+/* SMALL TEXT */
+
+.khazana-bottom-sub{
+    margin-top:5px;
+
+    display:block;
+
+    font-size:14px;
+    line-height:1.7;
+
+    color:#4b5563;
+
+    max-width:520px;
+}
+
+/* 🎁 CORNER IMAGE */
+
+.khazana-corner-box{
+    position:absolute;
+
+    bottom:5px;
+    right:-5px;
+
+    width:130px;
+
+    object-fit:contain;
+
+    pointer-events:none;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .khazana-bottom-content{
+        padding:28px 22px;
+        min-height:240px;
+    }
+.khazana-bottom-heading{
+        font-size:20px;
+    }
+
+    .khazana-bottom-text{
+        font-size:18px;
+    }
+
+    .khazana-bottom-sub{
+        font-size:12px;
+        max-width:60%;
+    }
+
+    .khazana-corner-box{
+        width:120px;
+        bottom:45px;
+        right:-12px;
+        opacity:0.95;
+         margin-bottom:2px;
+    }
+
+}
+/* 🔥 SUBJECT ROW GRID */
+.batch-scroll{
+    display:grid;
+    justify-content:center;
+
+    /* DESKTOP FIXED PX GRID */
+    grid-template-columns:repeat(4, 260px);
+
+    gap:18px;
+    overflow:hidden;
+    padding-bottom:6px;
+}
+
+/* FIXED CARD SIZE */
+.batch-card{
+    width:500px;
+
+    height:260px;
+
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+
+    box-shadow:0 2px 10px rgba(0,0,0,0.06);
+
+    transition:0.3s;
+    cursor:pointer;
+
+    display:flex;
+    flex-direction:column;
+}
+
+/* MOBILE -> EXACTLY 2 CARDS */
+@media(max-width:768px){
+
+    .batch-scroll{
+        grid-template-columns:repeat(2, 250px);
+        justify-content:center;
+        gap:14px;
+    }
+
+    .batch-card{
+        width:80%;
+
+        height:230px;
+    }
+
+    .batch-image{
+        height:110px;
+    }
+
+    .batch-info{
+        padding:10px;
+    }
+
+    .batch-info h4{
+        font-size:13px;
+        line-height:1.3;
+    }
+
+    .batch-info p{
+        font-size:12px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+<div id="overlay"></div>
+<!-- NAVBAR -->
+
+<div class="navbar">
+<div class="menu-btn" id="menuBtn">
+  <i class="ph ph-list"></i>
+</div>
+<a href="home.html" class="logo">
+  <img src="logo.png">
+</a>
+
+<div class="dropdown" id="goalDropdown">
+
+<span id="goalText">Select Goal</span>
+<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
+
+<div id="goalMenu" class="goal-menu">
+<div data-goal="class9th">9th Class</div>
+<div data-goal="board10th">10th Boards</div>
+<div data-goal="science11">11th Science</div>
+<div data-goal="commerce11">11th Commerce</div>
+<div data-goal="humanities11">11th Humanities</div>
+
+</div>
+
+</div>
+
+
+<div class="user" id="userBox">
+
+<span id="userName">Hi, User</span>
+
+<div class="user-avatar">
+
+<img src="https://static.pw.live/images/boy_20250107145242.png">
+
+<i class="ph ph-caret-down dropdown-icon"></i>
+
+</div>
+
+<div class="user-menu" id="userMenu">
+
+<a href="profile.html">
+<i class="ph ph-user"></i> My Profile
+</a>
+
+<button id="logoutBtn">
+<i class="ph ph-sign-out"></i> Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<a href="study.html" class="active">
+<i class="ph ph-graduation-cap"></i> Study Hub
+</a>
+
+<a href="home.html">
+<i class="ph ph-squares-four"></i> All Classes
+</a>
+<a href="admin.html" id="adminLink" style="display:none;">
+  <i class="ph ph-lock"></i> Admin Panel
+</a>
+
+
+<h4>MORE</h4>
+<a href="xp-mart.html">
+<i class="ph ph-shopping-bag"></i> XP Mart
+</a>
+
+
+
+<a href="josh-game.html">
+<i class="ph ph-lightning"></i> Josh Game
+</a>
+
+<a href="refer.html">
+<i class="ph ph-gift"></i> Refer & Earn
+</a>
+
+<a href="about.html">
+<i class="ph ph-info"></i> About us
+</a>
+
+<a href="privacy.html">
+<i class="ph ph-shield-check"></i> Privacy Policy
+</a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+    <!-- 🔥 STICKY PROFILE HEADER -->
+<div class="profile-sticky-header">
+    <div class="page-title">
+        <i class="ph ph-arrow-left back-btn" onclick="history.back()"></i>
+        <span>Khazana</span>
+    </div>
+</div>
+    
+<!-- ✨ HERO TITLE -->
+<div class="khazana-hero">
+
+  <div class="hero-stars">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="hero-rays"></div>
+
+  <div class="hero-content">
+
+   <div class="laurel left">
+  <img src="https://static.pw.live/react-batches/assets/images/single_leaf.svg">
+</div>
+
+<div>
+  <h1 class="khazana-title">Khazana</h1>
+  <p class="khazana-subtitle">
+    All Platforms. One Destination
+  </p>
+</div>
+
+<div class="laurel right">
+  <img src="https://static.pw.live/react-batches/assets/images/single_leaf.svg">
+</div>
+
+  </div>
+<!-- 🔍 HERO SEARCH BAR -->
+<div class="hero-search">
+    <i class="ph ph-magnifying-glass"></i>
+    <input type="text" placeholder="Search for Courses">
+</div>
+
+</div>
+  <!-- 🔍 SEARCH PANEL -->
+
+<div id="searchPane">
+
+    <!-- TOP BAR -->
+    <div class="search-pane-header">
+
+        <button id="closeSearchPane">
+            <i class="ph ph-arrow-left"></i>
+            Back
+        </button>
+
+        <div class="search-pane-input">
+
+            <i class="ph ph-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="globalSearchInput"
+                placeholder="Search for Courses"
+            >
+
+        </div>
+
+    </div>
+<!-- ADD THIS INSIDE #searchPane, BELOW .search-pane-header -->
+<div class="search-results-wrapper">
+    <h3 class="search-results-title">Related Courses</h3>
+    <div id="searchResults" class="search-results-grid"></div>
+</div>
+</div>
+
+<!-- 🔥 ALL COURSES -->
+<div class="courses-section">
+
+  <h2 class="courses-main-title">All Courses</h2> 
+
+<!-- FILTERS -->
+<div class="course-filters">
+
+  <select id="coachingFilter" class="filter-select">
+    <option value="all">All Coaching</option>
+    <option value="Physics Wallah">Physics Wallah</option>
+    <option value="Next Toppers">Next Toppers</option>
+    <option value="Science and Fun">Science and Fun</option>
+  </select>
+
+  <select id="yearFilter" class="filter-select">
+    <option value="all">All Years</option>
+    <option value="2026">2026</option>
+    <option value="2025">2025</option>
+    <option value="2024">2024</option>
+  </select>
+
+</div>
+<div id="science11">
+  <div class="subject-row"
+     data-coaching="Physics Wallah">
+
+    <div class="subject-header">
+      <h3>Physics Wallah</h3>
+
+      <a href="#" class="view-all-btn">
+  View All
+  <i class="ph ph-caret-right"></i>
+</a>
+    </div>
+
+    <div class="batch-scroll">
+      <!-- UDAYS -->
+       <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/693129e9ca482883d573de14?name=Class+11th+Project+45','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/a8b64d75-7cf2-44bc-b2dc-9fa1e8d635af.jpeg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Class 11th Project 45</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+       <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6774f509dcc961a5430bb4ba?name=UDAY+2026+%28Class+11th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/5ccf3806-0fe3-4f7f-aadb-9f3afe3a06fe.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY (Class 11th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6819787b3380aa01c4251997?name=UDAY+RELOADED+2026+%28Class+11th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/186c3985-132d-4739-9c14-34df48eec225.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY RELOADED (Class 11th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card"data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d8a02173443900186869b2?name=Uday+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/bef435a4-08a5-4894-9969-2df492c3bff8.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+<div class="batch-card"data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/668e374fc4514a00183fec8e?name=Uday+2.0+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/828e50d6-7f6f-4cb7-9e8b-e4e1b3dd61ee.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Uday 2.0</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026"onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67becd2b508fc4755e5c5bde?name=UDAY+2.0+2026+%28Class+11th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/816ffbf8-c70e-49b0-88ff-43b364bc8f06.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY 2.0 (Class 11th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67d7b5d9da15d97e06fb22c6?name=UDAY+ISC+2026+%28Class+11th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/b6064612-4847-438b-9b07-4e5f0fd9ba97.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY ISC (Class 11th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/677baf3ab81632e44485fb90?name=Uday+MP+2026+Class+11th+English+Medium','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/862ed2cf-de6f-4b21-9e1e-c8ffa593483d.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Uday MP Class 11th English Medium</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/69390e37e6bcd2db26655ad5?name=Uday+JAC+Board+%28+English+Medium%29+2026+class+11th+Crash+Course','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/c57d0d71-f6f1-446d-a209-9742cd0a6bdf.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Uday JAC Board ( English Medium) class 11th Crash Course</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026"onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6895e6087fd2c28656484a0d?name=Uday+2.0+MP+English+Medium+%282026%29+Class+11th','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/9d85296a-68fe-4ac5-b428-7634cf890f0b.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Uday 2.0 MP English Medium Class 11th</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67bece5e1336493ed1d9a4bc?name=Uday+Fastrack+2026+%28Class+11th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/5e205107-d40a-4e03-a116-cd1289d51a24.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Uday Fastrack (Class 11th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026"onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67ab246d8462213247d8eae6?name=Uday+%28Bihar+Board+2026%29+Foundation+Batch+%28English%29+Class+11th','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/df5c9291-42b1-45f9-ab66-e6d810139579.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Uday (Bihar Board) Foundation Batch (English) Class 11th</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+<!-- Arjunas 2026-->
+ <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/676e4dee1ec923bc192f38c9?name=Arjuna+JEE+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/61e8fafe-0891-4741-a76d-b3f7dedae5b7.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+       <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/678a08fc872e93ccb58047b0?name=Arjuna+NEET+2.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttHVhcn-WoPLALGDdk1dqQVcUBg4eP0n-fA&s">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET 2.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div> 
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/68e749097bbb12f648f52b20?name=Arjuna+JEE+Plus+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/262dffa1-2810-4f2c-b3fa-91d0537765fe.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE Plus</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+       <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/676e5677418e84037bd6247c?name=Arjuna+NEET+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/faaf5401-7378-41fc-89bf-14e8cad4d25c.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/68e66d8605d777b144ab65f4?name=Arjuna+NEET+Plus+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/c239551e-eb89-4b4c-92c7-6c370b42982e.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET Plus</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/676e530042356584ca23370f?name=Arjuna+JEE+Hindi+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/ed3d71f8-5c56-41f8-b6f0-c11d2fc8a8b8.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE Hindi</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026"onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/685cf3cd8746216a1638b4d4?name=Arjuna+JEE+Hindi+2.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/23ef528e-3f79-45bc-a2b9-b55bb3b20167.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE Hindi 2.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/678a0324dab28c8848cc026f?name=Arjuna+JEE+2.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/296e9fef-24fc-4160-9184-cbfb59236409.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE 2.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/678a08fdf69b15eb632dc940?name=Arjuna+NEET+4.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/7ac717a0-f54e-41f3-b1ab-1e7dc1805edf.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET 4.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/678a29372d11efb05956e1f8?name=Arjuna+NEET+3.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/04f61f7c-304e-4fad-bd12-7c0d447f4675.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET 3.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026"onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67738e4d908633cbf52a07ce?name=Arjuna+NEET+Hindi+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/29c6f28b-6245-4ae5-b4e2-3a0a80043096.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET Hindi</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/677956b4471eac719efef274?name=Arjuna+MHTCET+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/97600da0-d40c-41fc-8a83-08dd13e5e277.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna MHTCET</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67e4034dffd269e6d477ddd8?name=ARJUNA+JEE+WEEKEND+EXPRESS+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/089e60e7-5fb4-4ffd-961a-f46dd2be4298.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>ARJUNA JEE WEEKEND EXPRESS</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026"onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/678a0325c1d3c4e8d532b474?name=Arjuna+JEE+4.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/6adbd109-e7b2-4d02-b0eb-fbfcdc4609e7.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE 4.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/678a1c6c984a0ff1ae00a142?name=Arjuna+JEE+3.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/84a04cc8-d147-408b-b5a0-5c1840b11212.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE 3.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+            <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6779471a84b8b491ed32c9c7?name=Arjuna+NEET+Gujarati+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/d2a81994-f086-40cf-a304-3ff49c1352d4.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET Gujarati</h4>
+          <p>2026</p>
+        </div>
+
+      </div>     
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67e4034e1d90a238e0186a0a?name=ARJUNA+NEET+WEEKEND+EXPRESS+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/aac2764b-f4ea-4040-98c9-cec8990f2ec7.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>ARJUNA NEET WEEKEND EXPRESS</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6867584ab67f40123735adc0?name=Arjuna+NEET+Hindi+2.0+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/3921c6b7-e4a2-413a-b1c1-4eb5223311bd.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET Hindi 2.0</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+<!-- Arjunas 2025-->
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d74cc98f6b150018b76ecf?name=Arjuna+NEET+Hindi+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/4fb2391d-ff67-46ab-8216-21596202c961.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET Hindi</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65dc4c1981825400181e4756?name=Arjuna+NEET+Gujarati+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/2dd1dc5d-a499-49bb-b33b-34194eefb622.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET Gujarati</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card"data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d86238cdb6ea00181bdcfe?name=Arjuna+JEE+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/30591125-b4b2-4ee0-af2d-0edc88cc2d89.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65dedbbd16156900189fdeec?name=Arjuna+JEE+3.0+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/99b87f84-c27c-4daa-a05d-c9feb556e2a5.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE 3.0</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65e03acc9461ec0018efa836?name=Arjuna+NEET+3.0+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/92d103e1-4cd7-436a-82ae-25c6eee55881.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET 3.0</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d8661b84c9330018751269?name=Arjuna+JEE+Hindi+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/705fe80d-fa24-4611-b752-823d0dba7828.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna JEE Hindi </h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+            <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d749530531c20018ad953b?name=Arjuna+NEET+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/2d5028d2-e44b-4444-9bb6-52fbd882f40c.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET</h4>
+          <p>2025</p>
+        </div>
+
+      </div>     
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65ddb1c5c8969e0018c0b5e8?name=Arjuna+NEET+2.0+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/707c06a3-d320-4140-bb79-05ed4835f692.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET 2.0</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65dedc191d0ac50018d61726?name=Arjuna+NEET+4.0+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/4d42f8ca-0d76-4abf-adce-13d4813a6a13.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET 4.0</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+
+<!-- Arjunas 2024 -->
+      <div class="batch-card" data-year="2024" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/63fc55ec692ade0018aa3f97?name=Arjuna+NEET+2.0+2024','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/a1dab2b6-4686-4cb7-81d6-420d4776fd67.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Arjuna NEET 2.0</h4>
+          <p>2024</p>
+        </div>
+
+      </div>
+            
+    </div>
+  </div>
+
+  <div class="subject-row"
+     data-coaching="Next Toppers">
+
+    <div class="subject-header">
+      <h3>Next Toppers</h3>
+
+      <a href="#" class="view-all-btn">
+        View All
+        <i class="ph ph-caret-right"></i>
+      </a>
+    </div>
+
+    <div class="batch-scroll">
+      <!-- CARD -->
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Science-11th-(PCMB)--55-p178?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/540/admin_v1/bundle_management/course/183130728609_Prarambh_BATCh_Science_Class_11.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Science 11th (PCMB)</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Science-11th-(PCMB)---NIRBHAY--85-p178?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/540/admin_v1/bundle_management/course/443372940688_Nirbhay_Class_11th_Science.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Science 11th (PCMB) - NIRBHAY</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+<div id="commerce11">
+        <div class="subject-row"
+     data-coaching="Physics Wallah">
+
+    <div class="subject-header">
+      <h3>Physics Wallah</h3>
+
+      <a href="#" class="view-all-btn">
+  View All
+  <i class="ph ph-caret-right"></i>
+</a>
+    </div>
+
+    <div class="batch-scroll">
+      <!-- CARD -->
+      <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67a30b5993d3824e289b363e?name=UDAY+2.0+2026+Class+11th+Commerce+%28Aarambh%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/75aacffa-fb47-4e13-9586-4732b51dc25b.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY 2.0 Class 11th Commerce (Aarambh)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67a448a0f48f21fc1e25caff?name=UDAY+PRO+2026+Class+11th+Commerce+%28Aarambh%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/7357588c-28cb-4150-8314-8f290c2208d4.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY PRO Class 11th Commerce (Aarambh)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+<div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67a3095a0ca0d94d9c023bc9?name=UDAY+2026+Class+11th+Commerce+%28Aarambh%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/de01838d-e78c-44db-a8ba-eb198e20d3ce.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY Class 11th Commerce (Aarambh)</h4>
+          <p>2026</p>
+        </div>
+        </div>  
+        <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67a313efc26a85d0163447dc?name=Project+45+Class+11+Commerce+Crash+course','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/0ed60d5b-2ffd-4c19-8219-2ef8ee94ce42.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Project 45 Class 11 Commerce Crash course</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+<div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65cde552c374f300184d4067?name=Aarambh+2025+Class+11+Commerce','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/20d1235b-7328-4ca8-bea1-26c059f682c8.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Aarambh Class 11 Commerce</h4>
+          <p>2025</p>
+        </div>
+      
+      
+      </div>
+    <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/68c2bf2dfa9a7c6385d16573?name=Mission+UDAY+2026+Class+11th+Commerce','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/2273ed8c-5e18-49fa-9e28-bf7e6093dd7d.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Mission UDAY Class 11th Commerce</h4>
+          <p>2026</p>
+        </div>
+        </div>
+        <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67a3116376be70372c9967de?name=UDAY+3.0+2026+Class+11th+Commerce+%28Aarambh%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/f020902c-99f4-48e8-a4b0-33bd9784ef3b.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY 3.0 Class 11th Commerce (Aarambh)</h4>
+          <p>2026</p>
+        </div>
+        </div>
+        <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/66f24babb5398dea198d0131?name=11th+Commerce+Exam+Booster+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/a341fd65-39d4-4731-b780-761ed264d351.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>11th Commerce Exam Booster</h4>
+          <p>2025</p>
+        </div>
+      
+      
+      </div>
+    <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65de1d97ee7b4700188a292b?name=Aarambh+3.0+2025+Class+11+Commerce','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/ed9c5083-d67c-47dd-b636-88786a6c68ec.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Aarambh 3.0 Class 11 Commerce</h4>
+          <p>2025</p>
+        </div>
+        </div>
+        <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65de1d97bea8770018cca49f?name=Aarambh+2.0+2025+Class+11+Commerce','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/9e7e83da-9f63-4c8e-aaf5-5fc97bab698c.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Aarambh 2.0 Class 11 Commerce</h4>
+          <p>2025</p>
+        </div>
+        </div>
+    </div>
+  </div>
+      <div class="subject-row"
+     data-coaching="Next Toppers">
+
+    <div class="subject-header">
+      <h3>Next Toppers</h3>
+
+      <a href="#" class="view-all-btn">
+  View All
+  <i class="ph ph-caret-right"></i>
+</a>
+    </div>
+
+    <div class="batch-scroll">
+      <!-- CARD -->
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Commerce11th-NIRBHAY-89?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/782676440693_Nirbhay%20Class%2011th%20Commerce.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Commerce 11th - NIRBHAY</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Commerce-11th-56?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/737975028610_Prarambh%20BATCh%20Commerce%2011.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Prarambh Commerce 11th</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  </div>
+  <div id="humanities11">
+      <div class="subject-row"
+     data-coaching="Physics Wallah">
+
+    <div class="subject-header">
+      <h3>Physics Wallah</h3>
+
+      <a href="#" class="view-all-btn">
+  View All
+  <i class="ph ph-caret-right"></i>
+</a>
+    </div>
+
+    <div class="batch-scroll">
+      <!-- CARD -->
+      <div class="batch-card"data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/681b52bf40b88584ef5556e9?name=Uday+Humanities+Reloaded+2026+%28Class+11th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/21666ae6-0959-4829-9e37-0ea933ce56f0.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Uday Humanities Reloaded (Class 11th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6773ed69073fb66bd4a9081c?name=UDAY+HUMANITIES+2026+%28Class+11th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/a479203b-99db-4289-b860-6a61873ee00b.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAY HUMANITIES (Class 11th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+          <div class="subject-row"
+     data-coaching="Next Toppers">
+
+    <div class="subject-header">
+      <h3>Next Toppers</h3>
+
+      <a href="#" class="view-all-btn">
+  View All
+  <i class="ph ph-caret-right"></i>
+</a>
+    </div>
+
+    <div class="batch-scroll">
+      <!-- CARD -->
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Humanities-11th-NIRBHAY-87?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/552700840691_Nirbhay%20Class%2011th%20Humanities.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Humanities 11th - NIRBHAY</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Humanities-11th-53?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/bundle_management/course/216113028517_Prarambh%20BATCh%20Humanities%2011.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Prarambh Humanities 11th</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  </div>
+  <div id="board10th">
+    <div class="subject-row"
+     data-coaching="Physics Wallah">
+
+    <div class="subject-header">
+      <h3>Physics Wallah</h3>
+
+      <a href="#" class="view-all-btn">
+        View All
+        <i class="ph ph-caret-right"></i>
+      </a>
+    </div>
+
+    <div class="batch-scroll">
+            <!-- CARD -->
+             <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67be1ea9e92878bc16923fe8?name=Class+10th+PROJECT+45','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/6c78be07-8d41-411d-b684-6cb7a293d02c.jpeg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Class 10th PROJECT 45</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65df241600f257001881fbbd?name=Udaan+2026+%28Class+10th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/f8e76262-6dcc-4a8e-be3e-1a12aa3c8d78.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan (Class 10th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d898a774dfb200182ce11b?name=Udaan+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/4f450cee-88eb-4955-8674-64b5836c86e2.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2024" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/63fc81b613f7a600180bf85a?name=Udaan+2024','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://i.ytimg.com/vi/TaE58YDkLP4/sddefault.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan</h4>
+          <p>2024</p>
+        </div>
+
+      </div>
+ <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6774ebb28f71582817e2ad1e?name=VICTORY+2026+%28Class+10th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/ab84b403-8fab-4cb6-b910-d588ddbb8a54.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>VICTORY (Class 10th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67be1ea98627cf3431ce4132?name=UDAAN+RELOADED+2026+%28Class+10th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/c12ce918-26c7-4996-9ed7-680e8ce646dc.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAAN RELOADED (Class 10th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/677b9f1967ac17b383bf24f1?name=Udaan+MP+2026+Class+10th+English+Medium','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/ae5976d2-d30a-4130-9938-c0287c5d2a9a.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan MP Class 10th English Medium</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67fc9f296743740c0bee0208?name=Udaan+GOAT+2026','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/7972e7a8-3b06-4176-9bf2-2e85eecb4dc8.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan GOAT</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67be1ea97412bb8d35024b72?name=UDAAN+3.0+2026+%28Class+10th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/86da62f5-0a94-49db-843f-0cf9e5a86a85.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAAN 3.0 (Class 10th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/68df734c7363e718cad6cd55?name=Udaan+Champions+2026+%28Class+10th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/6511b593-aa05-43fa-80cc-a03097dbd118.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan Champions (Class 10th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67be1ea9508fc4755e582d8e?name=UDAAN+2.0+2026+%28Class+10th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/68543fe7-966a-426a-ab47-7eb57e424bf7.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAAN 2.0 (Class 10th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6774f1aa440cb58775292c6e?name=Udaan+Hindi+2026+%28Class+10th%29','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/86370b4f-bdab-4bbd-b605-4a23e2ff870c.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan Hindi 2026 (Class 10th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d898a83ca80c00188b7f4c?name=Udaan+UP+Board+2025+-+For+Hindi+Medium','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/fb2b7442-706a-4dc4-89e8-4680fab4eab8.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan UP Board - For Hindi Medium</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/66c5797d749a1b0018487450?name=UDAAN+RELOADED+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/993d39fa-4e67-49dc-b3d6-5b226a03bd50.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UDAAN RELOADED</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65ddb1c70ccebd001804feb5?name=Udaan+2.0+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/77b65788-56a2-4891-86e0-51db390434be.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan 2.0</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67567f5319ffbab172a414be?name=Udaan+Achievers+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/99a7ef56-fc9f-43b2-b5bc-8b2adf7bf82c.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan Achievers</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/66582e93d21a22001835940e?name=Udaan+Hindi+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/47bba877-c631-4d98-8bc0-8503fa153107.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan Hindi </h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d898a774dfb200182ce11b?name=Udaan+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/4f450cee-88eb-4955-8674-64b5836c86e2.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan </h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65df1046479ea30018d33041?name=Udaan+3.0+2025','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/66318614-151e-42d0-b7c5-748582f18c03.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Udaan 3.0</h4>
+          <p>2025</p>
+        </div>
+
+      
+      
+      
+      </div>
+
+</div>
+  </div>
+  <div class="subject-row"
+     data-coaching="Next Toppers">
+
+    <div class="subject-header">
+      <h3>Next Toppers</h3>
+
+      <a href="#" class="view-all-btn">
+        View All
+        <i class="ph ph-caret-right"></i>
+      </a>
+    </div>
+
+    <div class="batch-scroll chemistry-row">
+<div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Abhay-10th-Batch-2026-78?from=BOOKStore','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/540/admin_v1/bundle_management/course/626308539904_abhay_10th_banner_app_2026.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Abhay 10th Batch</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025-26" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/AARAMBH-10th-BATCH-25-26-62?from=BOOKStore','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/540/admin_v1/bundle_management/course/285939929246_10th_aarambh_2.0_banner_app.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>AARAMBH 2.O 10th BATCH</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+      
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/UP-Board-ABHAY-10th-83?from=BOOKStore','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/540/admin_v1/bundle_management/course/641788840605_Abhay_UP_Board_(1).png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>UP Board ABHAY 10th (हिंदी माध्यम)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Bihar-Board-ABHAY-10th-84?from=BOOKStore','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/540/admin_v1/bundle_management/course/777873140606_Abhay_Bihar_Board_(1).png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Bihar Board ABHAY 10th(हिंदी माध्यम)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+    <div class="subject-row"
+     data-coaching="Science and Fun">
+
+    <div class="subject-header">
+      <h3>Science and Fun</h3>
+
+      <a href="#" class="view-all-btn">
+        View All
+        <i class="ph ph-caret-right"></i>
+      </a>
+    </div>
+
+    <div class="batch-scroll chemistry-row">
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://deltastudy.site/scienceandfun/126?title=Class%2010th%20(Board%20Foundation%20Batch)%20Live%202025-26','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://appx-content-v2.classx.co.in/paid_course3/2025-02-26-0.5955475734869313.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Class 10th (Board Foundation Batch)</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+<div class="batch-card" data-year="2026" onclick="window.open('https://deltastudy.site/scienceandfun/128?title=Class%2010th%20(Board%20Foundation%202.0%20Batch)%20Live%202025-26','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://appx-content-v2.classx.co.in/paid_course3/2025-06-28-0_901952210217486.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Class 10th (Board Foundation 2.0 Batch)</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://deltastudy.site/scienceandfun/129?title=Class%2010th%20(Board%20Foundation%20CRASH%20COURSE%20Batch)%20Live%202025-26','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://appx-content-v2.classx.co.in/paid_course3/2025-10-25-0_991683478134986.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Class 10th (Board Foundation CRASH COURSE Batch)</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+            <div class="batch-card" data-year="2025" onclick="window.open('https://deltastudy.site/scienceandfun/190?title=Class%2010th%20Recorded%20batch%202024-25','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://appx-content-v2.classx.co.in/paid_course3/2025-03-12-0.49640459442151674.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Class 10th Recorded batch</h4>
+          <p>2024-25</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  </div>
+<div id="class9th">
+  <div class="subject-row"
+     data-coaching="Physics Wallah">
+
+    <div class="subject-header">
+      <h3>Physics Wallah</h3>
+
+      <a href="#" class="view-all-btn">
+        View All
+        <i class="ph ph-caret-right"></i>
+      </a>
+    </div>
+
+    <div class="batch-scroll chemistry-row">
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6774ebb37aa1a60276d43e7c?name=NEEV+2026+%28Class+9th%29','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/0d87949f-d1f8-4483-bcf2-80730b8f5369.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>NEEV (Class 9th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67beb9fc0f67cce58f3de164?name=Class+9th+PROJECT+45','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/b9fb65f8-35c7-4bb8-815e-a5eb933c6079.PNG">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Class 9th PROJECT 45</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67beb6e665bd7b47d657bcbf?name=NEEV+2.0+2026+%28Class+9th%29','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/fc98542b-5f3b-4709-a0c8-993fb935c4f0.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>NEEV 2.0 (Class 9th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67beb8576841f06753826bed?name=NEEV+3.0+2026+%28Class+9th%29','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/72c1801e-8e93-4650-b65d-05d8fc4b30b4.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>NEEV 3.0 (Class 9th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+
+
+<div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/6790d4f1300c5325fcefe009?name=Neev+2026+%28UP+Board+9th%29','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/8e4504e4-8bf6-464b-bb1c-f94066cfc727.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Neev (UP Board 9th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+<div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67af33a17d72e82b7df6332f?name=NEEV+%28%E0%A4%A8%E0%A5%80%E0%A4%B5%29+%28Bihar+Board+2026%29+Foundation+Batch+%28%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80+%E0%A4%AE%E0%A4%BE%E0%A4%A7%E0%A5%8D%E0%A4%AF%E0%A4%AE+%29+For+Class+9th','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/daf1606b-bd5d-45e7-aecb-996ae511e7b6.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>NEEV (नीव) (Bihar Board) Foundation Batch (हिन्दी माध्यम ) For Class 9th</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+<div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67fc9f2953d560becbad4ba7?name=Neev+GOAT+2026','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/4ed98700-66f8-4b77-b397-f28ecd8c2c93.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Neev GOAT</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2026" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67beb6e665bd7b47d657bcbf?name=NEEV+2.0+2026+%28Class+9th%29','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/fc98542b-5f3b-4709-a0c8-993fb935c4f0.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>NEEV 2.0 (Class 9th)</h4>
+          <p>2026</p>
+        </div>
+
+      </div>
+
+
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/669638b5eb4e570018b311c3?name=Neev+3.0+2025','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/27dddc9b-dfa1-49a1-8e12-8f7effd747e8.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Neev 3.0</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+<div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65ddb1c7d60e270018791232?name=Neev+2.0+2025','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/28645fe6-ecf7-44cc-9d17-9b8d84bf8e4e.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Neev 2.0 </h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+<div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/67164ddecf3b1d358876da96?name=Neev+Fastrack+2025','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/0342c7f7-18ef-4655-825b-902ceab3715d.jpg">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Neev Fastrack</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/65d898a7b8b10a00187a4f9c?name=Neev+2025','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/da10c576-2930-485d-89a0-560346b14110.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Neev</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+      <div class="batch-card" data-year="2025" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/66c5797d1c35e5001863918d?name=NEEV+RELOADED+2025','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/b18909ba-c195-49b2-9e9a-a44fe59ce55b.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>NEEV RELOADED</h4>
+          <p>2025</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2023" onclick="window.open('https://physx-wallah.pages.dev/study-v2/batches/621c66129f0d7f0018edc9c9?name=Neev+2023','_blank')">
+
+        <div class="batch-image chemistry-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/92fad7d9-b6b7-4128-b28d-41dbcf09093f.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Neev</h4>
+          <p>2023</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+    <div class="subject-row"
+     data-coaching="Next Toppers">
+
+    <div class="subject-header">
+      <h3>Next Toppers</h3>
+
+      <a href="#" class="view-all-btn">
+  View All
+  <i class="ph ph-caret-right"></i>
+</a>
+    </div>
+
+    <div class="batch-scroll">
+      <!-- CARD -->
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/AARAMBH-Recorded-9th-BATCH-25-26-64-p178?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/1770981347/admin_v2/uploads/courses/thumbnail/4604089_125_APP%20AARAMBH%20REC%20OLD%20NCERT.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>AARAMBH Recorded 9th BATCH</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+      <div class="batch-card" data-year="2026" onclick="window.open('https://eduvibe-nt.pages.dev/private/course/Abhay-9th-Batch-2026-81-p178?from=BOOKStore','_blank')">
+
+        <div class="batch-image physics-bg">
+
+          <span class="batch-tag">Complete</span>
+
+          <img src="https://dylnd2lqy6eys.cloudfront.net/540/admin_v1/bundle_management/course/151836440589_abhay_9th_banner_app_2026.png">
+
+        </div>
+
+        <div class="batch-info">
+          <h4>Abhay 9th Batch</h4>
+          <p>2025-26</p>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  </div>
+</div>
+<!-- 🔥 KHANAZA BOTTOM BANNER -->
+<div class="khazana-bottom-banner">
+
+    <div class="khazana-bottom-content">
+
+        <div class="khazana-bottom-left">
+
+            <h2 class="khazana-bottom-heading">
+                Khazana
+            </h2>
+
+            <p class="khazana-bottom-text">
+                Unlock Past Batches, Learn Freely
+            </p>
+
+            <span class="khazana-bottom-sub">
+                Learn from top faculty, access past lectures & content,
+                and master every topic at your own pace.
+            </span>
+
+        </div>
+
+        <!-- 🎁 TOP RIGHT BOX IMAGE -->
+        <img src="https://static.pw.live/react-batches/assets/images/khazana_footer.svg" class="khazana-corner-box">
+
+    </div>
+
+</div>
+<!-- 🔥 VIEW ALL PANE -->
+<div id="viewAllPane">
+
+  <div class="viewall-topbar">
+
+    <button id="closeViewAll">
+      <i class="ph ph-arrow-left"></i>
+      Back
+    </button>
+
+  </div>
+
+  <div class="viewall-content">
+
+    <h2 id="viewAllTitle"></h2>
+
+    <div class="course-filters" style="margin-top:20px;">
+
+  <select id="viewAllYearFilter" class="filter-select">
+    <option value="all">All Years</option>
+    <option value="2026">2026</option>
+    <option value="2025">2025</option>
+    <option value="2024">2024</option>
+  </select>
+
+</div>
+
+    <div id="viewAllGrid"></div>
+
+  </div>
+
+</div>
+
+<!-- GOAL SELECTION POPUP -->
+
+<div id="goalPopup">
+
+<div class="goal-box">
+
+<div class="goal-header">
+<h2>Select your Goal</h2>
+</div>
+
+<div class="goal-grid">
+<div class="goal-card" data-goal="class9th">
+9th Class
+</div>
+<div class="goal-card" data-goal="board10th">
+10th Boards
+</div>
+
+<div class="goal-card" data-goal="science11">
+11th Science
+</div>
+
+<div class="goal-card" data-goal="commerce11">
+11th Commerce
+</div>
+
+<div class="goal-card" data-goal="humanities11">
+11th Humanities
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- LOGOUT CONFIRM POPUP -->
+<div id="logoutPopup" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+">
+
+  <div style="
+    width:400px;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  ">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-weight:500;">Confirm Logout</h3>
+      <span id="closeLogoutPopup" style="cursor:pointer; font-size:18px;">✕</span>
+    </div>
+
+    <p style="margin-top:10px; color:#555;">
+      Are you sure you want to log out? You'll need to log in again to access your account.
+    </p>
+
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      
+      <button id="cancelLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:1px solid #6c63ff;
+        background:white;
+        color:#6c63ff;
+        cursor:pointer;
+      ">
+        Cancel
+      </button>
+
+      <button id="confirmLogout" style="
+        padding:8px 16px;
+        border-radius:6px;
+        border:none;
+        background:#6c63ff;
+        color:white;
+        cursor:pointer;
+      ">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- FIREBASE LOGIN PROTECTION -->
+
+<script type="module">
+
+/* 🔥 IMPORTS */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  getDatabase, 
+  ref, 
+  get, 
+  set 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+/* 🔥 CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+  authDomain: "bookstore-6ab08.firebaseapp.com",
+  projectId: "bookstore-6ab08",
+  databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com/"
+};
+
+/* 🔥 INIT */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+/* 🔥 ELEMENTS */
+const userName = document.getElementById("userName");
+const adminLink = document.getElementById("adminLink");
+const goalText = document.getElementById("goalText");
+const popup = document.getElementById("goalPopup");
+
+/* 🔥 GOAL MAP */
+const goalMap = {
+  class9th:"9th Class",
+  board10th:"10th Boards",
+  science11:"11th Science",
+  commerce11:"11th Commerce",
+  humanities11:"11th Humanities"
+};
+/* 🔥 SHOW ONLY GOAL SECTIONS */
+function updateGoalSections(goal){
+
+  // all sections
+  const sections = [
+    "science11",
+    "commerce11",
+    "humanities11",
+    "board10th",
+    "class9th"
+  ];
+
+  // hide everything first
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el){
+      el.style.display = "none";
+    }
+  });
+
+  // show only selected goal section
+  if(goal && document.getElementById(goal)){
+    document.getElementById(goal).style.display = "block";
+  }
+
+}
+/* 🔥 HIDE PAGE UNTIL AUTH */
+document.body.style.display = "none";
+
+/* 🔥 AUTH CHECK */
+onAuthStateChanged(auth, async (user) => {
+
+  if(!user){
+    window.location.href = "index.html";
+    return;
+  }
+
+  document.body.style.display = "block";
+
+  const uid = user.uid;
+
+  /* 🔒 ADMIN */
+  const adminUIDs = [
+  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+];
+if (adminUIDs.includes(uid)) {
+    adminLink.style.display = "flex";
+  }
+
+  /* 🔥 USER DATA */
+  const userRef = ref(db, "users/" + uid);
+  const snap = await get(userRef);
+
+  if(snap.exists()){
+    const data = snap.val();
+/* 🔒 SUBSCRIPTION LOCK */
+
+const unlockBar =
+  document.getElementById("unlockKhazanaBar");
+
+const unlockBtn =
+  document.getElementById("unlockKhazanaBtn");
+
+const isSubscribed =
+  data.subscribed === true;
+
+/* SHOW BUTTON ONLY FOR UNSUBSCRIBED USERS */
+
+if(!isSubscribed){
+
+  unlockBar.style.display = "block";
+
+  /* 🚫 BLOCK ALL CARD CLICKS */
+
+  document.querySelectorAll(".batch-card").forEach(card => {
+
+    card.addEventListener("click", (e) => {
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      window.location.href = "xp-mart.html";
+
+    }, true);
+
+  });
+
+}else{
+
+  unlockBar.style.display = "none";
+
+}
+
+/* 🔓 BUTTON CLICK */
+
+unlockBtn.onclick = () => {
+  window.location.href = "xp-mart.html";
+};
+    /* 🚫 BLOCK CHECK */
+    if(data.block === true){
+      document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#f5f6fa;
+      font-family:Poppins;
+    ">
+      <div style="
+        text-align:center;
+        max-width:500px;
+        margin-top:-80px;
+      ">
+        
+        <h1 style="
+          color:#e74c3c;
+          font-size:32px;
+        ">
+          🚫 Access Blocked
+        </h1>
+        
+        <p style="
+          font-size:18px;
+          color:#444;
+          margin-top:10px;
+        ">
+          You are blocked by Admin from BOOKStore.
+        </p>
+        
+        <p style="
+          font-size:16px;
+          color:#777;
+          margin-top:8px;
+        ">
+          Contact support if you think this is a mistake.
+        </p>
+
+        <button onclick="window.open('https://www.instagram.com/bookstoreofficial_0/','_blank')" style="
+          margin-top:25px;
+          padding:12px 28px;
+          font-size:16px;
+          border:none;
+          background:#111a22;
+          color:white;
+          border-radius:8px;
+          cursor:pointer;
+        ">
+          Contact
+        </button>
+
+      </div>
+    </div>
+  `;
+      return;
+    }
+
+    if(data.displayName){
+
+  if(data.subscribed === true){
+    userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${data.displayName} `;
+  } else {
+    userName.innerText = "Hi, " + data.displayName;
+  }
+
+} 
+  }
+
+  /* 🔥 GOAL */
+  const goalRef = ref(db, "users/" + uid + "/goals");
+  const goalSnap = await get(goalRef);
+
+  if(goalSnap.exists()){
+
+  const savedGoal = goalSnap.val();
+
+  goalText.innerText = goalMap[savedGoal];
+
+  // make search and UI respect the saved goal
+  try{
+    currentGoal = savedGoal;
+  }catch(e){
+    // currentGoal may be declared later; ignore if not yet defined
+  }
+
+  updateGoalSections(savedGoal);
+
+  popup.style.display = "none";
+
+} else {
+
+  popup.style.display = "flex";
+
+  // hide all until selected
+  updateGoalSections("");
+
+}
+
+});
+
+/* 🔥 SAVE GOAL */
+document.querySelectorAll(".goal-card").forEach(card => {
+  card.onclick = () => {
+  const goal = card.dataset.goal;
+  const user = auth.currentUser;
+
+  currentGoal = goal; // ✅ ADD THIS
+
+  set(ref(db, "users/" + user.uid + "/goals"), goal);
+
+  goalText.innerText = goalMap[goal];
+
+  updateGoalSections(goal);
+
+  popup.style.display = "none";
+};
+});
+
+/* 🔽 DROPDOWN */
+const dropdown = document.getElementById("goalDropdown");
+dropdown.onclick = () => {
+  dropdown.classList.toggle("active");
+};
+
+/* 🔄 CHANGE GOAL */
+document.querySelectorAll(".goal-menu div").forEach(item => {
+  item.onclick = (e) => {
+    e.stopPropagation();
+    const goal = item.dataset.goal;
+    const user = auth.currentUser;
+
+    set(ref(db, "users/" + user.uid + "/goals"), goal);
+
+goalText.innerText = goalMap[goal];
+
+// update currentGoal so search pane filters correctly
+try{
+  currentGoal = goal;
+}catch(e){
+  // if currentGoal not declared yet, ignore
+}
+
+updateGoalSections(goal);
+
+dropdown.classList.remove("active");
+  };
+});
+
+/* 👤 USER MENU */
+const userBox = document.getElementById("userBox");
+
+userBox.onclick = (e) => {
+  e.stopPropagation();
+  userBox.classList.toggle("active");
+};
+
+document.addEventListener("click", () => {
+  userBox.classList.remove("active");
+});
+
+/* 🚪 LOGOUT */
+const logoutBtn = document.getElementById("logoutBtn");
+
+const logoutPopup = document.getElementById("logoutPopup");
+const closeLogoutPopup = document.getElementById("closeLogoutPopup");
+const cancelLogout = document.getElementById("cancelLogout");
+const confirmLogout = document.getElementById("confirmLogout");
+
+/* 🚪 OPEN POPUP */
+logoutBtn.onclick = (e) => {
+  e.stopPropagation(); // prevent menu close issue
+  logoutPopup.style.display = "flex";
+  userBox.classList.remove("active"); // close dropdown
+};
+
+/* ❌ CLOSE POPUP (X button) */
+closeLogoutPopup.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ❌ CANCEL BUTTON */
+cancelLogout.onclick = () => {
+  logoutPopup.style.display = "none";
+};
+
+/* ✅ CONFIRM LOGOUT */
+confirmLogout.onclick = () => {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
+};
+
+/* CLICK OUTSIDE TO CLOSE */
+logoutPopup.onclick = (e) => {
+  if (e.target === logoutPopup) {
+    logoutPopup.style.display = "none";
+  }
+};
+
+/* 📱 SIDEBAR */
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuBtn.onclick = () => {
+  sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
+};
+
+overlay.onclick = () => {
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+};
+
+/* 📄 VIEWER */
+const frame = document.getElementById("pdfFrame");
+let zoomLevel = 100;
+
+function applyZoom(){
+  frame.style.transform = "scale(" + (zoomLevel/100) + ")";
+  document.getElementById("zoomLevel").innerText = zoomLevel + "%";
+}
+
+window.zoomIn = () => {
+  if(zoomLevel < 300){
+    zoomLevel += 10;
+    applyZoom();
+  }
+};
+
+window.zoomOut = () => {
+  if(zoomLevel > 50){
+    zoomLevel -= 10;
+    applyZoom();
+  }
+};
+
+window.closeBook = () => {
+  document.getElementById("viewerPane").style.display = "none";
+  frame.src = "";
+};
+/* 🔥 FILTERS */
+
+
+/* 🔥 FILTERS */
+
+const coachingFilter = document.getElementById("coachingFilter");
+const yearFilter = document.getElementById("yearFilter");
+
+function applyFilters(){
+
+  const coachingValue = coachingFilter.value;
+  const yearValue = yearFilter.value;
+
+  document.querySelectorAll(".subject-row").forEach(row => {
+
+    const coaching = row.dataset.coaching;
+    const cards = row.querySelectorAll(".batch-card");
+
+    let visibleCount = 0;
+
+    cards.forEach((card,index) => {
+
+      const year = card.dataset.year || "";
+
+      let show = true;
+
+      /* COACHING FILTER */
+      if(
+        coachingValue !== "all" &&
+        coaching !== coachingValue
+      ){
+        show = false;
+      }
+
+      /* YEAR FILTER */
+      if(
+        yearValue !== "all" &&
+        !year.includes(yearValue)
+      ){
+        show = false;
+      }
+
+      /* 🔥 HOME PAGE SHOW ONLY FIRST 4 */
+      if(show){
+
+        visibleCount++;
+
+        if(visibleCount <= 4){
+          card.style.display = "flex";
+        }else{
+          card.style.display = "none";
+        }
+
+      }else{
+        card.style.display = "none";
+      }
+
+    });
+
+    /* HIDE EMPTY ROW */
+    row.style.display =
+      visibleCount > 0 ? "block" : "none";
+
+  });
+
+}
+
+/* RUN */
+applyFilters();
+
+coachingFilter.addEventListener("change", applyFilters);
+yearFilter.addEventListener("change", applyFilters);
+
+
+/* 🔥 VIEW ALL */
+
+const viewAllBtns =
+document.querySelectorAll(".view-all-btn");
+
+const viewAllPane =
+document.getElementById("viewAllPane");
+
+const viewAllGrid =
+document.getElementById("viewAllGrid");
+
+const viewAllTitle =
+document.getElementById("viewAllTitle");
+
+const closeViewAll =
+document.getElementById("closeViewAll");
+
+const viewAllYearFilter =
+document.getElementById("viewAllYearFilter");
+
+let currentCards = [];
+
+/* OPEN VIEW ALL */
+viewAllBtns.forEach(btn => {
+
+  btn.addEventListener("click", e => {
+
+    e.preventDefault();
+
+    const subjectRow =
+      btn.closest(".subject-row");
+
+    const title =
+      subjectRow.querySelector("h3").innerText;
+
+    const cards =
+      subjectRow.querySelectorAll(".batch-card");
+
+    currentCards = [...cards];
+
+    viewAllTitle.innerText = title;
+
+    renderViewAllCards();
+
+    viewAllPane.style.display = "block";
+
+  });
+
+});
+
+/* RENDER VIEW ALL */
+function renderViewAllCards(){
+
+  const filterValue =
+    viewAllYearFilter.value;
+
+  viewAllGrid.innerHTML = "";
+
+  currentCards.forEach(card => {
+
+    const year =
+      card.dataset.year || "";
+
+    if(
+      filterValue === "all" ||
+      year.includes(filterValue)
+    ){
+
+      const clone =
+        card.cloneNode(true);
+
+      clone.style.display = "flex";
+
+      viewAllGrid.appendChild(clone);
+
+    }
+
+  });
+
+}
+
+/* FILTER INSIDE VIEW ALL */
+viewAllYearFilter.addEventListener(
+  "change",
+  renderViewAllCards
+);
+
+/* CLOSE */
+closeViewAll.addEventListener("click", () => {
+
+  viewAllPane.style.display = "none";
+
+});
+
+</script>
+<script>
+
+/* 🔥 ELEMENTS */
+
+const heroSearch = document.querySelector(".hero-search");
+const searchPane = document.getElementById("searchPane");
+const closeSearchPane = document.getElementById("closeSearchPane");
+const globalSearchInput = document.getElementById("globalSearchInput");
+
+/* LOCAL STORAGE KEY */
+
+const RECENT_KEY = "khazanaRecentSearches";
+
+/* OPEN SEARCH PANE */
+
+heroSearch.addEventListener("click", () => {
+
+    searchPane.style.display = "flex";
+
+    setTimeout(() => {
+        globalSearchInput.focus();
+    }, 100);
+
+    renderRecentSearches();
+
+});
+
+/* CLOSE */
+
+closeSearchPane.addEventListener("click", () => {
+
+    searchPane.style.display = "none";
+
+});
+
+/* GET SEARCHES */
+
+function getRecentSearches(){
+
+    return JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+
+}
+
+/* SAVE SEARCH */
+
+function saveSearch(value){
+
+    if(!value.trim()) return;
+
+    let searches = getRecentSearches();
+
+    searches = searches.filter(item => item !== value);
+
+    searches.unshift(value);
+
+    searches = searches.slice(0, 8);
+
+    localStorage.setItem(
+        RECENT_KEY,
+        JSON.stringify(searches)
+    );
+
+}
+
+/* REMOVE SEARCH */
+
+function removeSearch(value){
+
+    let searches = getRecentSearches();
+
+    searches = searches.filter(item => item !== value);
+
+    localStorage.setItem(
+        RECENT_KEY,
+        JSON.stringify(searches)
+    );
+
+    renderRecentSearches();
+
+}
+/* 🔍 SEARCH FUNCTIONALITY */
+
+const searchResults = document.getElementById("searchResults");
+
+/* GET ALL COURSE CARDS */
+function getAllCourseCards() {
+    let base = currentGoal && currentGoal !== "all"
+        ? document.querySelectorAll(`#${currentGoal} .batch-card`)
+        : document.querySelectorAll(".batch-card");
+
+    return [...base];
+}
+
+/* RENDER SEARCH RESULTS */
+function renderSearchResults(query = "") {
+
+    const allCards = getAllCourseCards();
+    searchResults.innerHTML = "";
+
+    // Show recent searches when input is empty
+    if (!query.trim()) {
+        const recentSearches = getRecentSearches();
+
+        if (recentSearches.length === 0) {
+            searchResults.innerHTML = `
+                <div class="search-empty">
+                    <i class="ph ph-magnifying-glass"></i>
+                    Search for your favourite courses
+                </div>
+            `;
+            return;
+        }
+
+        // Show matching courses for recent searches
+        const shownTitles = new Set();
+
+        recentSearches.forEach(term => {
+            allCards.forEach(card => {
+                const title = card.querySelector("h4")?.innerText || "";
+
+                if (
+                    title.toLowerCase().includes(term.toLowerCase()) &&
+                    !shownTitles.has(title)
+                ) {
+                    shownTitles.add(title);
+
+                    const clone = card.cloneNode(true);
+                    clone.style.display = "flex";
+                    searchResults.appendChild(clone);
+                }
+            });
+        });
+
+        if (!searchResults.innerHTML.trim()) {
+            searchResults.innerHTML = `
+                <div class="search-empty">
+                    <i class="ph ph-clock-counter-clockwise"></i>
+                    No recent courses found
+                </div>
+            `;
+        }
+
+        return;
+    }
+
+    // Filter cards based on query
+    const q = query.toLowerCase();
+    let matches = [];
+
+    allCards.forEach(card => {
+        const title =
+            card.querySelector("h4")?.innerText.toLowerCase() || "";
+
+        const year =
+            card.querySelector(".batch-info p")?.innerText.toLowerCase() || "";
+
+        const coaching =
+            card.closest(".subject-row")
+                ?.querySelector(".subject-header h3")
+                ?.innerText.toLowerCase() || "";
+
+        if (
+            title.includes(q) ||
+            year.includes(q) ||
+            coaching.includes(q)
+        ) {
+            matches.push(card);
+        }
+    });
+
+    if (matches.length === 0) {
+        searchResults.innerHTML = `
+            <div class="search-empty">
+                <i class="ph ph-file-x"></i>
+                No courses found for "<strong>${query}</strong>"
+            </div>
+        `;
+        return;
+    }
+
+    // Limit to 20 results
+    matches.slice(0, 20).forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.style.display = "flex";
+        searchResults.appendChild(clone);
+    });
+}
+
+/* INPUT SEARCH */
+globalSearchInput.addEventListener("input", () => {
+    renderSearchResults(globalSearchInput.value);
+});
+
+/* ENTER KEY SAVE SEARCH */
+globalSearchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        const value = globalSearchInput.value.trim();
+
+        if (value) {
+            saveSearch(value);
+            renderSearchResults(value);
+        }
+    }
+});
+
+/* OPEN SEARCH PANE */
+heroSearch.addEventListener("click", () => {
+    searchPane.style.display = "flex";
+    globalSearchInput.value = "";
+
+    setTimeout(() => {
+        globalSearchInput.focus();
+    }, 100);
+
+    renderSearchResults();
+});
+
+/* CLOSE SEARCH PANE */
+closeSearchPane.addEventListener("click", () => {
+    searchPane.style.display = "none";
+});
+const searchInput = document.getElementById("globalSearchInput");
+
+let currentGoal = "all";
+
+function getAllCourses() {
+  return [...document.querySelectorAll(".batch-card")].map(card => {
+    return {
+      el: card,
+      title: card.querySelector("h4")?.innerText.toLowerCase() || "",
+      parentGoal: getGoalFromCard(card)
+    };
+  });
+}
+function getGoalFromCard(card) {
+  let parent = card.closest("#science11, #commerce11, #humanities11, #class9th, #board10th");
+  if (!parent) return "all";
+  return parent.id;
+}
+searchInput.addEventListener("input", function () {
+  let value = this.value.toLowerCase().trim();
+
+  searchResults.innerHTML = "";
+
+  if (!value) {
+    searchResults.innerHTML = `
+      <div class="search-empty">
+        <i class="ph ph-magnifying-glass"></i>
+        Start typing to search courses
+      </div>`;
+    return;
+  }
+
+  let courses = getAllCourses();
+
+  let filtered = courses.filter(c => {
+    let matchText = c.title.includes(value);
+
+    // 🎯 GOAL FILTER LOGIC
+    let matchGoal = (currentGoal === "all" || c.parentGoal === currentGoal);
+
+    return matchText && matchGoal;
+  });
+
+  if (filtered.length === 0) {
+    searchResults.innerHTML = `
+      <div class="search-empty">
+        <i class="ph ph-x-circle"></i>
+        No courses found for "${value}"
+      </div>`;
+    return;
+  }
+
+  filtered.forEach(c => {
+    let clone = c.el.cloneNode(true);
+    searchResults.appendChild(clone);
+  });
+});
+</script>
+<!-- 🔒 UNLOCK KHAZANA BUTTON -->
+<div id="unlockKhazanaBar">
+  <button id="unlockKhazanaBtn">
+    🔓 Unlock Khazana
+  </button>
+</div>
+</body>
+</html>
