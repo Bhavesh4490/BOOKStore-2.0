@@ -2016,59 +2016,59 @@ if(snapshot.exists()){
 
   if(data.block === true){
     document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#f5f6fa;
+      font-family:Poppins;
+    ">
       <div style="
-        height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        background:#f5f6fa;
-        font-family:Poppins;
+        text-align:center;
+        max-width:500px;
+        margin-top:-80px;
       ">
-        <div style="
-          text-align:center;
-          max-width:500px;
+        
+        <h1 style="
+          color:#e74c3c;
+          font-size:32px;
         ">
-          
-          <h1 style="
-            color:#e74c3c;
-            font-size:32px;
-            margin-bottom:10px;
-          ">
-            🚫 Access Blocked
-          </h1>
-          
-          <p style="
-            font-size:18px;
-            color:#444;
-            margin-top:10px;
-          ">
-            You are blocked by Admin from BOOKStore.
-          </p>
-          
-          <p style="
-            font-size:16px;
-            color:#777;
-            margin-top:8px;
-          ">
-            Contact support if you think this is a mistake.
-          </p>
+          🚫 Access Blocked
+        </h1>
+        
+        <p style="
+          font-size:18px;
+          color:#444;
+          margin-top:10px;
+        ">
+          You are blocked by Admin from BOOKStore.
+        </p>
+        
+        <p style="
+          font-size:16px;
+          color:#777;
+          margin-top:8px;
+        ">
+          Contact support if you think this is a mistake.
+        </p>
 
-          <button onclick="window.open('https://www.instagram.com/bookstoreofficial_0/','_blank')" style="
-            margin-top:25px;
-            padding:12px 28px;
-            font-size:16px;
-            border:none;
-            background:#111a22;
-            color:white;
-            border-radius:8px;
-            cursor:pointer;
-          ">
-            Contact
-          </button>
+        <button onclick="window.open('https://www.instagram.com/bookstoreofficial_0/','_blank')" style="
+          margin-top:25px;
+          padding:12px 28px;
+          font-size:16px;
+          border:none;
+          background:#111a22;
+          color:white;
+          border-radius:8px;
+          cursor:pointer;
+        ">
+          Contact
+        </button>
 
-        </div>
       </div>
-    `;
+    </div>
+  `;
     return; // ⛔ STOP EVERYTHING
   }
 }
