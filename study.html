@@ -245,6 +245,7 @@ z-index:1;
 font-size:14px;
 color:#777;
 margin-bottom:20px;
+margin-left:30px;
 }
 
 /* FILTERS */
@@ -269,13 +270,15 @@ cursor:pointer;
      display:grid;
     grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
     gap:20px;
+    margin-left:30px;
 }
 
 /* 🎓 BATCHES GRID - 3 per row */
 #batchesContainer{
 display:grid;
 grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-gap:20px;
+gap:3px;
+margin-left:30px;
 }
 
 
@@ -284,6 +287,7 @@ background:white;
 border-radius:16px;
 overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.08);
+width:95%;
 }
 
 .batch-card .banner{
@@ -1004,7 +1008,7 @@ background:#dfe3ea;
 border-radius:12px;
 overflow:hidden;
 box-shadow:0 8px 24px rgba(0,0,0,0.15);
-z-index:200;
+z-index:10000;
 }
 
 .viewer-actions button{
@@ -1713,6 +1717,251 @@ body.popup-active #notificationPanel{
   border-radius:6px;
   margin-left:6px;
 }
+
+/* ⭐ MY STUDY ZONE */
+
+.study-zone{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin:18px 30px 10px;
+}
+
+.study-card{
+  background:#fff;
+  border-radius:18px;
+  padding:22px;
+  border:1px solid #ececec;
+  cursor:pointer;
+  transition:0.28s ease;
+  min-height:135px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+
+.study-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 28px rgba(0,0,0,0.06);
+}
+
+.study-icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f3f4ff;
+  color:#5c4cff;
+  font-size:22px;
+  margin-bottom:18px;
+}
+
+.study-content h3{
+  font-size:16px;
+  font-weight:600;
+  color:#222;
+  margin-bottom:6px;
+}
+
+.study-content p{
+  font-size:14px;
+  color:#777;
+  line-height:1.5;
+}
+
+/* 📱 MOBILE */
+
+@media(max-width:768px){
+
+  .study-zone{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:18px 15px 10px;
+  }
+
+  .study-card{
+    padding:16px;
+    min-height:120px;
+    border-radius:14px;
+  }
+
+  .study-content h3{
+    font-size:15px;
+  }
+
+  .study-content p{
+    font-size:12px;
+  }
+
+  .study-icon{
+    width:40px;
+    height:40px;
+    font-size:20px;
+    margin-bottom:14px;
+  }
+
+}
+/* 📚 LIBRARY PANE */
+
+#libraryPane{
+  position:fixed;
+  top:65px;
+  left:230px;
+  width:calc(100% - 230px);
+  height:calc(100vh - 65px);
+  background:#f5f6fa;
+  z-index:9999;
+  display:none;
+  flex-direction:column;
+  overflow-y:auto;
+}
+
+/* HEADER */
+
+.library-header{
+  height:65px;
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  display:flex;
+  align-items:center;
+  padding:10px 25px;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.library-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:18px;
+  font-weight:500;
+}
+
+.library-left i{
+  font-size:22px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.library-left i:hover{
+  color:#5c4cff;
+  transform:translateX(-2px);
+}
+
+/* CONTENT */
+
+.library-content{
+  padding:25px 10px 40px;
+}
+
+.library-content h2{
+  margin-left:20px;
+  margin-bottom:6px;
+}
+
+.library-content p{
+  margin-left:20px;
+  color:#777;
+  margin-bottom:25px;
+}
+
+/* 📱 MOBILE */
+
+@media(max-width:768px){
+
+  #libraryPane{
+    left:0;
+    width:100%;
+  }
+
+}
+/* 🔥 PROFESSIONAL LOADER */
+
+.skeleton-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:18px;
+    width:100%;
+}
+
+.skeleton-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid #ececec;
+    box-shadow:0 4px 18px rgba(0,0,0,0.04);
+}
+
+.skeleton-banner{
+    width:100%;
+    height:240px;
+    background:#e9e9e9;
+    position:relative;
+    overflow:hidden;
+}
+
+.skeleton-content{
+    padding:14px;
+}
+
+.skeleton-line{
+    height:12px;
+    border-radius:8px;
+    background:#ececec;
+    margin-bottom:12px;
+    position:relative;
+    overflow:hidden;
+}
+
+.skeleton-line.short{
+    width:55%;
+}
+
+.skeleton-line.medium{
+    width:75%;
+}
+
+.skeleton-line.long{
+    width:100%;
+}
+
+.skeleton-btn{
+    height:42px;
+    border-radius:12px;
+    background:#ececec;
+    margin-top:18px;
+    position:relative;
+    overflow:hidden;
+}
+
+/* ✨ SHIMMER EFFECT */
+.skeleton-banner::before,
+.skeleton-line::before,
+.skeleton-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-150px;
+    width:120px;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.7),
+        transparent
+    );
+    animation:shimmer 1.3s infinite;
+}
+
+@keyframes shimmer{
+    100%{
+        left:120%;
+    }
+}
 </style>
 </head>
 
@@ -1854,85 +2103,57 @@ body.popup-active #notificationPanel{
 
   </div>
 </div>
-    <!-- ⭐ BEST BOOKS -->
-<h2>Best Books</h2>
-<p class="small">Top recommended books for your goal</p>
+<!-- ⭐ MY STUDY ZONE -->
+<h2 style="margin-top:30px; margin-left:30px; font-size:20px;">
+  My Study Zone
+</h2>
 
-<div class="courses">
+<div class="study-zone">
+
+<!-- KHAZANA -->
+<div class="study-card" id="khazanawrapper" style="display:none;" onclick="window.open('/khazana.html')">
+  <div class="study-icon">
+    <i class="ph-fill ph-briefcase"></i>
+  </div>
+
+  <div class="study-content" id="khazanaCard">
+    <h3>Khazana</h3>
+    <p>Access Past Years Batches Content at One Place</p>
+  </div>
+</div>
+
+<!-- LIBRARY -->
+<div class="study-card" id="libraryCard">
+  <div class="study-icon">
+    <i class="ph ph-books"></i>
+  </div>
+
+  <div class="study-content">
+    <h3>Library</h3>
+    <p>Access all your free material here</p>
+  </div>
+</div>
 
 </div>
 
 
-<!-- ⭐ BEST BATCHES -->
-<h2 style="margin-top:30px;">Best Batches</h2>
-<p class="small">Top live & recorded batches</p>
 
-<div class="courses" id="batchesContainer"> </div>
+<!-- ⭐ BATCHES FOR YOU -->
+<h2 style="margin-top:30px; margin-left:30px; font-size:20px;">
+  Batches For You
+</h2>
 
-<div class="footer-quote">
-  <h2>From Fear into Confidence</h2>
-  <p>❤️ From BOOKStore</p>
-</div>
-</div>
-</div>
+
+  <!-- SLIDER -->
+  <div id="batchesContainer">
+
+
+  </div>
+
+
 </div>
     
-<div id="viewerPane">
 
-<!-- VIEW BOOK HEADER -->
-<div class="viewer-topbar">
-
-<button onclick="closeBook()">
-<i class="ph ph-arrow-left"></i>
-</button>
-
-<span>View Book</span>
-
-</div>
-
-<div class="viewer-toolbar">
-
-
-
-<div class="viewer-center">
-
-
-<button onclick="zoomOut()">
-<i class="ph ph-magnifying-glass-minus"></i>
-</button>
-
-<div class="zoom-indicator">
-<span id="zoomLevel">100%</span>
-</div>
-
-<button onclick="zoomIn()">
-<i class="ph ph-magnifying-glass-plus"></i>
-</button>
-
-<button onclick="fitScreen()" >
-<i class="ph ph-arrows-out"></i>
-</button>
-
-</div>
-
-<div class="viewer-right">
-<button onclick="downloadPDF()" >
-<i class="ph ph-download-simple"></i>
-</button>
-
-</div>
-
-</div>
-<div id="pageSidebar">
-
-<div class="pageList" id="pageList"></div>
-
-</div>
-<div id="pdfContainer">
-<iframe id="pdfFrame"></iframe>
-</div>
-
-</div>
 <!-- GOAL SELECTION POPUP -->
 
 <div id="goalPopup">
@@ -2139,7 +2360,82 @@ body.popup-active #notificationPanel{
   <div class="leaderboard-list" id="leaderboardList"></div>
 
 </div>
+<!-- 📚 LIBRARY FULL PANE -->
+<div id="libraryPane">
 
+  <!-- HEADER -->
+  <div class="library-header">
+
+    <div class="library-left">
+      <i class="ph ph-arrow-left" id="closeLibrary"></i>
+      <span>Library</span>
+    </div>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="library-content">
+<div class="courses" id="booksContainer"></div>
+
+  </div>
+
+</div>
+<div id="viewerPane">
+
+<!-- VIEW BOOK HEADER -->
+<div class="viewer-topbar">
+
+<button onclick="closeBook()">
+<i class="ph ph-arrow-left"></i>
+</button>
+
+<span>View Book</span>
+
+</div>
+
+<div class="viewer-toolbar">
+
+
+
+<div class="viewer-center">
+
+
+<button onclick="zoomOut()">
+<i class="ph ph-magnifying-glass-minus"></i>
+</button>
+
+<div class="zoom-indicator">
+<span id="zoomLevel">100%</span>
+</div>
+
+<button onclick="zoomIn()">
+<i class="ph ph-magnifying-glass-plus"></i>
+</button>
+
+<button onclick="fitScreen()" >
+<i class="ph ph-arrows-out"></i>
+</button>
+
+</div>
+
+<div class="viewer-right">
+<button onclick="downloadPDF()" >
+<i class="ph ph-download-simple"></i>
+</button>
+
+</div>
+
+</div>
+<div id="pageSidebar">
+
+<div class="pageList" id="pageList"></div>
+
+</div>
+<div id="pdfContainer">
+<iframe id="pdfFrame"></iframe>
+</div>
+
+</div>
 <!-- LOGOUT CONFIRM POPUP -->
 <div id="logoutPopup" style="
   position:fixed;
@@ -2241,10 +2537,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-const coursesContainer = document.querySelector(".courses");
-
 /* 🔥 INIT CONTAINERS */
-const booksContainer = document.querySelector(".courses"); // First one
+const booksContainer = document.getElementById("booksContainer");
 const batchesContainer = document.getElementById("batchesContainer");
 let messaging = null;
 
@@ -2255,6 +2549,8 @@ try {
 }
 const notifList = document.getElementById("notifList");
 const notifBadge = document.querySelector(".notification .badge");
+
+
 /* 🔔 LOCAL STORAGE HANDLING */
 function getReadNotifications(){
   return JSON.parse(localStorage.getItem("readNotifs") || "[]");
@@ -2468,30 +2764,174 @@ async function loadPageData(goal) {
     loadBatches(goal);
 }
 
+/* 📚 OPEN LIBRARY */
+
+const libraryPane = document.getElementById("libraryPane");
+const closeLibrary = document.getElementById("closeLibrary");
+const libraryBooks = document.getElementById("libraryBooks");
+
+/* OPEN */
+libraryCard.addEventListener("click", () => {
+
+    libraryPane.style.display = "flex";
+
+    // ✅ URL CHANGE
+    history.pushState(
+        { library: true },
+        "",
+        "study.html/library"
+    );
+
+});
+
+/* ❌ CLOSE LIBRARY */
+function closeLibraryPane(){
+
+    libraryPane.style.display = "none";
+
+    // ✅ RESTORE URL
+    history.pushState(
+        {},
+        "",
+        "/study.html"
+    );
+}
+closeLibrary.addEventListener("click", closeLibraryPane);
+
+/* 🔙 BACK BUTTON SUPPORT */
+window.addEventListener("popstate", () => {
+
+    if(location.pathname.includes("/library")){
+
+        libraryPane.style.display = "flex";
+
+    } else {
+
+        libraryPane.style.display = "none";
+
+    }
+
+});
+
+/* 🔥 AUTO OPEN IF URL IS /library */
+if(location.pathname.includes("/library")){
+
+    libraryPane.style.display = "flex";
+
+}
+/* 🔥 SHOW PROFESSIONAL LOADING */
+function showSkeletonLoader(container, count = 6, isBook = true){
+
+    container.innerHTML = "";
+
+    const grid = document.createElement("div");
+    grid.className = "skeleton-grid";
+
+    for(let i = 0; i < count; i++){
+
+        const card = document.createElement("div");
+        card.className = "skeleton-card";
+
+        card.innerHTML = `
+            <div class="skeleton-banner"></div>
+
+            <div class="skeleton-content">
+
+                <div class="skeleton-line long"></div>
+
+                <div class="skeleton-line medium"></div>
+
+                <div class="skeleton-line short"></div>
+
+                ${!isBook ? `<div class="skeleton-btn"></div>` : ""}
+
+            </div>
+            
+        `;
+
+        grid.appendChild(card);
+    }
+
+    container.appendChild(grid);
+}
 /* 🔥 LOAD BOOKS (Your existing function modified slightly) */
+/* 📚 LOAD BOOKS BASED ON GOAL */
 async function loadBooks(goal) {
-    booksContainer.innerHTML = "<p>Loading Books...</p>";
-    const booksRef = ref(db, goal); 
+
+    showSkeletonLoader(booksContainer, 6, true);
+
+    const booksRef = ref(db, goal);
     const snap = await get(booksRef);
+
     booksContainer.innerHTML = "";
 
-    if(!snap.exists()) {
-        booksContainer.innerHTML = "<p>No books found</p>";
+    /* ❌ NO BOOKS */
+    if (!snap.exists()) {
+
+        booksContainer.innerHTML = "";
+        libraryCard.style.display = "none";
+
         return;
     }
 
+    /* ✅ SHOW LIBRARY CARD */
+    libraryCard.style.display = "flex";
+
     const data = snap.val();
-    for(const subjectKey in data) {
-        for(const bookKey in data[subjectKey]) {
-            const book = data[subjectKey][bookKey];
-            renderCard(booksContainer, book, subjectKey, true);
-        }
+
+    let totalBooks = 0;
+
+    /*
+      Example Structure:
+
+      board10th
+        └── All Subject
+              └── oswaal
+                    cover
+                    edition
+                    title
+                    view
+    */
+
+    Object.keys(data).forEach(subjectKey => {
+
+        const subjectData = data[subjectKey];
+
+        Object.keys(subjectData).forEach(bookKey => {
+
+            const book = subjectData[bookKey];
+
+            /* ✅ VALID BOOK CHECK */
+            if (
+                typeof book === "object" &&
+                book.title &&
+                book.cover
+            ) {
+
+                totalBooks++;
+
+                renderCard(
+                    booksContainer,
+                    book,
+                    subjectKey,
+                    true
+                );
+            }
+        });
+
+    });
+
+    /* ❌ IF STILL NO BOOKS */
+    if(totalBooks === 0){
+
+        libraryCard.style.display = "none";
+        booksContainer.innerHTML = "";
+
     }
 }
-
 /* 🔥 NEW: LOAD BATCHES */
 async function loadBatches(goal) {
-    batchesContainer.innerHTML = "<p>Loading Batches...</p>";
+    showSkeletonLoader(batchesContainer, 4, false);
     // This assumes your DB structure is batches/board10th/...
     const batchesRef = ref(db, `batches/${goal}`); 
     const snap = await get(batchesRef);
@@ -2627,6 +3067,8 @@ subscribeUser();
   document.body.style.display = "block";
 
   const uid = user.uid;
+  const khazanaWrapper = document.getElementById("khazanaWrapper");
+  
   /* 🔒 ADMIN */
   const adminUIDs = [
   "F9UxJ3W6CVUVIIgwByuHQxscQab2",
@@ -2652,18 +3094,83 @@ if(snap.exists()){
 
   /* 🚫 BLOCK CHECK */
   if(data.block === true){
-    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;'>🚫 You are blocked</h2>";
-    return;
+     document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#f5f6fa;
+      font-family:Poppins;
+    ">
+      <div style="
+        text-align:center;
+        max-width:500px;
+        margin-top:-80px;
+      ">
+        
+        <h1 style="
+          color:#e74c3c;
+          font-size:32px;
+        ">
+          🚫 Access Blocked
+        </h1>
+        
+        <p style="
+          font-size:18px;
+          color:#444;
+          margin-top:10px;
+        ">
+          You are blocked by Admin from BOOKStore.
+        </p>
+        
+        <p style="
+          font-size:16px;
+          color:#777;
+          margin-top:8px;
+        ">
+          Contact support if you think this is a mistake.
+        </p>
+
+        <button onclick="window.open('https://www.instagram.com/bookstoreofficial_0/','_blank')" style="
+          margin-top:25px;
+          padding:12px 28px;
+          font-size:16px;
+          border:none;
+          background:#111a22;
+          color:white;
+          border-radius:8px;
+          cursor:pointer;
+        ">
+          Contact
+        </button>
+
+      </div>
+    </div>
+  `;
+      return;
   }
 
   /* 👤 NAME */
   let name = data.displayName ? data.displayName : "User";
 
 // Check subscription
+const khazanaWrapper = document.getElementById("khazanawrapper"); // Ensure ID matches HTML
+
 if(data.subscribed === true){
   userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${name} `;
+  
+  // ✅ Show Khazana only for subscribed users
+  if(khazanaWrapper) {
+    khazanaWrapper.style.display = "flex";
+  }
 } else {
   userName.innerText = "Hi, " + name;
+  
+  // ❌ Ensure Khazana is hidden for others
+  if(khazanaWrapper) {
+    khazanaWrapper.style.display = "none";
+  }
 }
 
   /* ⭐ XP LOAD */
