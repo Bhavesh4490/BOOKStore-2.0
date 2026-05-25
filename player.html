@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Player - BOOKStore</title>
+<link rel="icon" type="image/png" href="book.png">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body {
+    width:100%;
+    height:100%;
+    background:#000;
+    overflow:hidden;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.video-player {
+    position:relative;
+    width:100vw;
+    height:100vh;
+    background:#000;
+    overflow:hidden;
+    display:flex;
+}
+
+.player-area {
+    position:relative;
+    flex:1;
+    height:100%;
+    background:#000;
+    transition:width 0.28s ease;
+    overflow:hidden;
+}
+
+#video {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#000;
+}
+
+/* TOP CONTROLS */
+.top-controls {
+    position:absolute;
+    top:0;
+    left:20px;
+    right:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:20;
+}
+
+.top-left, .top-right {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.control-btn {
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:10px;
+    background:rgba(255,255,255,0.08);
+    color:#f1f1f1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+.control-btn:hover {
+    background:rgba(255,255,255,0.14);
+}
+
+/* CENTER LOADER */
+.loader-wrapper {
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+}
+
+.loader {
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,0.14);
+    border-top:4px solid #ffffff;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform:rotate(0deg); }
+    to { transform:rotate(360deg); }
+}
+
+/* BOTTOM PLAYER AREA */
+.bottom-player {
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    padding:0 20px 26px;
+    z-index:20;
+}
+
+.time-row {
+    color:#cfcfcf;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.cool-live-box {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+.cool-live-box::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #ef4444;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1.5s infinite;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* PROGRESS BAR */
+.progress-container {
+    width:100%;
+    height:4px;
+    background:#353535;
+    border-radius:20px;
+    overflow:visible;
+    margin-bottom:30px;
+    cursor:pointer;
+    transition:0.18s ease;
+    position:relative;
+}
+
+.progress-container:hover {
+    height:7px;
+}
+.progress {
+    width:0%;
+    height:100%;
+    background:rgb(59 130 246 / 0.7);
+    border-radius:20px;
+    position:relative;
+}
+
+.progress::after {
+    content:'';
+    position:absolute;
+    right:-7px;
+    top:50%;
+    transform:translateY(-50%) scale(0);
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:#fff;
+    transition:0.18s ease;
+}
+
+.progress-container:hover .progress::after {
+    transform:translateY(-50%) scale(1);
+}
+
+/* CONTROL ROW */
+.controls-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+    margin-left:10px;
+}
+
+.left-controls, .right-controls {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.player-icon {
+    font-size:20px;
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.2s ease;
+    color:#ffffff;
+    cursor:pointer;
+}
+
+.player-icon:hover {
+    background:rgba(255,255,255,0.14);
+}
+.small-icon {
+    font-size:21px;
+}
+.menu-btn {
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    margin-right:6px;
+}
+
+/* OPTIONAL DARK OVERLAY */
+.video-overlay {
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.22),
+        rgba(0,0,0,0) 22%,
+        rgba(0,0,0,0) 78%,
+        rgba(0,0,0,0.28)
+    );
+    pointer-events:none;
+}
+
+/* SETTINGS POPUP OVERHAUL */
+.settings-wrapper {
+    position:relative;
+}
+
+.settings-popup {
+    position:absolute;
+    top:52px;
+    right:0;
+    width:280px;
+    background:#16161f;
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:16px;
+    display:none;
+    flex-direction:column;
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
+    z-index:300;
+    overflow: hidden; 
+}
+
+.settings-popup.active {
+    display:flex;
+}
+
+/* Main View */
+.settings-main {
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    padding:18px;
+}
+
+.settings-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+}
+
+.settings-option {
+    width:120px;
+    height:38px;
+    border:none;
+    border-radius:10px;
+    background:#20202e;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 14px;
+    cursor:pointer;
+    font-size:14px;
+    transition:0.2s ease;
+}
+
+.settings-option i {
+    font-size:12px;
+    opacity:0.7;
+}
+
+.settings-option:hover {
+    background:#2c2c3e;
+}
+
+/* Sub View (Speed & Quality) */
+.settings-sub {
+    display:none;
+    flex-direction:column;
+}
+
+.settings-sub.active {
+    display:flex;
+}
+
+.sub-header {
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px 20px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    font-size:16px;
+    font-weight:600;
+    color:#fff;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+.sub-header:hover {
+    background:rgba(255,255,255,0.04);
+}
+
+.sub-list {
+    display:flex;
+    flex-direction:column;
+    padding-bottom: 8px;
+}
+
+.sub-item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px;
+    color:#d1d1d1;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.15s ease;
+}
+
+.sub-item:hover {
+    background:rgba(255,255,255,0.04);
+}
+
+.sub-item.active {
+    background:#333153; /* Deep purple highlight */
+    color:#fff;
+}
+
+/* Custom Radio Circles */
+.radio-circle {
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,0.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.15s ease;
+}
+
+.sub-item.active .radio-circle {
+    border-color:#6366f1; /* Bright Indigo */
+}
+
+.radio-circle::after {
+    content:'';
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#6366f1;
+    transform:scale(0);
+    transition:0.15s ease;
+}
+
+.sub-item.active .radio-circle::after {
+    transform:scale(1);
+}
+
+/* MENU PANE */
+.menu-pane {
+    position:relative;
+    width:430px;
+    height:100%;
+    background:#11111a;
+    border-left:1px solid rgba(255,255,255,0.06);
+    z-index:100;
+    display:none;
+    flex-direction:column;
+    flex-shrink:0;
+}
+.menu-pane.active {
+    display:flex;
+}
+.menu-list {
+    flex:1;
+    overflow-y:auto;
+    padding-top:0;
+}
+.menu-card {
+    display:flex;
+    gap:12px;
+    padding:14px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    cursor:pointer;
+    transition:0.2s ease;
+}
+.menu-card:hover { background:rgba(255,255,255,0.03); }
+.menu-thumb { width:130px; height:74px; border-radius:8px; object-fit:cover; }
+.menu-info { flex:1; }
+.menu-title { color:#fff; font-size:15px; font-weight:600; line-height:1.4; margin-bottom:8px; }
+.menu-duration { color:#9f9f9f; font-size:14px; }
+.close-menu {
+    width:95%; height:40px; border-radius:8px;
+    border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.08);
+    color:#fff; font-size:15px; font-weight:600; cursor:pointer;
+    flex-shrink:0; align-self:center; margin:14px 0 40px;
+}
+.close-menu:hover { background:rgba(255,255,255,0.12); }
+.menu-watch-bar { width:100%; height:4px; background:rgba(255,255,255,0.08); border-radius:30px; overflow:hidden; margin-top:10px; }
+.menu-watch-progress { height:100%; width:0%; background:#3b82f6; border-radius:30px; transition:width 0.2s linear; }
+
+.video-player.menu-open .player-area {
+    width:calc(100% - 430px);
+}
+
+@media(max-width:700px){
+    .bottom-player{ padding:0 16px 22px; }
+    .left-controls, .right-controls{ gap:18px; }
+    .settings-popup{ width:260px; right:0; }
+    .video-player{ display:block; }
+    .player-area{ width:100% !important; }
+    .menu-pane{ position:absolute; top:0; right:0; width:100%; display:none; }
+    .menu-pane.active{ display:flex; }
+}
+.menu-list{
+    flex:1;
+    overflow-y:auto;
+    padding-bottom:20px;
+    scroll-behavior:smooth;
+}
+
+.menu-list::-webkit-scrollbar{
+    width:6px;
+}
+
+.menu-list::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,0.12);
+    border-radius:20px;
+}
+
+.menu-card{
+    animation:fadeIn 0.22s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="video-player">
+    <div class="player-area">
+        <video id="video" playsinline webkit-playsinline autoplay></video>
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+        <div class="video-overlay"></div>
+
+        <div class="top-controls">
+            <div class="top-left">
+                <button class="control-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="top-right">
+                <div class="settings-wrapper">
+                    <button class="control-btn" id="settingsBtn">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+
+                    <div class="settings-popup" id="settingsPopup">
+                        <div class="settings-main" id="settingsMain">
+                            <div class="settings-row">
+                                <span>Speed</span>
+                                <button class="settings-option" onclick="openSubMenu('speed')">
+                                    <span id="speedLabel">Normal</span>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="settings-row">
+                                <span>Quality</span>
+                                <button class="settings-option" onclick="openSubMenu('quality')">
+                                    <span id="qualityLabel">Auto</span>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            
+                        </div>
+
+                        <div class="settings-sub" id="settingsSub">
+                            <div class="sub-header" onclick="closeSubMenu()">
+                                <i class="fa-solid fa-chevron-left"></i>
+                                <span id="subTitle">Quality</span>
+                            </div>
+                            <div class="sub-list" id="subList">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="control-btn" id="fullscreenBtn">
+                    <i class="fa-solid fa-expand" id="fullscreenIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="video-poster" id="videoPoster">
+            <img src="book.png" alt="" style="display:none;">
+        </div>
+
+        <div class="loader-wrapper">
+            <div class="loader"></div>
+        </div>
+
+        <div class="bottom-player">
+            <div class="time-row" id="timeRowContainer">
+                <span id="currentTime">0:00</span>
+                &nbsp;&nbsp;/&nbsp;&nbsp;
+                <span id="duration">0:00</span>
+            </div>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="controls-row">
+                <div class="left-controls">
+                    <i class="fa-solid fa-rotate-left player-icon small-icon" id="rewindBtn"></i>
+                    <i class="fa-solid fa-play player-icon" id="playBtn"></i>
+                    <i class="fa-solid fa-rotate-right player-icon small-icon" id="forwardBtn"></i>
+                    <i class="fa-solid fa-volume-high player-icon small-icon" id="volumeBtn"></i>
+                </div>
+
+                <div class="right-controls">
+                    <div class="menu-btn" id="menuBtn">
+                        <svg width="24" height="24" viewBox="0 0 27 27" fill="none">
+                            <path d="M3.375 5.625H3.3875" stroke="#ffffff" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M3.375 13.5H3.3875" stroke="#ffffff" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M3.375 21.375H3.3875" stroke="#ffffff" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M9 5.625H23.625" stroke="#ffffff" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M9 13.5H23.625" stroke="#ffffff" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M9 21.375H23.625" stroke="#ffffff" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-pane" id="menuPane">
+        <div class="menu-list" id="historyList"></div>
+        <button class="close-menu" id="closeMenu">Close</button>
+    </div>
+</div>
+
+<script>
+const video = document.getElementById("video");
+const playBtn = document.getElementById("playBtn");
+const volumeBtn = document.getElementById("volumeBtn");
+const rewindBtn = document.getElementById("rewindBtn");
+const forwardBtn = document.getElementById("forwardBtn");
+const progress = document.getElementById("progress");
+const progressContainer = document.getElementById("progressContainer");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+const loader = document.querySelector(".loader-wrapper");
+const fullscreenBtn = document.getElementById("fullscreenBtn");
+const fullscreenIcon = document.getElementById("fullscreenIcon");
+
+/* =========================
+   FIREBASE LIVE STATUS HOOK
+========================= */
+let firebaseStreamStatus = "VOD";
+
+/* =========================
+   GET VIDEO URL & LOAD
+========================= */
+let videoUrl = "";
+const params = new URLSearchParams(window.location.search);
+
+if(params.get("url")){
+    videoUrl = decodeURIComponent(params.get("url"));
+} else if(window.location.search.startsWith("?http")){
+    videoUrl = decodeURIComponent(window.location.search.substring(1));
+}
+
+const STORAGE_KEY = "video-progress-" + btoa(videoUrl);
+
+let hls = null;
+
+if(videoUrl){
+
+    if(Hls.isSupported()){
+
+        hls = new Hls({
+            enableWorker: true,
+            lowLatencyMode: true,
+            backBufferLength: 90,
+            maxBufferLength: 30,
+            maxMaxBufferLength: 60,
+            capLevelToPlayerSize: true,
+            autoStartLoad: true
+        });
+
+        hls.loadSource(videoUrl);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+
+    setupQualityLevels();
+
+    setTimeout(() => {
+
+        loadPlayerSettings();
+
+    }, 300);
+
+    video.play();
+});
+
+    } else if(video.canPlayType("application/vnd.apple.mpegurl")) {
+
+        video.src = videoUrl;
+
+        video.addEventListener("loadedmetadata", () => {
+            video.play();
+        });
+    }
+}
+
+/* =========================
+   PLAYER CONTROLS
+========================= */
+
+function togglePlay(){
+    video.paused ? video.play() : video.pause();
+}
+
+playBtn.addEventListener("click", togglePlay);
+
+video.addEventListener("play", () => {
+    playBtn.classList.remove("fa-play");
+    playBtn.classList.add("fa-pause");
+});
+
+video.addEventListener("pause", () => {
+    playBtn.classList.remove("fa-pause");
+    playBtn.classList.add("fa-play");
+});
+
+volumeBtn.addEventListener("click", toggleMute);
+
+function toggleMute(){
+    video.muted = !video.muted;
+
+    if(video.muted){
+        volumeBtn.classList.remove("fa-volume-high");
+        volumeBtn.classList.add("fa-volume-xmark");
+    }else{
+        volumeBtn.classList.remove("fa-volume-xmark");
+        volumeBtn.classList.add("fa-volume-high");
+    }
+}
+
+rewindBtn.addEventListener("click", () => {
+    video.currentTime -= 10;
+});
+
+forwardBtn.addEventListener("click", () => {
+    video.currentTime += 10;
+});
+
+/* =========================
+   KEYBOARD SHORTCUTS
+========================= */
+
+document.addEventListener("keydown", (e) => {
+
+    const tag = document.activeElement.tagName.toLowerCase();
+
+    if(tag === "input" || tag === "textarea") return;
+
+    switch(e.key.toLowerCase()){
+
+        case " ":
+        case "k":
+        case "enter":
+            e.preventDefault();
+            togglePlay();
+            break;
+
+        case "f":
+            toggleFullscreen();
+            break;
+
+        case "m":
+            toggleMute();
+            break;
+
+        case "arrowright":
+            video.currentTime += 5;
+            break;
+
+        case "arrowleft":
+            video.currentTime -= 5;
+            break;
+
+        case "arrowup":
+            e.preventDefault();
+            video.volume = Math.min(1, video.volume + 0.1);
+            video.muted = false;
+            break;
+
+        case "arrowdown":
+            e.preventDefault();
+            video.volume = Math.max(0, video.volume - 0.1);
+            break;
+
+        case "j":
+            video.currentTime -= 10;
+            break;
+
+        case "l":
+            video.currentTime += 10;
+            break;
+
+        case ">":
+        case ".":
+            changePlaybackSpeed(0.25);
+            break;
+
+        case "<":
+        case ",":
+            changePlaybackSpeed(-0.25);
+            break;
+    }
+});
+
+function changePlaybackSpeed(change){
+
+    const speeds = [
+        0.25,
+        0.5,
+        0.75,
+        1,
+        1.25,
+        1.5,
+        1.75,
+        2
+    ];
+
+    let currentIndex =
+        speeds.indexOf(video.playbackRate);
+
+    if(currentIndex === -1){
+        currentIndex = 3;
+    }
+
+    if(change > 0){
+
+        currentIndex++;
+
+    } else {
+
+        currentIndex--;
+    }
+
+    currentIndex =
+        Math.max(
+            0,
+            Math.min(
+                speeds.length - 1,
+                currentIndex
+            )
+        );
+
+    const newSpeed =
+        speeds[currentIndex];
+
+    setSpeed(
+        newSpeed,
+        newSpeed === 1
+        ? "Normal"
+        : `${newSpeed}x`
+    );
+}
+/* =========================
+   TIME UPDATE
+========================= */
+
+video.addEventListener("timeupdate", () => {
+
+    const percent =
+        (video.currentTime / video.duration) * 100;
+
+    progress.style.width = percent + "%";
+
+    if(firebaseStreamStatus === "Live"){
+
+        document.getElementById("timeRowContainer").innerHTML =
+        `<div class="cool-live-box">LIVE</div>`;
+
+    } else {
+
+        if(document.getElementById("currentTime")){
+            document.getElementById("currentTime").textContent =
+            formatTime(video.currentTime);
+        }
+    }
+
+    localStorage.setItem(STORAGE_KEY, video.currentTime);
+});
+
+video.addEventListener("loadedmetadata", () => {
+
+    if(document.getElementById("duration")){
+        document.getElementById("duration").textContent =
+        formatTime(video.duration);
+    }
+
+    const savedTime = localStorage.getItem(STORAGE_KEY);
+
+    if(savedTime){
+        video.currentTime = parseFloat(savedTime);
+    }
+});
+video.addEventListener("ratechange", () => {
+
+    currentSpeed = video.playbackRate;
+
+    speedLabel.textContent =
+        currentSpeed === 1
+        ? "Normal"
+        : currentSpeed + "x";
+});
+/* =========================
+   SAVE SETTINGS
+========================= */
+
+const PLAYER_SETTINGS_KEY =
+    "player-settings";
+
+function savePlayerSettings(){
+
+    localStorage.setItem(
+        PLAYER_SETTINGS_KEY,
+        JSON.stringify({
+            speed: currentSpeed,
+            quality: currentQuality
+        })
+    );
+}
+
+/* =========================
+   LOAD SETTINGS
+========================= */
+
+function loadPlayerSettings(){
+
+    const saved =
+        localStorage.getItem(
+            PLAYER_SETTINGS_KEY
+        );
+
+    if(!saved) return;
+
+    try{
+
+        const data = JSON.parse(saved);
+
+        /* SPEED */
+
+        if(data.speed){
+
+            currentSpeed = Number(data.speed);
+
+            video.playbackRate =
+                currentSpeed;
+
+            video.defaultPlaybackRate =
+                currentSpeed;
+
+            speedLabel.textContent =
+                currentSpeed === 1
+                ? "Normal"
+                : `${currentSpeed}x`;
+        }
+
+        /* QUALITY */
+
+        if(data.quality){
+
+            currentQuality =
+                data.quality;
+
+            qualityLabel.textContent =
+                currentQuality;
+
+            // apply saved quality
+            const matched =
+                qualityOptions.find(
+                    q => q.label === currentQuality
+                );
+
+            if(matched){
+
+                setQuality(
+                    matched.value,
+                    matched.label
+                );
+            }
+        }
+
+    }catch(err){
+
+        console.log(err);
+    }
+}
+
+progressContainer.addEventListener("click", (e) => {
+
+    const width = progressContainer.clientWidth;
+
+    video.currentTime =
+        (e.offsetX / width) * video.duration;
+});
+
+video.addEventListener("waiting", () => {
+    loader.style.display = "flex";
+});
+
+video.addEventListener("playing", () => {
+    loader.style.display = "none";
+});
+
+video.addEventListener("ended", () => {
+    localStorage.removeItem(STORAGE_KEY);
+});
+
+function formatTime(time){
+
+    if(isNaN(time)) return "0:00";
+
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = Math.floor(time % 60);
+
+    if(hours > 0){
+        return `${hours}:${minutes
+            .toString()
+            .padStart(2,"0")}:${seconds
+            .toString()
+            .padStart(2,"0")}`;
+    }
+
+    return `${minutes}:${seconds
+        .toString()
+        .padStart(2,"0")}`;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPopup = document.getElementById("settingsPopup");
+const settingsMain = document.getElementById("settingsMain");
+const settingsSub = document.getElementById("settingsSub");
+const subTitle = document.getElementById("subTitle");
+const subList = document.getElementById("subList");
+const speedLabel = document.getElementById("speedLabel");
+const qualityLabel = document.getElementById("qualityLabel");
+
+let currentSpeed = 1;
+let currentQuality = "Auto";
+
+const speedOptions = [
+    { label: "0.25x", value: 0.25 },
+    { label: "0.5x", value: 0.5 },
+    { label: "0.75x", value: 0.75 },
+    { label: "Normal", value: 1 },
+    { label: "1.25x", value: 1.25 },
+    { label: "1.5x", value: 1.5 },
+    { label: "1.75x", value: 1.75 },
+    { label: "2x", value: 2 }
+];
+
+let qualityOptions = [
+    { label: "Auto", value: -1 }
+];
+
+/* =========================
+   QUALITY SYSTEM
+========================= */
+
+let availableLevels = [];
+
+function setupQualityLevels(){
+
+    if(!hls || !hls.levels || !hls.levels.length){
+        qualityOptions = [
+            { label:"Auto", value:-1 }
+        ];
+        return;
+    }
+
+    availableLevels = [];
+    qualityOptions = [
+        { label:"Auto", value:-1 }
+    ];
+
+    hls.levels.forEach((level, index) => {
+
+        const height = level.height;
+
+        // prevent duplicate qualities
+        const alreadyExists =
+            availableLevels.find(
+                l => l.height === height
+            );
+
+        if(!alreadyExists){
+
+            availableLevels.push({
+                height,
+                index
+            });
+
+            qualityOptions.push({
+                label: `${height}p`,
+                value: index
+            });
+        }
+    });
+
+    // sort highest to lowest
+    qualityOptions.sort((a,b) => {
+
+        if(a.value === -1) return -1;
+        if(b.value === -1) return 1;
+
+        return parseInt(b.label) - parseInt(a.label);
+    });
+
+    // default label
+    qualityLabel.textContent = "Auto";
+}
+
+/* =========================
+   HLS QUALITY EVENTS
+========================= */
+
+if(hls){
+
+    // update active quality automatically
+    hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
+
+        if(hls.autoLevelEnabled){
+
+            const current =
+                hls.levels[data.level];
+
+            if(current){
+
+                qualityLabel.textContent =
+                    `Auto (${current.height}p)`;
+            }
+
+        } else {
+
+            const current =
+                hls.levels[data.level];
+
+            if(current){
+
+                qualityLabel.textContent =
+                    `${current.height}p`;
+            }
+        }
+    });
+}
+
+function openSubMenu(type){
+
+    settingsMain.style.display = "none";
+    settingsSub.classList.add("active");
+    subList.innerHTML = "";
+
+    if(type === "speed"){
+
+        subTitle.textContent = "Speed";
+
+        speedOptions.forEach(opt => {
+
+            const isActive =
+                currentSpeed === opt.value;
+
+            subList.appendChild(
+                createSubItem(
+                    opt.label,
+                    isActive,
+                    () => setSpeed(opt.value, opt.label)
+                )
+            );
+        });
+
+    } else if(type === "quality") {
+
+        subTitle.textContent = "Quality";
+
+        qualityOptions.forEach(opt => {
+
+            const isActive =
+                currentQuality === opt.label;
+
+            subList.appendChild(
+                createSubItem(
+                    opt.label,
+                    isActive,
+                    () => setQuality(opt.value, opt.label)
+                )
+            );
+        });
+    }
+}
+
+function createSubItem(text, isActive, onClick){
+
+    const div = document.createElement("div");
+
+    div.className =
+        "sub-item" + (isActive ? " active" : "");
+
+    div.innerHTML = `
+        <span>${text}</span>
+        <div class="radio-circle"></div>
+    `;
+
+    div.addEventListener("click", (e) => {
+        e.stopPropagation();
+        onClick();
+        closeSubMenu();
+    });
+
+    return div;
+}
+
+function closeSubMenu(){
+
+    settingsSub.classList.remove("active");
+    settingsMain.style.display = "flex";
+}
+
+/* =========================
+   GLOBAL SPEED SYNC SYSTEM
+========================= */
+
+let speedSyncLock = false;
+
+/* =========================
+   UPDATE SPEED UI
+========================= */
+
+function updateSpeedUI(speed){
+
+    currentSpeed = Number(speed);
+
+    // round weird extension values
+    currentSpeed =
+        Math.round(currentSpeed * 100) / 100;
+
+    let label =
+        currentSpeed === 1
+        ? "Normal"
+        : `${currentSpeed}x`;
+
+    speedLabel.textContent = label;
+
+    // update active state inside submenu
+    document
+    .querySelectorAll(".sub-item")
+    .forEach(item => {
+
+        item.classList.remove("active");
+
+        const itemText =
+            item.innerText.trim();
+
+        if(
+            itemText === label ||
+            (
+                label === "Normal" &&
+                itemText === "Normal"
+            )
+        ){
+            item.classList.add("active");
+        }
+    });
+}
+
+/* =========================
+   DETECT ALL SPEED CHANGES
+========================= */
+
+video.addEventListener("ratechange", () => {
+
+    // avoid recursive updates
+    if(speedSyncLock) return;
+
+    const detectedSpeed =
+        video.playbackRate;
+
+    updateSpeedUI(detectedSpeed);
+
+    savePlayerSettings();
+});
+
+/* =========================
+   SET SPEED SAFELY
+========================= */
+
+function setSpeed(val, label){
+
+    speedSyncLock = true;
+
+    currentSpeed = Number(val);
+
+    // apply safely
+    requestAnimationFrame(() => {
+
+        video.playbackRate =
+            currentSpeed;
+
+        video.defaultPlaybackRate =
+            currentSpeed;
+
+        updateSpeedUI(currentSpeed);
+
+        savePlayerSettings();
+
+        setTimeout(() => {
+
+            speedSyncLock = false;
+
+        }, 50);
+    });
+}
+function setQuality(levelIndex, label){
+
+    currentQuality = label;
+
+    if(!hls) return;
+
+    // AUTO
+    if(levelIndex === -1){
+
+        hls.currentLevel = -1;
+        hls.nextLevel = -1;
+        hls.loadLevel = -1;
+
+        hls.autoLevelEnabled = true;
+
+        qualityLabel.textContent =
+            "Auto";
+
+    } else {
+
+        hls.autoLevelEnabled = false;
+
+        // IMPORTANT
+        hls.nextLevel = levelIndex;
+        hls.loadLevel = levelIndex;
+
+        // smooth switching
+        setTimeout(() => {
+
+            hls.currentLevel =
+                levelIndex;
+
+        }, 100);
+
+        const selected =
+            hls.levels[levelIndex];
+
+        if(selected){
+
+            qualityLabel.textContent =
+                `${selected.height}p`;
+        }
+    }
+
+    document
+    .querySelectorAll(".sub-item")
+    .forEach(item => {
+
+        item.classList.remove("active");
+
+        if(
+            item.innerText.trim() === label
+        ){
+            item.classList.add("active");
+        }
+    });
+
+    savePlayerSettings();
+}
+
+settingsBtn.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    if(settingsPopup.classList.contains("active")){
+
+        settingsPopup.classList.remove("active");
+
+        setTimeout(closeSubMenu, 200);
+
+    } else {
+
+        settingsPopup.classList.add("active");
+    }
+});
+
+document.addEventListener("click", (e) => {
+
+    if(!e.target.closest(".settings-wrapper")){
+
+        settingsPopup.classList.remove("active");
+
+        setTimeout(closeSubMenu, 200);
+    }
+});
+
+/* =========================
+   MENU & FULLSCREEN
+========================= */
+
+const videoPlayer =
+    document.querySelector(".video-player");
+
+const menuPane =
+    document.getElementById("menuPane");
+
+const menuBtn =
+    document.getElementById("menuBtn");
+
+const closeMenu =
+    document.getElementById("closeMenu");
+
+videoPlayer.addEventListener("click", (e) => {
+
+    // ❌ DON'T TOGGLE PLAY IF SETTINGS POPUP OPEN
+    if(
+        settingsPopup.classList.contains("active") &&
+        e.target.closest(".settings-wrapper")
+    ){
+        return;
+    }
+
+    // ❌ IGNORE UI CONTROLS
+    if(
+        e.target.closest(".control-btn") ||
+        e.target.closest(".player-icon") ||
+        e.target.closest(".menu-pane") ||
+        e.target.closest(".progress-container") ||
+        e.target.closest(".menu-btn") ||
+        e.target.closest(".settings-popup") ||
+        e.target.closest(".settings-option") ||
+        e.target.closest(".sub-item") ||
+        e.target.closest(".sub-header")
+    ){
+        return;
+    }
+
+    togglePlay();
+});
+settingsPopup.addEventListener("click", (e) => {
+    e.stopPropagation();
+});
+menuBtn.addEventListener("click", () => {
+
+    menuPane.classList.toggle("active");
+    videoPlayer.classList.toggle("menu-open");
+});
+
+closeMenu.addEventListener("click", () => {
+
+    menuPane.classList.remove("active");
+    videoPlayer.classList.remove("menu-open");
+});
+
+fullscreenBtn.addEventListener("click", toggleFullscreen);
+
+function toggleFullscreen(){
+
+    if(!document.fullscreenElement){
+
+        document.documentElement.requestFullscreen();
+
+    } else {
+
+        document.exitFullscreen();
+    }
+}
+
+document.addEventListener("fullscreenchange", () => {
+
+    if(document.fullscreenElement){
+
+        fullscreenIcon.classList.remove("fa-expand");
+        fullscreenIcon.classList.add("fa-compress");
+
+    } else {
+
+        fullscreenIcon.classList.remove("fa-compress");
+        fullscreenIcon.classList.add("fa-expand");
+    }
+});
+/* =========================
+   EXTENSION SPEED WATCHER
+========================= */
+
+setInterval(() => {
+
+    const actualSpeed =
+        Math.round(
+            video.playbackRate * 100
+        ) / 100;
+
+    if(actualSpeed !== currentSpeed){
+
+        updateSpeedUI(actualSpeed);
+
+        savePlayerSettings();
+    }
+
+}, 300);
+</script>
+<script>
+/* =========================
+   WATCH HISTORY SYSTEM
+========================= */
+
+const HISTORY_KEY = "watch-history";
+const historyList = document.getElementById("historyList");
+
+/* =========================
+   GET VIDEO TITLE
+========================= */
+
+function getVideoTitle(){
+
+    // try URL filename
+    try{
+
+        const url = new URL(videoUrl);
+
+        let file =
+            url.pathname.split("/").pop();
+
+        file =
+            decodeURIComponent(file);
+
+        file =
+            file.replace(/\.[^/.]+$/, "");
+
+        return file || "Untitled Video";
+
+    }catch{
+
+        return "Untitled Video";
+    }
+}
+
+/* =========================
+   GENERATE THUMBNAIL
+   FROM LAST WATCHED TIME
+========================= */
+
+function generateThumbnail(time = 0){
+
+    return new Promise((resolve) => {
+
+        try{
+
+            const tempVideo =
+                document.createElement("video");
+
+            tempVideo.crossOrigin = "anonymous";
+            tempVideo.src = videoUrl;
+            tempVideo.muted = true;
+            tempVideo.playsInline = true;
+
+            tempVideo.addEventListener(
+                "loadedmetadata",
+                () => {
+
+                    // use last watched position
+                    let captureTime = time;
+
+                    // safety limits
+                    if(
+                        isNaN(captureTime) ||
+                        captureTime <= 0
+                    ){
+                        captureTime =
+                            Math.min(
+                                5,
+                                tempVideo.duration / 4
+                            );
+                    }
+
+                    // avoid black frame near ending
+                    if(
+                        captureTime >=
+                        tempVideo.duration - 1
+                    ){
+                        captureTime =
+                            tempVideo.duration - 2;
+                    }
+
+                    tempVideo.currentTime =
+                        captureTime;
+                }
+            );
+
+            tempVideo.addEventListener(
+                "seeked",
+                () => {
+
+                    const canvas =
+                        document.createElement("canvas");
+
+                    canvas.width = 480;
+canvas.height = 270;
+
+                    const ctx =
+                        canvas.getContext("2d");
+
+                    ctx.drawImage(
+                        tempVideo,
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
+
+                    const thumbnail =
+                        canvas.toDataURL(
+                            "image/jpeg",
+                            0.75
+                        );
+
+                    resolve(thumbnail);
+                }
+            );
+
+            tempVideo.addEventListener(
+                "error",
+                () => {
+
+                    resolve("book.png");
+                }
+            );
+
+        }catch{
+
+            resolve("book.png");
+        }
+    });
+}
+/* =========================
+   SAVE HISTORY
+========================= */
+
+async function saveWatchHistory(){
+
+    if(!videoUrl) return;
+
+    const existing =
+        JSON.parse(
+            localStorage.getItem(HISTORY_KEY)
+        ) || [];
+
+    // remove duplicate
+    const filtered =
+        existing.filter(
+            item => item.url !== videoUrl
+        );
+
+    const progressPercent =
+        video.duration
+        ? (video.currentTime / video.duration) * 100
+        : 0;
+
+    // remove fully watched
+    if(progressPercent >= 98){
+
+        localStorage.setItem(
+            HISTORY_KEY,
+            JSON.stringify(filtered)
+        );
+
+        renderWatchHistory();
+
+        return;
+    }
+
+    let thumbnail = "book.png";
+
+    const already =
+        existing.find(
+            item => item.url === videoUrl
+        );
+
+    thumbnail =
+await generateThumbnail(
+    video.currentTime
+);
+
+    const videoData = {
+
+        title: getVideoTitle(),
+
+        url: videoUrl,
+
+        duration: formatTime(video.duration),
+
+        currentTime: video.currentTime,
+
+        progress: progressPercent,
+
+        thumbnail,
+
+        updatedAt: Date.now()
+    };
+
+    filtered.unshift(videoData);
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(
+            filtered.slice(0, 50)
+        )
+    );
+
+    renderWatchHistory();
+}
+
+/* =========================
+   RENDER HISTORY
+========================= */
+
+/* =========================
+   RENDER HISTORY
+========================= */
+
+function renderWatchHistory(){
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(HISTORY_KEY)
+        ) || [];
+
+    historyList.innerHTML = "";
+
+    // remove invalid entries
+    const cleanedHistory =
+        history.filter(item =>
+            item &&
+            item.url &&
+            item.title
+        );
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(cleanedHistory)
+    );
+
+    if(!cleanedHistory.length){
+
+        historyList.innerHTML = `
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                flex-direction:column;
+                height:100%;
+                color:#8a8a8a;
+                gap:12px;
+                padding:30px;
+                text-align:center;
+            ">
+                <i
+                    class="fa-solid fa-clock-rotate-left"
+                    style="
+                        font-size:42px;
+                        opacity:0.45;
+                    "
+                ></i>
+
+                <div style="
+                    font-size:16px;
+                    font-weight:600;
+                    color:#cfcfcf;
+                ">
+                    No watched videos yet
+                </div>
+
+                <div style="
+                    font-size:14px;
+                    line-height:1.5;
+                    max-width:260px;
+                ">
+                    Videos watched partially
+                    will appear here automatically.
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+    cleanedHistory
+    .sort((a,b) => b.updatedAt - a.updatedAt)
+    .forEach(item => {
+
+        const isCurrent =
+            item.url === videoUrl;
+
+        const card =
+            document.createElement("div");
+
+        card.className = "menu-card";
+
+        if(isCurrent){
+
+            card.style.background =
+                "rgba(59,130,246,0.12)";
+
+            card.style.borderLeft =
+                "3px solid #3b82f6";
+        }
+
+        card.innerHTML = `
+
+            <div style="
+                position:relative;
+                flex-shrink:0;
+            ">
+
+                <img
+                    class="menu-thumb"
+                    src="${item.thumbnail}"
+                    loading="lazy"
+                >
+
+                <div style="
+                    position:absolute;
+                    right:6px;
+                    bottom:6px;
+                    background:rgba(0,0,0,0.82);
+                    color:#fff;
+                    font-size:12px;
+                    padding:3px 6px;
+                    border-radius:5px;
+                    font-weight:600;
+                ">
+                    ${item.duration}
+                </div>
+
+            </div>
+
+            <div class="menu-info">
+
+                <div class="menu-title">
+                    ${item.title}
+                </div>
+
+                <div class="menu-duration">
+
+                    ${formatTime(item.currentTime)}
+
+                </div>
+
+                <div class="menu-watch-bar">
+
+                    <div
+                        class="menu-watch-progress"
+                        style="
+                            width:${item.progress}%;
+                        "
+                    ></div>
+
+                </div>
+
+            </div>
+        `;
+
+        card.addEventListener("click", () => {
+
+            if(item.url === videoUrl){
+
+                menuPane.classList.remove("active");
+                videoPlayer.classList.remove("menu-open");
+                return;
+            }
+
+            window.location.href =
+                `${location.pathname}?url=` +
+                encodeURIComponent(item.url);
+        });
+
+        historyList.appendChild(card);
+    });
+}
+/* =========================
+   AUTO SAVE HISTORY
+========================= */
+
+let historySaveTimer = null;
+
+video.addEventListener("timeupdate", () => {
+
+    clearTimeout(historySaveTimer);
+
+    historySaveTimer =
+        setTimeout(() => {
+
+            saveWatchHistory();
+
+        }, 1200);
+});
+
+/* =========================
+   SAVE ON EXIT
+========================= */
+
+window.addEventListener(
+    "beforeunload",
+    saveWatchHistory
+);
+
+/* =========================
+   REMOVE WHEN FINISHED
+========================= */
+
+video.addEventListener("ended", () => {
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(HISTORY_KEY)
+        ) || [];
+
+    const filtered =
+        history.filter(
+            item => item.url !== videoUrl
+        );
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(filtered)
+    );
+
+    renderWatchHistory();
+});
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+renderWatchHistory();
+</script>
+
+</body>
+</html>
