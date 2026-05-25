@@ -622,6 +622,7 @@ let firebaseStreamStatus = "VOD";
 /* =========================
    GET VIDEO URL & LOAD
 ========================= */
+
 let videoUrl = "";
 const params = new URLSearchParams(window.location.search);
 
@@ -631,50 +632,111 @@ if(params.get("url")){
     videoUrl = decodeURIComponent(window.location.search.substring(1));
 }
 
-const STORAGE_KEY = "video-progress-" + btoa(videoUrl);
+const STORAGE_KEY =
+    "video-progress-" + btoa(videoUrl);
 
 let hls = null;
 
 if(videoUrl){
 
-    if(Hls.isSupported()){
+    // detect HLS stream
+    const isHLS =
+        videoUrl.includes(".m3u8");
 
-        hls = new Hls({
-            enableWorker: true,
-            lowLatencyMode: true,
-            backBufferLength: 90,
-            maxBufferLength: 30,
-            maxMaxBufferLength: 60,
-            capLevelToPlayerSize: true,
-            autoStartLoad: true
-        });
+    if(isHLS){
 
-        hls.loadSource(videoUrl);
-        hls.attachMedia(video);
+        /* =========================
+           HLS STREAM
+        ========================== */
 
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if(Hls.isSupported()){
 
-    setupQualityLevels();
+            hls = new Hls({
+                enableWorker:true,
+                lowLatencyMode:true,
+                backBufferLength:90,
+                maxBufferLength:30,
+                maxMaxBufferLength:60,
+                capLevelToPlayerSize:true,
+                autoStartLoad:true
+            });
 
-    setTimeout(() => {
+            hls.loadSource(videoUrl);
+            hls.attachMedia(video);
 
-        loadPlayerSettings();
+            hls.on(
+                Hls.Events.MANIFEST_PARSED,
+                () => {
 
-    }, 300);
+                    setupQualityLevels();
 
-    video.play();
-});
+                    setTimeout(() => {
+                        loadPlayerSettings();
+                    }, 300);
 
-    } else if(video.canPlayType("application/vnd.apple.mpegurl")) {
+                    video.play().catch(()=>{});
+                }
+            );
+
+            hls.on(Hls.Events.ERROR, (_, data) => {
+
+                console.log("HLS ERROR:", data);
+
+            });
+
+        } else if(
+            video.canPlayType(
+                "application/vnd.apple.mpegurl"
+            )
+        ){
+
+            video.src = videoUrl;
+
+            video.addEventListener(
+                "loadedmetadata",
+                () => {
+
+                    loadPlayerSettings();
+
+                    video.play().catch(()=>{});
+                }
+            );
+        }
+
+    } else {
+
+        /* =========================
+           NORMAL MP4 / VIDEO FILE
+        ========================== */
 
         video.src = videoUrl;
 
-        video.addEventListener("loadedmetadata", () => {
-            video.play();
-        });
+        video.addEventListener(
+            "loadedmetadata",
+            () => {
+
+                loadPlayerSettings();
+
+                video.play().catch(()=>{});
+            }
+        );
+
+        video.addEventListener(
+            "error",
+            (e) => {
+
+                console.log(
+                    "VIDEO LOAD ERROR:",
+                    e
+                );
+
+                alert(
+                    "Video failed to load."
+                );
+            }
+        );
     }
 }
-
 /* =========================
    PLAYER CONTROLS
 ========================= */
