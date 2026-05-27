@@ -1142,7 +1142,6 @@ display:flex;
             <div data-coach="Mission JEET">Mission JEET</div>
             <div data-coach="Next Toppers">Next Toppers</div>
             <div data-coach="Vibrant Academy">Vibrant Academy</div>
-          <div data-coach="Master Sahab">Master Sahab</div>
         </div>
     </div>
 </div>
@@ -1253,7 +1252,6 @@ margin-bottom:10px;
   <option value="Mission JEET">Mission JEET</option>
   <option value="Next Toppers">Next Toppers</option>
   <option value="Vibrant Academy">Vibrant Academy</option>
-    <option value="Master Sahab">Master Sahab</option>
 </select>
 <select id="editLang" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="English">English</option>
@@ -1331,7 +1329,6 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
   <option value="Mission JEET">Mission JEET</option>
   <option value="Next Toppers">Next Toppers</option>
   <option value="Vibrant Academy">Vibrant Academy</option>
-  <option value="Master Sahab">Master Sahab</option>
 </select>
 <select id="addLang" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="English">English</option>
@@ -1917,46 +1914,60 @@ function loadCourses() {
 
     let allCourses = [];
 
-    // 🔥 Collect all courses first
+    // 🔥 Collect all courses
     Object.keys(batches).forEach(categoryKey => {
 
       const category = batches[categoryKey];
 
       Object.keys(category).forEach(courseKey => {
+
         const course = category[courseKey];
 
         course.id = courseKey;
         course.classKey = categoryKey;
+
+        // 🔥 Save timestamp from Firebase key
+        course.createdAt = Number(courseKey) || 0;
 
         allCourses.push(course);
       });
 
     });
 
-    // 🔥 SORT ONCE (backend style)
+    // 🔥 SORTING SYSTEM
     allCourses.sort((a, b) => {
 
       const aGoal = a.classKey === currentGoal;
       const bGoal = b.classKey === currentGoal;
 
-      const aBookstore = (a.coach || "").toLowerCase().includes("bookstore");
-      const bBookstore = (b.coach || "").toLowerCase().includes("bookstore");
+      const aBookstore =
+        (a.coach || "").toLowerCase().includes("bookstore");
 
-      // Priority 1 → goal + BOOKStore
+      const bBookstore =
+        (b.coach || "").toLowerCase().includes("bookstore");
+
+      // ✅ PRIORITY 1:
+      // BOOKStore courses of selected goal
       if (aGoal && aBookstore && !(bGoal && bBookstore)) return -1;
       if (bGoal && bBookstore && !(aGoal && aBookstore)) return 1;
 
-      // Priority 2 → goal only
+      // ✅ PRIORITY 2:
+      // Other courses of selected goal
       if (aGoal && !bGoal) return -1;
       if (bGoal && !aGoal) return 1;
 
-      return 0;
+      // ✅ PRIORITY 3:
+      // Newly added first
+      return b.createdAt - a.createdAt;
     });
 
-    // 🔥 RENDER ONCE
+    // 🔥 Render
     allCourses.forEach(course => {
+
       const card = createCard(course, course.classKey);
+
       coursesContainer.appendChild(card);
+
     });
 
     updateCourseCount();
@@ -1964,7 +1975,6 @@ function loadCourses() {
   });
 
 }
-
 
 loadCourses();
 /* SAVE GOAL FROM POPUP */
