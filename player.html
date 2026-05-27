@@ -4,6 +4,43 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Player - BOOKStore</title>
+
+<!-- WhatsApp / Social Share Preview -->
+<!-- =========================
+     SOCIAL SHARE META TAGS
+========================= -->
+
+<meta property="og:type" content="video.other">
+
+<meta property="og:site_name" content="BOOKStore">
+
+<meta property="og:title" id="ogTitle"
+content="BOOKStore Player">
+
+<meta property="og:description" id="ogDescription"
+content="Watch videos on BOOKStore">
+
+<meta property="og:image" id="ogImage"
+content="https://bookstore-nt.vercel.app/click.png">
+
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+
+<meta property="og:url" id="ogUrl"
+content="https://bookstore-nt.vercel.app/">
+
+<meta name="twitter:card"
+content="summary_large_image">
+
+<meta name="twitter:title" id="twitterTitle"
+content="BOOKStore Player">
+
+<meta name="twitter:description" id="twitterDescription"
+content="Watch videos on BOOKStore">
+
+<meta name="twitter:image" id="twitterImage"
+content="https://bookstore-nt.vercel.app/click.png">
+
 <link rel="icon" type="image/png" href="book.png">
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
@@ -490,7 +527,28 @@ html,body {
         transform:translateY(0);
     }
 }
+/* =========================
+   AUTO HIDE CONTROLS
+========================= */
 
+.player-area.hide-ui .top-controls,
+.player-area.hide-ui .bottom-player,
+.player-area.hide-ui .video-overlay{
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.25s ease;
+}
+
+.top-controls,
+.bottom-player,
+.video-overlay{
+    opacity:1;
+    transition:opacity 0.25s ease;
+}
+
+.player-area.hide-ui{
+    cursor:none;
+}
 </style>
 </head>
 <body>
@@ -1456,32 +1514,124 @@ const menuBtn =
 const closeMenu =
     document.getElementById("closeMenu");
 
-videoPlayer.addEventListener("click", (e) => {
+/* =========================
+   AUTO HIDE CONTROLS SYSTEM
+========================= */
 
-    // ❌ DON'T TOGGLE PLAY IF SETTINGS POPUP OPEN
+const playerArea =
+    document.querySelector(".player-area");
+
+let hideControlsTimer = null;
+
+/* SHOW CONTROLS */
+
+function showControls(){
+
+    playerArea.classList.remove("hide-ui");
+
+    clearTimeout(hideControlsTimer);
+
+    // don't hide if paused
+    if(video.paused) return;
+
+    // don't hide while menu/settings open
     if(
-        settingsPopup.classList.contains("active") &&
-        e.target.closest(".settings-wrapper")
+        settingsPopup.classList.contains("active") ||
+        menuPane.classList.contains("active")
     ){
         return;
     }
 
-    // ❌ IGNORE UI CONTROLS
-    if(
-        e.target.closest(".control-btn") ||
-        e.target.closest(".player-icon") ||
-        e.target.closest(".menu-pane") ||
-        e.target.closest(".progress-container") ||
-        e.target.closest(".menu-btn") ||
-        e.target.closest(".settings-popup") ||
-        e.target.closest(".settings-option") ||
-        e.target.closest(".sub-item") ||
-        e.target.closest(".sub-header")
-    ){
-        return;
-    }
+    hideControlsTimer = setTimeout(() => {
 
-    togglePlay();
+        playerArea.classList.add("hide-ui");
+
+    }, 5000);
+}
+
+/* HIDE CONTROLS */
+
+function hideControls(){
+
+    if(
+        !settingsPopup.classList.contains("active") &&
+        !menuPane.classList.contains("active") &&
+        !video.paused
+    ){
+        playerArea.classList.add("hide-ui");
+    }
+}
+
+/* MOUSE / TOUCH ACTIVITY */
+
+[
+    "mousemove",
+    "touchstart",
+    "touchmove",
+    "click"
+].forEach(event => {
+
+    playerArea.addEventListener(
+        event,
+        showControls
+    );
+});
+
+/* INITIAL TIMER */
+
+video.addEventListener("play", () => {
+
+    showControls();
+});
+
+/* SHOW WHEN PAUSED */
+
+video.addEventListener("pause", () => {
+
+    clearTimeout(hideControlsTimer);
+
+    playerArea.classList.remove("hide-ui");
+});
+
+/* KEEP VISIBLE INSIDE SETTINGS */
+
+settingsBtn.addEventListener("click", () => {
+
+    playerArea.classList.remove("hide-ui");
+
+    clearTimeout(hideControlsTimer);
+});
+
+/* KEEP VISIBLE INSIDE MENU */
+
+menuBtn.addEventListener("click", () => {
+
+    playerArea.classList.remove("hide-ui");
+
+    clearTimeout(hideControlsTimer);
+
+    if(!menuPane.classList.contains("active")){
+
+        setTimeout(showControls, 100);
+    }
+});
+
+/* PREVENT VIDEO CLICK PLAY/PAUSE */
+
+video.addEventListener("click", (e) => {
+
+    e.preventDefault();
+    e.stopPropagation();
+
+});
+
+/* OPTIONAL:
+   DOUBLE CLICK FULLSCREEN
+*/
+
+video.addEventListener("dblclick", () => {
+
+    toggleFullscreen();
 });
 settingsPopup.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -1979,6 +2129,87 @@ video.addEventListener("ended", () => {
 ========================= */
 
 renderWatchHistory();
+/* =========================
+   DYNAMIC SHARE PREVIEW
+========================= */
+
+async function updateShareMeta(){
+
+    if(!videoUrl) return;
+
+    const title =
+        getVideoTitle();
+
+    let previewImage =
+        "https://bookstore-nt.vercel.app/click.png";
+
+    try{
+
+        previewImage =
+            await generateThumbnail(1);
+
+    }catch(err){
+
+        console.log(err);
+    }
+
+    // title
+    document
+    .getElementById("ogTitle")
+    .setAttribute(
+        "content",
+        title
+    );
+
+    document
+    .getElementById("twitterTitle")
+    .setAttribute(
+        "content",
+        title
+    );
+
+    // description
+    document
+    .getElementById("ogDescription")
+    .setAttribute(
+        "content",
+        `Watch ${title} on BOOKStore`
+    );
+
+    document
+    .getElementById("twitterDescription")
+    .setAttribute(
+        "content",
+        `Watch ${title} on BOOKStore`
+    );
+
+    // image
+    document
+    .getElementById("ogImage")
+    .setAttribute(
+        "content",
+        previewImage
+    );
+
+    document
+    .getElementById("twitterImage")
+    .setAttribute(
+        "content",
+        previewImage
+    );
+
+    // url
+    document
+    .getElementById("ogUrl")
+    .setAttribute(
+        "content",
+        location.href
+    );
+}
+
+/* RUN */
+
+setTimeout(updateShareMeta, 1000);
 </script>
 
 </body>
