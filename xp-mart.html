@@ -2713,7 +2713,12 @@ applyCouponBtn.addEventListener("click", () => {
   const basePrice = 100;
 
 // ✅ VALID COUPONS
-if (code === "khyati90") {
+if (
+  code === "khyati90" ||
+  code === "books100" ||
+  code === "bhavesh500" ||
+  code === "vanshikaa90"
+) {
 
   // 🔥 90% OFF → 10 XP
   discountAmount = Math.floor(basePrice * 0.9);
@@ -2721,8 +2726,12 @@ if (code === "khyati90") {
 
   updatePaymentSummary();
 
-  document.querySelector(".coupon-title").innerText = "KHYATI90 Applied!";
-  document.querySelector(".coupon-sub").innerText = `${discountAmount} XP saved`;
+  document.querySelector(".coupon-title").innerText =
+    `${code.toUpperCase()} Applied!`;
+
+  document.querySelector(".coupon-sub").innerText =
+    `${discountAmount} XP saved`;
+
   document.querySelector(".coupon-sub").style.color = "#2ecc71";
 
   couponError.style.display = "none";
@@ -2730,7 +2739,7 @@ if (code === "khyati90") {
 
   closeCoupon();
   showCouponSuccess();
-  createToast("success", "Coupon Applied 🎉");
+  createToast("success", "90% OFF Applied 🎉");
 
   applyCouponBtn.disabled = true;
   couponInput.disabled = true;
@@ -2743,8 +2752,12 @@ if (code === "khyati90") {
 
   updatePaymentSummary();
 
-  document.querySelector(".coupon-title").innerText = "KINGOFPIRATES80 Applied!";
-  document.querySelector(".coupon-sub").innerText = `${discountAmount} XP saved`;
+  document.querySelector(".coupon-title").innerText =
+    "KINGOFPIRATES80 Applied!";
+
+  document.querySelector(".coupon-sub").innerText =
+    `${discountAmount} XP saved`;
+
   document.querySelector(".coupon-sub").style.color = "#2ecc71";
 
   couponError.style.display = "none";
