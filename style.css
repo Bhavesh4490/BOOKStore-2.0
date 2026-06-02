@@ -924,9 +924,7 @@ box-shadow:0 25px 60px rgba(0,0,0,0.25);
 
 .login-box h2{
 font-size:22px;
-margin-right:180px;
 font-weight:500;
-margin: bottom 0;;
 }
 
 /* INPUTS */
@@ -1079,7 +1077,7 @@ background:white;
 
 border-radius:20px;
 
-padding:74px 28px;
+padding:55px 28px;
 
 display:flex;
 flex-direction:column;
@@ -1100,7 +1098,7 @@ transform:translateY(0) scale(1);
 /* IMAGE */
 
 .login-image img{
-width:140px;
+width:170px;
 margin-bottom:10px;
 }
 
