@@ -851,7 +851,7 @@ background:#5b4bdb;
 color:white;
 
 border:none;
-border-radius:6px;
+border-radius:5px;
 
 cursor:pointer;
 
@@ -914,22 +914,19 @@ display:flex;
 flex-direction:column;   /* IMPORTANT */
 align-items:center;
 
-gap:14px;                /* space between elements */
+gap:10px;                /* space between elements */
 
 box-shadow:0 25px 60px rgba(0,0,0,0.25);
 }
 
-/* IMAGE */
-
-.login-image img{
-width:110px;
-}
 
 /* TITLE */
 
 .login-box h2{
-font-size:20px;
-text-align:center;
+font-size:22px;
+margin-right:180px;
+font-weight:500;
+margin: bottom 0;;
 }
 
 /* INPUTS */
@@ -1076,13 +1073,13 @@ visibility:visible;
 
 .login-box{
 
-width:360px;
+width:500px;
 
 background:white;
 
 border-radius:20px;
 
-padding:35px 30px;
+padding:74px 28px;
 
 display:flex;
 flex-direction:column;
@@ -1103,34 +1100,29 @@ transform:translateY(0) scale(1);
 /* IMAGE */
 
 .login-image img{
-width:110px;
-animation:float 4s ease-in-out infinite;
+width:140px;
+margin-bottom:10px;
 }
 
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-10px)}
-100%{transform:translateY(0)}
-}
 
 /* INPUT */
 
 .login-box input{
 width:100%;
-padding:12px;
+padding:18px;
 
 border:1px solid #ddd;
-border-radius:8px;
+border-radius:5px;
 
 font-size:14px;
 
 transition:.25s;
+margin-bottom:10px;
 }
 
 .login-box input:focus{
 border-color:#5b4bdb;
 outline:none;
-box-shadow:0 0 0 2px rgba(91,75,219,.15);
 }
 
 /* LOGIN BUTTON */
@@ -1139,7 +1131,7 @@ box-shadow:0 0 0 2px rgba(91,75,219,.15);
 
 width:100%;
 
-padding:12px;
+padding:14px;
 
 background:linear-gradient(135deg,#6a5cff,#5b4bdb);
 
@@ -1150,15 +1142,12 @@ border:none;
 border-radius:8px;
 
 cursor:pointer;
-
+font-size:18px;
 font-weight:500;
 
 transition:.3s;
-}
-
-.submit-btn:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 18px rgba(91,75,219,.35);
+margin-bottom:10px;
+margin-top:18px;
 }
 
 /* GOOGLE BUTTON */
@@ -1172,7 +1161,7 @@ align-items:center;
 justify-content:center;
 gap:10px;
 
-padding:11px;
+padding:12px;
 
 border:1px solid #ddd;
 
@@ -1196,14 +1185,15 @@ width:18px;
 /* NEW USER */
 
 .new-user{
-font-size:13px;
+font-size:15px;
 color:#555;
+margin-top:8px;
 }
 
 .new-user span{
 color:#5b4bdb;
 cursor:pointer;
-font-weight:500;
+font-weight:600;
 }
 
 .new-user span:hover{
@@ -1213,7 +1203,7 @@ text-decoration:underline;
 /* TERMS */
 
 .terms-text{
-font-size:12px;
+font-size:15px;
 color:#666;
 text-align:center;
 line-height:1.4;
@@ -1778,7 +1768,7 @@ text-decoration:underline;
 /* POPUP BOX */
 .login-box{
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     background: #fff;
     border-radius: 18px 18px 0 0;
     padding: 20px;
