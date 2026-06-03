@@ -1718,90 +1718,122 @@ body.popup-active #notificationPanel{
   margin-left:6px;
 }
 
-/* ⭐ MY STUDY ZONE */
+/* ⭐ PW STYLE STUDY GRID */
 
 .study-zone{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,minmax(250px,460px));
   gap:18px;
-  margin:18px 30px 10px;
+  margin:20px 30px;
 }
+
+/* CARD */
 
 .study-card{
   background:#fff;
-  border-radius:18px;
-  padding:22px;
   border:1px solid #ececec;
-  cursor:pointer;
-  transition:0.28s ease;
-  min-height:135px;
+  border-radius:18px;
+  height:90px;
+  padding:10px 10px;
   display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  transition:all .25s ease;
+  position:relative;
 }
 
 .study-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 28px rgba(0,0,0,0.06);
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
 }
 
+/* ICON BOX */
+
 .study-icon{
-  width:44px;
-  height:44px;
-  border-radius:12px;
+  width:72px;
+  height:72px;
+  border-radius:14px;
+  background:#f5f5f5;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#f3f4ff;
-  color:#5c4cff;
-  font-size:22px;
-  margin-bottom:18px;
+  flex-shrink:0;
+  margin:0;
+}
+
+/* LIBRARY ICON COLOR */
+
+#libraryCard .study-icon{
+  background:#f5f5f5;
+}
+
+#libraryCard .study-icon i{
+  color:#caa400;
+  font-size:28px;
+}
+
+/* KHAZANA ICON COLOR */
+
+#khazanawrapper .study-icon{
+  background:#f5f5f5;
+}
+
+#khazanawrapper .study-icon i{
+  color:#1f9d48;
+  font-size:28px;
+}
+
+/* CONTENT */
+
+.study-content{
+  flex:1;
 }
 
 .study-content h3{
-  font-size:16px;
+  margin:0;
+  font-size:17px;
   font-weight:600;
-  color:#222;
-  margin-bottom:6px;
+  color:#333;
 }
 
 .study-content p{
-  font-size:14px;
-  color:#777;
-  line-height:1.5;
+  display:none; /* hide description like screenshot */
 }
 
-/* 📱 MOBILE */
+/* RIGHT ARROW */
+
+.study-card::after{
+  content:"›";
+  position:absolute;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:24px;
+  color:#9ca3af;
+  font-weight:300;
+}
+
+/* MOBILE */
 
 @media(max-width:768px){
-
   .study-zone{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,minmax(220px,460px));
+    margin:15px;
     gap:12px;
-    margin:18px 15px 10px;
   }
 
   .study-card{
-    padding:16px;
-    min-height:120px;
-    border-radius:14px;
-  }
-
-  .study-content h3{
-    font-size:15px;
-  }
-
-  .study-content p{
-    font-size:12px;
+    height:72px;
   }
 
   .study-icon{
-    width:40px;
-    height:40px;
-    font-size:20px;
-    margin-bottom:14px;
+    width:46px;
+    height:46px;
   }
 
+  .study-icon i{
+    font-size:24px !important;
+  }
 }
 /* 📚 LIBRARY PANE */
 
@@ -2110,30 +2142,43 @@ body.popup-active #notificationPanel{
 
 <div class="study-zone">
 
+  <!-- MY BATCHES -->
+  <div class="study-card">
+    <div class="study-icon">
+      <i class="ph ph-student"></i>
+    </div>
+
+    <div class="study-content">
+      <h3>My Batches</h3>
+      <p>View list of batches in which you are enrollhttps://nextenigma-mj.pages.dev/_next/static/media/4cf2300e9c8272f7-s.p.woff2ed</p>
+    </div>
+  </div>
 <!-- KHAZANA -->
-<div class="study-card" id="khazanawrapper" style="display:none;" onclick="window.open('/khazana.html')">
+<div class="study-card" id="khazanawrapper" style="display:none;"
+onclick="window.open('/khazana.html')">
+
   <div class="study-icon">
-    <i class="ph-fill ph-briefcase"></i>
+    <i class="ph-fill ph-treasure-chest"></i>
   </div>
 
-  <div class="study-content" id="khazanaCard">
+  <div class="study-content">
     <h3>Khazana</h3>
-    <p>Access Past Years Batches Content at One Place</p>
   </div>
+
 </div>
 
 <!-- LIBRARY -->
 <div class="study-card" id="libraryCard">
+
   <div class="study-icon">
-    <i class="ph ph-books"></i>
+    <i class="ph-fill ph-books"></i>
   </div>
 
   <div class="study-content">
     <h3>Library</h3>
-    <p>Access all your free material here</p>
   </div>
-</div>
 
+</div>
 </div>
 
 
