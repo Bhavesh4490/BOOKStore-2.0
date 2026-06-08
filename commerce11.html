@@ -1283,10 +1283,17 @@ padding:16px;
 <a href="home.html">
 <i class="ph ph-squares-four"></i> All Classes
 </a>
-<h4>EXPLORE BOOKStore</h4>
+
+<h4>ADMIN TOOLS</h4>
 <a href="admin.html" id="adminLink" style="display:none;">
-  <i class="ph ph-lock"></i> Admin Panel
+  <i class="ph ph-lock"></i> Management
+</a> 
+<a href="adminsupport.html" id="adminSupportBtn" style="display:none;">
+    <i class="ph ph-headset"></i> Admin Support
 </a>
+
+<h4>EXPLORE BOOKStore</h4>
+
 <a href="xp-mart.html">
 <i class="ph ph-shopping-bag"></i> XP Mart
 </a>
@@ -1858,9 +1865,24 @@ const adminUID = "F9UxJ3W6CVUVIIgwByuHQxscQab2";const adminUIDs = [
 ];
 const adminLink = document.getElementById("adminLink");
 const adminActions = document.getElementById("adminActions");
+const adminSupportBtn = document.getElementById("adminSupportBtn");
+
 if (adminUIDs.includes(uid)) {
+
+  // Show Admin Tools
   adminLink.style.display = "flex";
-  adminActions.style.display = "flex"; 
+  adminActions.style.display = "flex";
+
+  // Show Admin Support
+  adminSupportBtn.style.display = "flex";
+
+} else {
+
+  // Hide everything for normal users
+  adminLink.style.display = "none";
+  adminActions.style.display = "none";
+  adminSupportBtn.style.display = "none";
+
 }
 let editMode = false;
 
