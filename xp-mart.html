@@ -1784,10 +1784,19 @@ background:rgb(241, 241, 241);
 <a href="home.html">
 <i class="ph ph-squares-four"></i> All Classes
 </a>
-<h4>EXPLORE BOOKStore</h4>
+
+<h4 id="adminToolsHeading" style="display:none;">ADMIN TOOLS</h4>
+
 <a href="admin.html" id="adminLink" style="display:none;">
-  <i class="ph ph-lock"></i> Admin Panel
+  <i class="ph ph-lock"></i> Management
+</a> 
+
+<a href="adminsupport.html" id="adminSupportBtn" style="display:none;">
+    <i class="ph ph-headset"></i> Admin Support
 </a>
+
+<h4>EXPLORE BOOKStore</h4>
+
 <a class="active">
 <i class="ph ph-shopping-bag"></i> XP Mart
 </a>
@@ -2301,14 +2310,24 @@ onAuthStateChanged(auth, async (user) => {
 
   const uid = user.uid;
 
-  /* 🔒 ADMIN */
-  const adminUIDs = [
+ /* 🔒 ADMIN */
+const adminUIDs = [
   "F9UxJ3W6CVUVIIgwByuHQxscQab2",
-  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1"
 ];
+
+const adminToolsHeading = document.getElementById("adminToolsHeading");
+const adminSupportBtn = document.getElementById("adminSupportBtn");
+
 if (adminUIDs.includes(uid)) {
+    adminToolsHeading.style.display = "block";
     adminLink.style.display = "flex";
-  }
+    adminSupportBtn.style.display = "flex";
+} else {
+    adminToolsHeading.style.display = "none";
+    adminLink.style.display = "none";
+    adminSupportBtn.style.display = "none";
+}
 
   /* 🔥 USER DATA */
   const userRef = ref(db, "users/" + uid);
