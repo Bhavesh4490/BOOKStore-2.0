@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Support Panel- BOOKStore</title>
+
+<link rel="icon" href="book.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/phosphor-icons"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+padding-top:70px;
+}
+/* NAVBAR */
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 30px;
+background:#f5f7fa;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+
+.nav-right{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav-btn{
+padding:8px 14px;
+border-radius:6px;
+border:1px solid #ccc;
+background:white;
+cursor:pointer;
+}
+.nav-btn:hover{
+background:rgb(236, 236, 236);
+}
+.active-btn{
+background:#0d3b53;
+color:white;
+border:none;
+}
+
+.profile{
+width:35px;
+height:35px;
+border-radius:50%;
+background:#e3f2fd;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+border:1px solid #dbeafe;
+}
+
+.profile i{
+font-size:18px;
+color:#0d3b53;
+}
+
+/* HERO */
+.hero{
+background:#143c53;
+color:white;
+text-align:center;
+padding:150px 20px;
+}
+
+.hero h1{
+font-size:34px;
+margin-bottom:20px;
+}
+
+/* SEARCH */
+.search-box{
+display:flex;
+justify-content:center;
+}
+
+.search-box input{
+width:400px;
+max-width:90%;
+padding:12px;
+border:none;
+border-radius:8px 0 0 8px;
+outline:none;
+}
+
+.search-box button{
+padding:12px 16px;
+border:none;
+background:#e0e0e0;
+border-radius:0 8px 8px 0;
+cursor:pointer;
+}
+
+/* CARDS */
+.cards{
+display:flex;
+justify-content:center;
+gap:30px;
+margin-top:-50px;
+flex-wrap:wrap;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:12px;
+width:260px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+text-align:left;
+cursor:pointer;
+}
+
+.card h3{
+margin-bottom:8px;
+}
+
+.card p{
+color:#555;
+font-size:14px;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+.hero h1{
+font-size:26px;
+}
+}
+.icon{
+margin-bottom:10px;
+}
+.required{
+color:red;
+}
+.submit-hero{
+background:#143c53;
+color:white;
+padding:70px;
+}
+
+.submit-hero h1{
+margin-top:10px;
+}
+
+.form-container{
+background:#f5f7fa;
+padding:30px;
+border-radius:10px;
+margin:30px;
+margin-left:5%;
+margin-right:8%;
+}
+
+.form-container label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+font-weight:500;
+width:75%;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea{
+width:75%;
+padding:15px;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+textarea{
+height:120px;
+resize:none;
+}
+
+.editor-toolbar{
+background:#eee;
+padding:8px;
+border-radius:6px 6px 0 0;
+}
+
+.attach-btn{
+display:inline-flex;
+align-items:center;
+gap:8px;
+margin-top:12px;
+padding:8px 12px;
+border:1px solid #0d3b53;
+border-radius:6px;
+cursor:pointer;
+color:#0d3b53;
+font-weight:500;
+background:white;
+width:75%;
+
+}
+
+.attach-btn:hover{
+background:#0d3b53;
+color:white;
+}
+
+.attach-btn:hover svg{
+stroke:white;
+}
+
+#fileList{
+margin-top:10px;
+font-size:13px;
+color:#444;
+}
+
+.form-actions{
+margin-top:20px;
+display:flex;
+gap:10px;
+}
+
+.cancel{
+padding:10px 15px;
+background:#ddd;
+border:none;
+border-radius:6px;
+cursor:pointer;
+
+}
+
+.submit{
+padding:10px 15px;
+background:#0d3b53;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+.file-item{
+background:#fff;
+border:1px solid #ddd;
+padding:6px 10px;
+border-radius:6px;
+margin-top:6px;
+display:flex;
+align-items:center;
+gap:8px;
+width:75%;
+}
+
+.remove-file{
+cursor:pointer;
+}
+.error{
+border:1.5px solid red !important;
+}
+
+.error-text{
+color:red;
+font-size:12px;
+margin-top:3px;
+}
+#ticketList div:hover{
+transform:scale(1.01);
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+.status-badge{
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+display:inline-block;
+}
+
+.status-open{
+background:#fff3e0;
+color:#e65100;
+border:1px solid #ffcc80;
+}
+
+.status-resolved{
+background:#e8f5e9;
+color:#2e7d32;
+border:1px solid #a5d6a7;
+}
+#ticketsSection,
+#ticketDetailSection {
+    min-height: calc(100vh - 70px);
+}
+/* MOBILE NAV */
+.hamburger{
+display:none;
+font-size:22px;
+cursor:pointer;
+}
+
+.desktop-menu{
+display:flex;
+gap:10px;
+}
+
+/* SIDEBAR */
+.mobile-menu{
+position:fixed;
+top:0;
+right:-260px;
+width:260px;
+height:100%;
+background:white;
+box-shadow:2px 0 10px rgba(0,0,0,0.2);
+z-index:2000;
+padding:20px;
+transition:0.3s;
+}
+
+.mobile-menu.active{
+right:0;
+}
+
+.close-btn{
+font-size:20px;
+margin-bottom:20px;
+cursor:pointer;
+}
+
+.menu-item{
+padding:12px;
+margin-bottom:10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.menu-item.active{
+background:#143c53;
+color:white;
+}
+
+/* PROFILE POPUP */
+.profile-popup{
+position:absolute;
+top:60px;
+right:20px;
+background:white;
+border-radius:8px;
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
+display:none;
+z-index:3000;
+}
+
+.profile-popup div{
+padding:12px 20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:10px;
+font-size:14px;
+transition:0.2s;
+}
+
+.profile-popup div:hover{
+background:#f5f7fa;
+}
+
+/* MOBILE UI */
+@media(max-width:768px){
+
+.desktop-menu{
+display:none;
+}
+
+.hamburger{
+display:block;
+}
+
+.hero{
+padding:100px 20px 60px;
+text-align:left;
+}
+
+.hero h1{
+font-size:22px;
+}
+
+.search-box{
+margin-top:15px;
+}
+
+.cards{
+flex-direction:column;
+gap:15px;
+margin-top:-30px;
+padding:0 15px;
+}
+
+.card{
+width:100%;
+border-radius:12px;
+padding:18px;
+}
+}
+.menu-item{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:15px;
+}
+
+.menu-item i{
+font-size:18px;
+}
+.tickets-container{
+display:flex;
+flex:1;
+gap:30px;
+padding:30px 8%;
+}
+
+.ticket-list{
+flex:3;
+background:#f5f7fa;
+padding:20px;
+border-radius:10px;
+}
+
+.ticket-filter{
+width:20%;
+}
+
+/* MOBILE FIX */
+@media(max-width:768px){
+
+.tickets-container{
+flex-direction:column;
+padding:20px;
+}
+
+.ticket-filter{
+width:100%;
+margin-top:20px;
+background:#f5f7fa;
+padding:15px;
+border-radius:10px;
+}
+
+}
+/* MAIN CONTAINER */
+.tickets-container{
+display:flex;
+flex:1;
+gap:25px;
+padding:30px 8%;
+}
+
+/* LEFT SIDE - TICKET LIST */
+.ticket-list{
+flex:3;
+background:#ffffff;
+padding:20px;
+border-radius:14px;
+box-shadow:0 6px 20px rgba(0,0,0,0.06);
+}
+
+/* INDIVIDUAL TICKET CARD */
+.ticket-item{
+background:#ffffff;
+padding:18px;
+margin-bottom:14px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+transition:all 0.25s ease;
+border:1px solid #eef2f7;
+}
+
+.ticket-item:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+border-color:#dbeafe;
+}
+
+/* LEFT TEXT */
+.ticket-id{
+color:#1976d2;
+font-weight:600;
+font-size:15px;
+}
+
+.ticket-date{
+font-size:13px;
+color:#6b7280;
+margin-top:4px;
+}
+
+/* RIGHT SIDE - FILTER PANEL */
+.ticket-filter{
+width:260px;
+background:#ffffff;
+padding:20px;
+border-radius:14px;
+box-shadow:0 6px 20px rgba(0,0,0,0.06);
+border:1px solid #eef2f7;
+height:fit-content;
+}
+
+/* LABEL */
+.ticket-filter label{
+font-size:13px;
+font-weight:500;
+color:#374151;
+display:block;
+margin-bottom:6px;
+}
+
+/* DROPDOWN */
+.ticket-filter select{
+width:100%;
+padding:10px 12px;
+border-radius:8px;
+border:1px solid #d1d5db;
+background:#f9fafb;
+font-size:14px;
+outline:none;
+transition:0.2s;
+cursor:pointer;
+}
+
+.ticket-filter select:hover{
+border-color:#1976d2;
+}
+
+.ticket-filter select:focus{
+border-color:#1976d2;
+background:#ffffff;
+box-shadow:0 0 0 3px rgba(25,118,210,0.1);
+}
+
+/* SPACING */
+.ticket-filter br{
+display:none;
+}
+
+.ticket-filter select + label{
+margin-top:15px;
+}
+
+/* STATUS BADGES UPGRADE */
+.status-badge{
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.tickets-container{
+flex-direction:column;
+padding:20px;
+}
+
+.ticket-filter{
+width:100%;
+}
+
+}
+.ticket-detail-layout{
+display:flex;
+gap:30px;
+}
+
+/* MOBILE: stack + move details below */
+@media(max-width:768px){
+.ticket-detail-layout{
+flex-direction:column;
+}
+
+.ticket-detail-layout > div:last-child{
+order:2; /* details goes below */
+}
+
+.ticket-detail-layout > div:first-child{
+order:1;
+}
+}
+.logout-btn{
+margin-top:10px;
+border-top:1px solid #eee;
+padding-top:12px;
+color:#d32f2f;
+font-weight:500;
+border-radius:8px;
+}
+
+.logout-btn i{
+color:#d32f2f;
+}
+
+.logout-btn:hover{
+background:#ffbfbf;
+}
+.resolve-card{
+margin-top:20px;
+padding:14px 16px;
+border:1px solid #e5e7eb;
+border-radius:12px;
+background:#f8fafc;
+transition:.25s;
+}
+
+.resolve-card:hover{
+border-color:#22c55e;
+background:#f0fdf4;
+}
+
+.resolve-switch{
+display:flex;
+align-items:center;
+justify-content:space-between;
+cursor:pointer;
+}
+
+.resolve-info{
+display:flex;
+flex-direction:column;
+}
+
+.resolve-title{
+font-weight:600;
+font-size:14px;
+color:#111827;
+}
+
+.resolve-subtitle{
+font-size:12px;
+color:#6b7280;
+margin-top:2px;
+}
+
+.switch{
+position:relative;
+width:52px;
+height:28px;
+}
+
+.switch input{
+opacity:0;
+width:0;
+height:0;
+}
+
+.slider{
+position:absolute;
+inset:0;
+background:#d1d5db;
+border-radius:999px;
+transition:.3s;
+}
+
+.slider:before{
+content:"";
+position:absolute;
+height:22px;
+width:22px;
+left:3px;
+top:3px;
+background:white;
+border-radius:50%;
+transition:.3s;
+box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+
+.switch input:checked + .slider{
+background:#22c55e;
+}
+
+.switch input:checked + .slider:before{
+transform:translateX(24px);
+}
+.profile-panel{
+display:flex;
+align-items:center;
+gap:10px;
+cursor:pointer;
+padding:6px 10px;
+border-radius:10px;
+transition:0.2s;
+}
+
+.profile-panel:hover{
+background:#eef4f8;
+}
+
+.profile-text{
+display:flex;
+flex-direction:column;
+line-height:1.1;
+}
+
+.profile-title{
+font-size:13px;
+font-weight:600;
+color:#143c53;
+}
+
+.profile-subtitle{
+font-size:11px;
+color:#777;
+}
+
+/* Mobile */
+@media(max-width:768px){
+.profile-text{
+display:none;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+<div class="logo">
+<img src="logo.png">
+</div>
+
+<div class="nav-right">
+
+
+<div class="profile-panel" onclick="toggleProfilePopup()">
+    
+    <div class="profile">
+        <i class="ph ph-user"></i>
+    </div>
+
+    <div class="profile-text">
+        <div class="profile-title">Admin Support Panel</div>
+        <div class="profile-subtitle">BOOKStore</div>
+    </div>
+
+</div>
+<div id="profilePopup" class="profile-popup">
+    <div onclick="goProfile()">
+    <i class="ph ph-user-circle"></i> My Profile
+</div>
+    <div class="logout-btn" onclick="logoutUser()">
+    <i class="ph ph-sign-out"></i> Logout
+</div>
+</div>
+
+</div>
+
+</div>
+<div id="ticketsSection" style="display:none;">
+
+<!-- HEADER -->
+<div style="background:#143c53;color:white;padding:60px 30px;">
+  <h1>Tickets</h1>
+</div>
+
+<!-- CONTENT -->
+<div style="display:flex;gap:30px;padding:30px 8%;">
+
+<div class="tickets-container">
+
+  <!-- LEFT LIST -->
+  <div class="ticket-list">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+padding-bottom:15px;
+border-bottom:1px solid #eee;
+">
+    <div>
+        <h2 style="margin:0;">🎫 All Tickets</h2>
+        <p style="color:#666;font-size:14px;">
+            Support requests from all BOOKStore users
+        </p>
+    </div>
+
+    <div id="ticketCount"
+         style="
+         background:#143c53;
+         color:white;
+         padding:8px 14px;
+         border-radius:999px;
+         font-size:14px;
+         font-weight:600;">
+         0 Tickets
+    </div>
+</div>
+
+<div id="ticketList"></div>
+
+</div>
+
+  <!-- RIGHT FILTER -->
+  <div class="ticket-filter">
+    
+    <label>Status</label>
+    <select id="statusFilter">
+      <option value="all">All Tickets</option>
+      <option value="open">Open</option>
+      <option value="resolved">Resolved</option>
+    </select>
+
+    <br><br>
+
+    <label>Sort by</label>
+    <select id="sortFilter">
+      <option value="new">Date Created</option>
+      <option value="old">Oldest First</option>
+    </select>
+
+  </div>
+
+</div>
+
+</div>
+</div>
+<div id="ticketDetailSection" style="display:none;">
+
+<!-- HEADER -->
+<div style="background:#143c53;color:white;padding:50px 8%;">
+  <h2 id="detailTicketId">#----</h2>
+  <div id="detailDate" style="font-size:14px;opacity:0.9;"></div>
+</div>
+
+<!-- BODY -->
+ <div class="form-container">
+<div class="ticket-detail-layout">
+
+  <!-- LEFT CHAT -->
+  <div style="flex:3;">
+
+    <div id="conversationBox"></div>
+
+    <!-- ADD COMMENT -->
+    <div id="commentBox" style="margin-top:20px;"></div>
+
+  </div>
+
+  <!-- RIGHT DETAILS -->
+  <div style="flex:1;">
+
+    <h3>Ticket details</h3>
+
+    <p><b>Status</b><br><span id="detailStatus"></span></p>
+
+    <p><b>Issue Type</b><br><span id="detailIssue"></span></p>
+
+<div class="resolve-card">
+
+<label class="resolve-switch">
+
+<div class="resolve-info">
+<div class="resolve-title">
+Mark as Resolved
+</div>
+
+<div class="resolve-subtitle">
+Close this ticket after sending reply
+</div>
+</div>
+
+<div class="switch">
+<input type="checkbox" id="resolveCheckbox">
+<span class="slider"></span>
+</div>
+
+</label>
+
+</div>
+
+
+  </div>
+
+</div>
+</div>
+</div>
+<div id="imageModal" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+    <span onclick="closeImagePreview()" style="
+    position:absolute;
+    top:10px;
+    right:30px;
+    font-size:30px;
+    color:white;
+    cursor:pointer;
+    ">&times;</span>
+
+    <img id="modalImg" style="
+    max-width:90%;
+    max-height:85%;
+    border-radius:10px;
+    ">
+</div>
+<!-- FIREBASE LOGIN CHECK -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+apiKey:"AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+authDomain:"bookstore-6ab08.firebaseapp.com",
+databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com",
+projectId:"bookstore-6ab08"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+/* 🔐 PAGE PROTECTION */
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const ADMIN_UIDS = [
+        "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+        "GpdeGHfMN5OQATvsGR4Y7TWHRrs1"
+    ];
+if (!ADMIN_UIDS.includes(user.uid)) {
+    window.location.replace("404.html");
+    return;
+}
+    // Automatically open tickets page
+    hideAllSections();
+    document.getElementById("ticketsSection").style.display = "block";
+
+    openTickets();
+
+});
+window.submitTicket = async function(){
+
+const nameInput = document.getElementById("nameInput");
+const issueInput = document.getElementById("issueType");
+const descInput = document.getElementById("description");
+
+const name = nameInput.value.trim();
+const issue = issueInput.value;
+const desc = descInput.value.trim();
+const email = document.getElementById("userEmail").value;
+
+let valid = true;
+
+/* RESET */
+document.querySelectorAll(".error-text").forEach(e => e.innerText = "");
+[nameInput, issueInput, descInput].forEach(el => {
+    el.classList.remove("error");
+});
+
+/* NAME */
+if(!name){
+    nameInput.classList.add("error");
+    document.getElementById("nameError").innerText = "This field is required";
+    nameInput.focus();
+    valid = false;
+}
+
+/* ISSUE */
+if(issue === "Choose..."){
+    issueInput.classList.add("error");
+    document.getElementById("issueError").innerText = "This field is required";
+    valid = false;
+}
+
+/* DESCRIPTION */
+if(!desc){
+    descInput.classList.add("error");
+    document.getElementById("descError").innerText = "This field is required";
+    valid = false;
+}
+
+if(!valid) return;
+
+try{
+
+// 🔥 UNIQUE TICKET ID (6 digit)
+const ticketId = Math.floor(100000 + Math.random()*900000);
+
+// 🔥 USER UID PATH
+const user = auth.currentUser;
+if(!user){
+alert("User not logged in");
+return;
+}
+const uid = user.uid;
+
+await set(ref(db, `tickets/${uid}/${ticketId}`), {
+ticketId,
+createdAt: Date.now(),
+email,
+name,
+issue: issue.toLowerCase().replace(/[^a-z0-9]+/g,"_"),
+description: desc,
+files: await Promise.all(selectedFiles.map(file => {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            resolve({
+                name: file.name,
+                type: file.type,
+                url: reader.result   // 🔥 actual file data
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+}))
+});
+
+
+// 🔄 refresh
+location.reload();
+
+}catch(err){
+alert("Error saving ticket");
+console.error(err);
+}
+
+}
+window.openTickets = async function(){
+hideAllSections();
+document.getElementById("ticketsSection").style.display="block";
+
+const user = auth.currentUser;
+if(!user) return;
+
+const uid = user.uid;
+
+const ticketsRef = ref(db, `tickets`);
+const snapshot = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js")
+.then(m => m.get(ticketsRef));
+
+let tickets = [];
+
+if(snapshot.exists()){
+    const data = snapshot.val();
+    tickets = [];
+
+Object.entries(data).forEach(([userUid, userTickets]) => {
+
+    Object.values(userTickets).forEach(ticket => {
+
+        ticket.ownerUid = userUid;
+
+        tickets.push(ticket);
+
+    });
+
+});
+}
+
+/* DEFAULT SORT */
+tickets.sort((a,b)=>b.createdAt - a.createdAt);
+
+renderTickets(tickets);
+
+/* FILTER HANDLERS */
+document.getElementById("statusFilter").onchange = () => renderTickets(tickets);
+document.getElementById("sortFilter").onchange = () => renderTickets(tickets);
+
+function renderTickets(data){
+
+let filtered = [...data];
+
+const statusVal = document.getElementById("statusFilter").value;
+const sortVal = document.getElementById("sortFilter").value;
+
+/* FILTER */
+if(statusVal !== "all"){
+    filtered = filtered.filter(t => {
+        const s = t.status || "open";
+        return s === statusVal;
+    });
+}
+
+/* SORT */
+if(sortVal === "new"){
+    filtered.sort((a,b)=>b.createdAt - a.createdAt);
+}else{
+    filtered.sort((a,b)=>a.createdAt - b.createdAt);
+}
+
+const container = document.getElementById("ticketList");
+container.innerHTML = "";
+document.getElementById("ticketCount").innerText =
+`${filtered.length} Tickets`;
+filtered.forEach(t => {
+
+const date = new Date(t.createdAt).toLocaleString();
+
+const statusClass = t.status === "resolved" ? "status-resolved" : "status-open";
+const statusText = t.status === "resolved" ? "Resolved" : "Open";
+
+container.innerHTML += `
+<div onclick="openTicketDetail('${t.ownerUid}', ${t.ticketId})" class="ticket-item">
+
+<div>
+<div style="color:#1976d2;font-weight:600;">
+#${t.ticketId}
+</div>
+
+<div style="font-size:14px;font-weight:500;">
+${t.name || "Unknown User"}
+</div>
+
+<div style="font-size:12px;color:#666;">
+${t.email || ""}
+</div>
+
+<div style="font-size:12px;color:#888;">
+Created on ${date}
+</div>
+</div>
+
+<div class="status-badge ${statusClass}">
+${statusText}
+</div>
+
+</div>
+`;
+});
+
+}
+};
+
+window.openTicketDetail = async function(ownerUid, ticketId){
+hideAllSections();
+document.getElementById("ticketDetailSection").style.display = "block";
+document.getElementById("ticketsSection").style.display="none";
+const user = auth.currentUser;
+if(!user) return;
+
+const uid = user.uid;
+
+const { get } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js");
+const checkbox = document.getElementById("resolveCheckbox");
+
+checkbox.onchange = async function(){
+
+    const { update } = await import(
+        "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"
+    );
+
+    await update(
+        ref(db, `tickets/${ownerUid}/${ticketId}`),
+        {
+            status: this.checked ? "resolved" : "open"
+        }
+    );
+
+    document.getElementById("detailStatus").innerText =
+        this.checked ? "Resolved" : "Open";
+};
+const snapshot = await get(
+ref(db, `tickets/${ownerUid}/${ticketId}`)
+);
+if(!snapshot.exists()) return;
+
+const t = snapshot.val();
+
+/* HEADER */
+document.getElementById("detailTicketId").innerText = `#${t.ticketId}`;
+document.getElementById("detailDate").innerText =
+"Created on " + new Date(t.createdAt).toLocaleString() + " - via Portal";
+
+/* RIGHT PANEL */
+document.getElementById("detailStatus").innerText =
+t.status === "resolved" ? "Resolved" : "Open";
+
+document.getElementById("detailIssue").innerText =
+(t.issue || "other").replace(/_/g," ");
+checkbox.checked = (t.status || "open") === "resolved";
+
+checkbox.onchange = async function(){
+
+    const { update } = await import(
+        "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"
+    );
+
+    const newStatus = this.checked ? "resolved" : "open";
+
+    await update(
+        ref(db, `tickets/${ownerUid}/${ticketId}`),
+        {
+            status: newStatus
+        }
+    );
+
+    document.getElementById("detailStatus").innerText =
+        newStatus === "resolved" ? "Resolved" : "Open";
+};
+/* CONVERSATION */
+const box = document.getElementById("conversationBox");
+box.innerHTML = "";
+
+/* USER MESSAGE */
+const userInitial = (t.name || "U").charAt(0).toUpperCase();
+
+box.innerHTML += `
+<div style="background:white;padding:15px;border-radius:10px;margin-bottom:15px;display:flex;gap:10px;">
+
+<div style="width:35px;height:35px;border-radius:50%;background:#cfd8dc;
+display:flex;align-items:center;justify-content:center;font-weight:600;">
+${userInitial}
+</div>
+
+<div>
+  <b>${t.name}</b> 
+  <div style="color:#888;font-size:12px;">
+  reported ${new Date(t.createdAt).toLocaleString()}
+  </div>
+
+  <p style="margin-top:8px;">${t.description}</p>
+  <div style="margin-top:10px;">
+${
+(t.files && t.files.length > 0)
+? t.files.map(file => {
+
+    if(file.type && file.type.startsWith("image/")){
+    return `
+    <img src="${file.url}" 
+         onclick="openImagePreview('${file.url}')"
+         style="max-width:200px;border-radius:8px;margin-top:8px;display:block;cursor:pointer;">
+    `;
+}
+
+    return `
+    <a href="${file.url}" target="_blank"
+       style="display:block;margin-top:6px;color:#1976d2;text-decoration:underline;">
+       📎 ${file.name}
+    </a>
+    `;
+
+}).join("")
+: ""
+}
+</div>
+</div>
+
+</div>
+`;
+
+/* ADMIN REPLY */
+if(t.admin_reply){
+
+box.innerHTML += `
+<div style="background:#f1f3f5;padding:15px;border-radius:10px;margin-top:10px;display:flex;gap:10px;">
+
+<img src="book.png" style="width:35px;height:35px;border-radius:50%;background:#cfd8dc;padding:5px;">
+
+<div>
+  <b>BOOKStore Team</b>
+  <div style="font-size:12px;color:#666;">
+  replied • ${new Date(t.admin_reply_time || Date.now()).toLocaleString()}
+  </div>
+
+  <p style="margin-top:10px;white-space:pre-line;">
+  ${t.admin_reply}
+  </p>
+</div>
+
+</div>
+`;
+}
+/* USER REPLY (reply1) */
+if(t.reply1){
+
+const userInitial = (t.name || "U").charAt(0).toUpperCase();
+
+box.innerHTML += `
+<div style="background:#e3f2fd;padding:15px;border-radius:10px;margin-top:10px;display:flex;gap:10px;">
+
+<div style="width:35px;height:35px;border-radius:50%;background:#90caf9;
+display:flex;align-items:center;justify-content:center;font-weight:600;">
+${userInitial}
+</div>
+
+<div>
+  <b>${t.name}</b>
+  <div style="font-size:12px;color:#666;">replied</div>
+
+  <p style="margin-top:8px;">${t.reply1}</p>
+</div>
+
+</div>
+`;
+}
+
+const commentBox = document.getElementById("commentBox");
+
+/* if reply1 exists → hide input */
+{
+
+commentBox.innerHTML = `
+<textarea id="replyInput" placeholder="Write your reply..."
+style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;"></textarea>
+
+<button onclick="submitReply('${ownerUid}', ${t.ticketId})"
+style="margin-top:10px;padding:10px 15px;background:#0d3b53;color:white;border:none;border-radius:6px;">
+Submit Reply
+</button>
+`;
+
+}
+};
+window.submitReply = async function(ownerUid, ticketId){
+
+const input = document.getElementById("replyInput");
+const text = input.value.trim();
+
+if(!text){
+    alert("Write something");
+    return;
+}
+
+const resolved =
+document.getElementById("resolveCheckbox").checked;
+
+const { update } = await import(
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"
+);
+
+await update(
+ref(db, `tickets/${ownerUid}/${ticketId}`),
+{
+    admin_reply: text,
+    admin_reply_time: Date.now(),
+    status: resolved ? "resolved" : "open"
+}
+);
+
+
+openTicketDetail(ownerUid, ticketId);
+
+};
+
+window.openImagePreview = function(src){
+    const modal = document.getElementById("imageModal");
+    const img = document.getElementById("modalImg");
+
+    img.src = src;
+    modal.style.display = "flex";
+}
+
+window.closeImagePreview = function(){
+    document.getElementById("imageModal").style.display = "none";
+}
+import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+window.logoutUser = function(){
+    signOut(auth).then(()=>{
+        window.location.href = "index.html";
+    }).catch(()=>{
+        window.location.href = "index.html";
+    });
+};
+</script>
+<script>
+function hideAllSections(){
+    document.getElementById("ticketsSection").style.display = "none";
+    document.getElementById("ticketDetailSection").style.display = "none";
+}
+function goTo(path){
+    window.location.hash = path;
+}
+function handleRoute() {}
+/* RUN ON LOAD */
+window.addEventListener("load", () => {
+    openTickets();
+});
+
+/* RUN WHEN URL CHANGES */
+// remove completely
+function goHome(){
+    openTickets();
+}
+
+function openSubmit(){
+    openTickets();
+}
+
+function renderFiles(){
+fileList.innerHTML = "";
+
+selectedFiles.forEach((file, index) => {
+
+let sizeKB = (file.size / 1024).toFixed(1);
+
+let div = document.createElement("div");
+div.className = "file-item";
+
+div.innerHTML = `
+<span class="remove-file" onclick="removeFile(${index})">✖</span>
+${file.name} (${sizeKB} kb)
+`;
+
+fileList.appendChild(div);
+
+});
+}
+
+function removeFile(index){
+selectedFiles.splice(index,1);
+renderFiles();
+}
+function toggleMenu(){
+    document.getElementById("mobileMenu").classList.toggle("active");
+}
+
+function toggleProfilePopup(){
+    const popup = document.getElementById("profilePopup");
+    popup.style.display = popup.style.display === "block" ? "none" : "block";
+}
+
+function goProfile(){
+    window.location.href = "profile.html";
+}
+
+/* CLOSE POPUP ON OUTSIDE CLICK */
+window.addEventListener("click", function(e){
+
+    const popup = document.getElementById("profilePopup");
+    const profile = document.querySelector(".profile-panel");
+
+    if(profile && !profile.contains(e.target)){
+        popup.style.display = "none";
+    }
+
+});
+
+
+function navigate(path){
+    window.location.hash = path;
+
+    // close menu automatically
+    document.getElementById("mobileMenu").classList.remove("active");
+
+    handleRoute(); // update UI
+}
+function setActiveMenu(path){
+
+document.querySelectorAll(".menu-item").forEach(item=>{
+    item.classList.remove("active");
+});
+
+if(path === "home"){
+document.querySelectorAll(".menu-item")[0].classList.add("active");
+}
+else if(path === "tickets"){
+document.querySelectorAll(".menu-item")[1].classList.add("active");
+}
+else if(path === "tickets/new"){
+document.querySelectorAll(".menu-item")[2].classList.add("active");
+}
+}
+</script>
+</body>
+</html>
