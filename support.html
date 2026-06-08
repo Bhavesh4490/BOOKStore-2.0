@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Support - BOOKStore</title>
+
+<link rel="icon" href="book.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/phosphor-icons"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+body{
+padding-top:70px;
+}
+/* NAVBAR */
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 30px;
+background:#f5f7fa;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+font-size:18px;
+}
+
+.logo img{
+height:36px;
+width:auto;
+border-radius:50%;
+}
+
+.nav-right{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav-btn{
+padding:8px 14px;
+border-radius:6px;
+border:1px solid #ccc;
+background:white;
+cursor:pointer;
+}
+.nav-btn:hover{
+background:rgb(236, 236, 236);
+}
+.active-btn{
+background:#0d3b53;
+color:white;
+border:none;
+}
+
+.profile{
+width:35px;
+height:35px;
+border-radius:50%;
+background:#e3f2fd;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+border:1px solid #dbeafe;
+}
+
+.profile i{
+font-size:18px;
+color:#0d3b53;
+}
+
+/* HERO */
+.hero{
+background:#143c53;
+color:white;
+text-align:center;
+padding:150px 20px;
+}
+
+.hero h1{
+font-size:34px;
+margin-bottom:20px;
+}
+
+/* SEARCH */
+.search-box{
+display:flex;
+justify-content:center;
+}
+
+.search-box input{
+width:400px;
+max-width:90%;
+padding:12px;
+border:none;
+border-radius:8px 0 0 8px;
+outline:none;
+}
+
+.search-box button{
+padding:12px 16px;
+border:none;
+background:#e0e0e0;
+border-radius:0 8px 8px 0;
+cursor:pointer;
+}
+
+/* CARDS */
+.cards{
+display:flex;
+justify-content:center;
+gap:30px;
+margin-top:-50px;
+flex-wrap:wrap;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:12px;
+width:260px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+text-align:left;
+cursor:pointer;
+}
+
+.card h3{
+margin-bottom:8px;
+}
+
+.card p{
+color:#555;
+font-size:14px;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+.hero h1{
+font-size:26px;
+}
+}
+.icon{
+margin-bottom:10px;
+}
+.required{
+color:red;
+}
+.submit-hero{
+background:#143c53;
+color:white;
+padding:70px;
+}
+
+.submit-hero h1{
+margin-top:10px;
+}
+
+.form-container{
+background:#f5f7fa;
+padding:30px;
+border-radius:10px;
+margin:30px;
+margin-left:5%;
+margin-right:8%;
+}
+
+.form-container label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+font-weight:500;
+width:75%;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea{
+width:75%;
+padding:15px;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+textarea{
+height:120px;
+resize:none;
+}
+
+.editor-toolbar{
+background:#eee;
+padding:8px;
+border-radius:6px 6px 0 0;
+}
+
+.attach-btn{
+display:inline-flex;
+align-items:center;
+gap:8px;
+margin-top:12px;
+padding:8px 12px;
+border:1px solid #0d3b53;
+border-radius:6px;
+cursor:pointer;
+color:#0d3b53;
+font-weight:500;
+background:white;
+width:75%;
+
+}
+
+.attach-btn:hover{
+background:#0d3b53;
+color:white;
+}
+
+.attach-btn:hover svg{
+stroke:white;
+}
+
+#fileList{
+margin-top:10px;
+font-size:13px;
+color:#444;
+}
+
+.form-actions{
+margin-top:20px;
+display:flex;
+gap:10px;
+}
+
+.cancel{
+padding:10px 15px;
+background:#ddd;
+border:none;
+border-radius:6px;
+cursor:pointer;
+
+}
+
+.submit{
+padding:10px 15px;
+background:#0d3b53;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+.file-item{
+background:#fff;
+border:1px solid #ddd;
+padding:6px 10px;
+border-radius:6px;
+margin-top:6px;
+display:flex;
+align-items:center;
+gap:8px;
+width:75%;
+}
+
+.remove-file{
+cursor:pointer;
+}
+.error{
+border:1.5px solid red !important;
+}
+
+.error-text{
+color:red;
+font-size:12px;
+margin-top:3px;
+}
+#ticketList div:hover{
+transform:scale(1.01);
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+.status-badge{
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+display:inline-block;
+}
+
+.status-open{
+background:#fff3e0;
+color:#e65100;
+border:1px solid #ffcc80;
+}
+
+.status-resolved{
+background:#e8f5e9;
+color:#2e7d32;
+border:1px solid #a5d6a7;
+}
+#ticketsSection,
+#ticketDetailSection {
+    min-height: calc(100vh - 70px);
+}
+/* MOBILE NAV */
+.hamburger{
+display:none;
+font-size:22px;
+cursor:pointer;
+}
+
+.desktop-menu{
+display:flex;
+gap:10px;
+}
+
+/* SIDEBAR */
+.mobile-menu{
+position:fixed;
+top:0;
+right:-260px;
+width:260px;
+height:100%;
+background:white;
+box-shadow:2px 0 10px rgba(0,0,0,0.2);
+z-index:2000;
+padding:20px;
+transition:0.3s;
+}
+
+.mobile-menu.active{
+right:0;
+}
+
+.close-btn{
+font-size:20px;
+margin-bottom:20px;
+cursor:pointer;
+}
+
+.menu-item{
+padding:12px;
+margin-bottom:10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.menu-item.active{
+background:#143c53;
+color:white;
+}
+
+/* PROFILE POPUP */
+.profile-popup{
+position:absolute;
+top:60px;
+right:20px;
+background:white;
+border-radius:8px;
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
+display:none;
+z-index:3000;
+}
+
+.profile-popup div{
+padding:12px 20px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:10px;
+font-size:14px;
+transition:0.2s;
+}
+
+.profile-popup div:hover{
+background:#f5f7fa;
+}
+
+/* MOBILE UI */
+@media(max-width:768px){
+
+.desktop-menu{
+display:none;
+}
+
+.hamburger{
+display:block;
+}
+
+.hero{
+padding:100px 20px 60px;
+text-align:left;
+}
+
+.hero h1{
+font-size:22px;
+}
+
+.search-box{
+margin-top:15px;
+}
+
+.cards{
+flex-direction:column;
+gap:15px;
+margin-top:-30px;
+padding:0 15px;
+}
+
+.card{
+width:100%;
+border-radius:12px;
+padding:18px;
+}
+}
+.menu-item{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:15px;
+}
+
+.menu-item i{
+font-size:18px;
+}
+.tickets-container{
+display:flex;
+flex:1;
+gap:30px;
+padding:30px 8%;
+}
+
+.ticket-list{
+flex:3;
+background:#f5f7fa;
+padding:20px;
+border-radius:10px;
+}
+
+.ticket-filter{
+width:20%;
+}
+
+/* MOBILE FIX */
+@media(max-width:768px){
+
+.tickets-container{
+flex-direction:column;
+padding:20px;
+}
+
+.ticket-filter{
+width:100%;
+margin-top:20px;
+background:#f5f7fa;
+padding:15px;
+border-radius:10px;
+}
+
+}
+/* MAIN CONTAINER */
+.tickets-container{
+display:flex;
+flex:1;
+gap:25px;
+padding:30px 8%;
+}
+
+/* LEFT SIDE - TICKET LIST */
+.ticket-list{
+flex:3;
+background:#ffffff;
+padding:20px;
+border-radius:14px;
+box-shadow:0 6px 20px rgba(0,0,0,0.06);
+}
+
+/* INDIVIDUAL TICKET CARD */
+.ticket-item{
+background:#ffffff;
+padding:18px;
+margin-bottom:14px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+transition:all 0.25s ease;
+border:1px solid #eef2f7;
+}
+
+.ticket-item:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+border-color:#dbeafe;
+}
+
+/* LEFT TEXT */
+.ticket-id{
+color:#1976d2;
+font-weight:600;
+font-size:15px;
+}
+
+.ticket-date{
+font-size:13px;
+color:#6b7280;
+margin-top:4px;
+}
+
+/* RIGHT SIDE - FILTER PANEL */
+.ticket-filter{
+width:260px;
+background:#ffffff;
+padding:20px;
+border-radius:14px;
+box-shadow:0 6px 20px rgba(0,0,0,0.06);
+border:1px solid #eef2f7;
+height:fit-content;
+}
+
+/* LABEL */
+.ticket-filter label{
+font-size:13px;
+font-weight:500;
+color:#374151;
+display:block;
+margin-bottom:6px;
+}
+
+/* DROPDOWN */
+.ticket-filter select{
+width:100%;
+padding:10px 12px;
+border-radius:8px;
+border:1px solid #d1d5db;
+background:#f9fafb;
+font-size:14px;
+outline:none;
+transition:0.2s;
+cursor:pointer;
+}
+
+.ticket-filter select:hover{
+border-color:#1976d2;
+}
+
+.ticket-filter select:focus{
+border-color:#1976d2;
+background:#ffffff;
+box-shadow:0 0 0 3px rgba(25,118,210,0.1);
+}
+
+/* SPACING */
+.ticket-filter br{
+display:none;
+}
+
+.ticket-filter select + label{
+margin-top:15px;
+}
+
+/* STATUS BADGES UPGRADE */
+.status-badge{
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.tickets-container{
+flex-direction:column;
+padding:20px;
+}
+
+.ticket-filter{
+width:100%;
+}
+
+}
+.ticket-detail-layout{
+display:flex;
+gap:30px;
+}
+
+/* MOBILE: stack + move details below */
+@media(max-width:768px){
+.ticket-detail-layout{
+flex-direction:column;
+}
+
+.ticket-detail-layout > div:last-child{
+order:2; /* details goes below */
+}
+
+.ticket-detail-layout > div:first-child{
+order:1;
+}
+}
+.logout-btn{
+margin-top:10px;
+border-top:1px solid #eee;
+padding-top:12px;
+color:#d32f2f;
+font-weight:500;
+border-radius:8px;
+}
+
+.logout-btn i{
+color:#d32f2f;
+}
+
+.logout-btn:hover{
+background:#ffbfbf;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+<div class="logo">
+<img src="logo.png">
+</div>
+
+<div class="nav-right">
+
+<!-- Desktop buttons -->
+<div class="desktop-menu">
+<button class="nav-btn" onclick="goHome('home')">Home</button>
+<button class="nav-btn" onclick="goTo('tickets')">Tickets</button>
+<button class="nav-btn" onclick="goTo('tickets/new')">Submit</button>
+</div>
+
+<!-- Mobile hamburger -->
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+<div class="profile" onclick="toggleProfilePopup()">
+    <i class="ph ph-user"></i>
+</div>
+<div id="profilePopup" class="profile-popup">
+    <div onclick="goProfile()">
+    <i class="ph ph-user-circle"></i> My Profile
+</div>
+    <div class="logout-btn" onclick="logoutUser()">
+    <i class="ph ph-sign-out"></i> Logout
+</div>
+</div>
+
+</div>
+
+</div>
+<!-- MOBILE SIDEBAR -->
+<div id="mobileMenu" class="mobile-menu">
+    <div class="close-btn" onclick="toggleMenu()">✖</div>
+
+    <div class="menu-item active" onclick="navigate('home')">
+        <i class="ph ph-house"></i> Home
+    </div>
+
+    <div class="menu-item" onclick="navigate('tickets')">
+        <i class="ph ph-ticket"></i> Tickets
+    </div>
+
+    <div class="menu-item" onclick="navigate('tickets/new')">
+        Submit a ticket
+    </div>
+</div>
+<div id="homeSection">
+
+<!-- HERO -->
+<section class="hero">
+<h1>Hi, how can we help you?</h1>
+
+</section>
+<!-- CARDS -->
+<div class="cards">
+
+<div class="card" onclick="openTickets()">
+    <div class="icon">
+<svg viewBox="0 0 60 60" width="50">
+    <path d="M5,27.83V11A6.08,6.08,0,0,1,11.06,5H48.91A6.07,6.07,0,0,1,55,11V27.83" fill="none" stroke="#475867" stroke-width="2"></path>
+    <path d="M5,27.59V17A6.08,6.08,0,0,1,11.06,11H48.91A6.08,6.08,0,0,1,55,17V27.59" fill="none" stroke="#475867" stroke-width="2"></path>
+    <path d="M35.1,52.07h-24A6.08,6.08,0,0,1,5,46V39.81a5,5,0,0,0,0-10V23A6.07,6.07,0,0,1,11.05,17H48.9A6.07,6.07,0,0,1,55,23v6.79h0a5,5,0,0,0-5,4.56" fill="none" stroke="#475867" stroke-width="2"></path>
+    <path d="M34.57,43.1h-13a4,4,0,0,1-4-4v-8a4,4,0,0,1,4-4h18a4,4,0,0,1,4,4v2.95" fill="none" stroke="#475867" stroke-width="2"></path>
+    <circle cx="46.58" cy="46.6" r="12.43" fill="none" stroke="#00a886" stroke-width="2"></circle>
+    <path d="M55.67,47.3a11.24,11.24,0,0,1-18,0,11.22,11.22,0,0,1,18,0Z" fill="none" stroke="#00a886" stroke-width="2"></path>
+    <path d="M50.29,46a3.62,3.62,0,1,1-5.65-3,11.59,11.59,0,0,1,4.07,0A3.6,3.6,0,0,1,50.29,46Z" fill="none" stroke="#00a886" stroke-width="2"></path>
+ </svg>
+</div>
+<h3>View all tickets</h3>
+<p>Track all your ticket's progress...</p>
+</div>
+
+<div class="card" onclick="openSubmit()">
+    <div class="icon">
+<svg viewBox="0 0 60 60" width="50">
+<circle cx="20.96" cy="22.89" r="7.95" fill="none" stroke="#475867" stroke-width="2"/>
+<path d="M5.05,51A15.91,15.91,0,0,1,22,35.12c8.45.55,14.84,8,14.84,16.42V55.8A3.18,3.18,0,0,1,33.68,59H8.23A3.18,3.18,0,0,1,5.05,55.8Z" fill="none" stroke="#475867" stroke-width="2"/>
+<path d="M37.86,23.4A11.63,11.63,0,1,1,40.38,26l-4,1.49Z" fill="none" stroke="#00a886" stroke-width="2"/>
+</svg>
+</div>
+<h3>Submit a ticket</h3>
+<p>Describe your issue...</p>
+</div>
+
+</div>
+
+</div>
+<div id="submitSection" style="display:none;">
+
+<!-- TOP BAR -->
+<div class="submit-hero">
+<h1>Submit a ticket</h1>
+</div>
+
+<!-- FORM -->
+<div class="form-container">
+<label>Student E-mail ID <span class="required">*</span></label>
+<input type="email" id="userEmail" readonly>
+
+<label>Student Name <span class="required">*</span></label>
+<input type="text" id="nameInput" readonly>
+<div class="error-text" id="nameError"></div>
+
+<label>Issue Type <span class="required">*</span></label>
+<select id="issueType">
+<option>Choose...</option>
+<option>New Feature Request</option>
+<option>New Batch Request</option>
+<option>Academic Concerns</option>
+<option>Technical Issue</option>
+<option>BOOKStore Pro Related</option>
+<option>Other...</option>
+</select>
+<div class="error-text" id="issueError"></div>
+
+<label>Please explain your concern in detail<span class="required">*</span></label>
+
+<textarea id="description" placeholder="Type something"></textarea>
+<div class="error-text" id="descError"></div>
+<label class="attach-btn">
+    <svg width="18" viewBox="0 0 24 24" fill="none" stroke="#0d3b53" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    Attach file
+    <input type="file" id="fileUpload" hidden multiple>
+</label>
+
+<div id="fileList"></div>
+
+<div class="form-actions">
+<button class="cancel" onclick="goHome()">Cancel</button>
+<button class="submit" onclick="submitTicket()">Submit</button>
+</div>
+
+</div>
+
+</div>
+<div id="ticketsSection" style="display:none;">
+
+<!-- HEADER -->
+<div style="background:#143c53;color:white;padding:60px 30px;">
+  <h1>Tickets</h1>
+</div>
+
+<!-- CONTENT -->
+<div style="display:flex;gap:30px;padding:30px 8%;">
+
+<div class="tickets-container">
+
+  <!-- LEFT LIST -->
+  <div id="ticketList" class="ticket-list"></div>
+
+  <!-- RIGHT FILTER -->
+  <div class="ticket-filter">
+    
+    <label>Status</label>
+    <select id="statusFilter">
+      <option value="all">All Tickets</option>
+      <option value="open">Open</option>
+      <option value="resolved">Resolved</option>
+    </select>
+
+    <br><br>
+
+    <label>Sort by</label>
+    <select id="sortFilter">
+      <option value="new">Date Created</option>
+      <option value="old">Oldest First</option>
+    </select>
+
+  </div>
+
+</div>
+
+</div>
+</div>
+<div id="ticketDetailSection" style="display:none;">
+
+<!-- HEADER -->
+<div style="background:#143c53;color:white;padding:50px 8%;">
+  <h2 id="detailTicketId">#----</h2>
+  <div id="detailDate" style="font-size:14px;opacity:0.9;"></div>
+</div>
+
+<!-- BODY -->
+ <div class="form-container">
+<div class="ticket-detail-layout">
+
+  <!-- LEFT CHAT -->
+  <div style="flex:3;">
+
+    <div id="conversationBox"></div>
+
+    <!-- ADD COMMENT -->
+    <div id="commentBox" style="margin-top:20px;"></div>
+
+  </div>
+
+  <!-- RIGHT DETAILS -->
+  <div style="flex:1;">
+
+    <h3>Ticket details</h3>
+
+    <p><b>Status</b><br><span id="detailStatus"></span></p>
+
+    <p><b>Issue Type</b><br><span id="detailIssue"></span></p>
+
+
+  </div>
+
+</div>
+</div>
+</div>
+<div id="imageModal" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+    <span onclick="closeImagePreview()" style="
+    position:absolute;
+    top:10px;
+    right:30px;
+    font-size:30px;
+    color:white;
+    cursor:pointer;
+    ">&times;</span>
+
+    <img id="modalImg" style="
+    max-width:90%;
+    max-height:85%;
+    border-radius:10px;
+    ">
+</div>
+<!-- FIREBASE LOGIN CHECK -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+apiKey:"AIzaSyCcpG-oEqkDprgTwWXKt5CFsttjAQAZFNg",
+authDomain:"bookstore-6ab08.firebaseapp.com",
+databaseURL:"https://bookstore-6ab08-default-rtdb.firebaseio.com",
+projectId:"bookstore-6ab08"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+/* 🔐 PAGE PROTECTION */
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    // Auto-fill logged in email
+    document.getElementById("userEmail").value = user.email || "";
+    document.getElementById("userEmail").readOnly = true;
+
+    // Profile icon letter
+    const profileLetter = document.getElementById("profileLetter");
+    if (profileLetter) {
+        profileLetter.innerText =
+            (user.email || "U").charAt(0).toUpperCase();
+    }
+
+    try {
+
+        const { get } = await import(
+            "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"
+        );
+
+        // Read full user record
+        const userSnap = await get(
+            ref(db, `users/${user.uid}`)
+        );
+
+        let displayName = "";
+
+        if (userSnap.exists()) {
+            const userData = userSnap.val();
+
+            // Database structure:
+            // users/{uid}/displayName
+            displayName = userData.displayName || "";
+        }
+
+        // Fallback if displayName not found
+        if (!displayName) {
+            displayName =
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "Student";
+        }
+
+        document.getElementById("nameInput").value = displayName;
+        document.getElementById("nameInput").readOnly = true;
+
+    } catch (err) {
+
+        console.error("Error loading profile:", err);
+
+        document.getElementById("nameInput").value =
+            user.displayName ||
+            user.email?.split("@")[0] ||
+            "Student";
+    }
+});
+
+window.submitTicket = async function(){
+
+const nameInput = document.getElementById("nameInput");
+const issueInput = document.getElementById("issueType");
+const descInput = document.getElementById("description");
+
+const name = nameInput.value.trim();
+const issue = issueInput.value;
+const desc = descInput.value.trim();
+const email = document.getElementById("userEmail").value;
+
+let valid = true;
+
+/* RESET */
+document.querySelectorAll(".error-text").forEach(e => e.innerText = "");
+[nameInput, issueInput, descInput].forEach(el => {
+    el.classList.remove("error");
+});
+
+/* NAME */
+if(!name){
+    nameInput.classList.add("error");
+    document.getElementById("nameError").innerText = "This field is required";
+    nameInput.focus();
+    valid = false;
+}
+
+/* ISSUE */
+if(issue === "Choose..."){
+    issueInput.classList.add("error");
+    document.getElementById("issueError").innerText = "This field is required";
+    valid = false;
+}
+
+/* DESCRIPTION */
+if(!desc){
+    descInput.classList.add("error");
+    document.getElementById("descError").innerText = "This field is required";
+    valid = false;
+}
+
+if(!valid) return;
+
+try{
+
+// 🔥 UNIQUE TICKET ID (6 digit)
+const ticketId = Math.floor(100000 + Math.random()*900000);
+
+// 🔥 USER UID PATH
+const user = auth.currentUser;
+if(!user){
+alert("User not logged in");
+return;
+}
+const uid = user.uid;
+
+await set(ref(db, `tickets/${uid}/${ticketId}`), {
+ticketId,
+createdAt: Date.now(),
+email,
+name,
+issue: issue.toLowerCase().replace(/[^a-z0-9]+/g,"_"),
+description: desc,
+files: await Promise.all(selectedFiles.map(file => {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            resolve({
+                name: file.name,
+                type: file.type,
+                url: reader.result   // 🔥 actual file data
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+}))
+});
+
+
+// 🔄 refresh
+location.reload();
+
+}catch(err){
+alert("Error saving ticket");
+console.error(err);
+}
+
+}
+window.openTickets = async function(){
+hideAllSections();
+document.getElementById("homeSection").style.display="none";
+document.getElementById("submitSection").style.display="none";
+document.getElementById("ticketsSection").style.display="block";
+
+const user = auth.currentUser;
+if(!user) return;
+
+const uid = user.uid;
+
+const ticketsRef = ref(db, `tickets/${uid}`);
+const snapshot = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js")
+.then(m => m.get(ticketsRef));
+
+let tickets = [];
+
+if(snapshot.exists()){
+    const data = snapshot.val();
+    tickets = Object.values(data);
+}
+
+/* DEFAULT SORT */
+tickets.sort((a,b)=>b.createdAt - a.createdAt);
+
+renderTickets(tickets);
+
+/* FILTER HANDLERS */
+document.getElementById("statusFilter").onchange = () => renderTickets(tickets);
+document.getElementById("sortFilter").onchange = () => renderTickets(tickets);
+
+function renderTickets(data){
+
+let filtered = [...data];
+
+const statusVal = document.getElementById("statusFilter").value;
+const sortVal = document.getElementById("sortFilter").value;
+
+/* FILTER */
+if(statusVal !== "all"){
+    filtered = filtered.filter(t => {
+        const s = t.status || "open";
+        return s === statusVal;
+    });
+}
+
+/* SORT */
+if(sortVal === "new"){
+    filtered.sort((a,b)=>b.createdAt - a.createdAt);
+}else{
+    filtered.sort((a,b)=>a.createdAt - b.createdAt);
+}
+
+const container = document.getElementById("ticketList");
+container.innerHTML = "";
+
+filtered.forEach(t => {
+
+const date = new Date(t.createdAt).toLocaleString();
+
+const statusClass = t.status === "resolved" ? "status-resolved" : "status-open";
+const statusText = t.status === "resolved" ? "Resolved" : "Open";
+
+container.innerHTML += `
+<div onclick="openTicketDetail(${t.ticketId})" class="ticket-item">
+
+<div>
+<div style="color:#1976d2;font-weight:500;">#${t.ticketId}</div>
+<div style="font-size:13px;color:#666;">Created on ${date} - via Portal</div>
+</div>
+
+<div class="status-badge ${statusClass}">
+${statusText}
+</div>
+
+</div>
+`;
+});
+
+}
+};
+
+window.openTicketDetail = async function(ticketId){
+hideAllSections();
+document.getElementById("ticketDetailSection").style.display = "block";
+document.getElementById("ticketsSection").style.display="none";
+const user = auth.currentUser;
+if(!user) return;
+
+const uid = user.uid;
+
+const { get } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js");
+
+const snapshot = await get(ref(db, `tickets/${uid}/${ticketId}`));
+
+if(!snapshot.exists()) return;
+
+const t = snapshot.val();
+
+/* HEADER */
+document.getElementById("detailTicketId").innerText = `#${t.ticketId}`;
+document.getElementById("detailDate").innerText =
+"Created on " + new Date(t.createdAt).toLocaleString() + " - via Portal";
+
+/* RIGHT PANEL */
+document.getElementById("detailStatus").innerText =
+t.status === "resolved" ? "Resolved" : "Open";
+
+document.getElementById("detailIssue").innerText =
+(t.issue || "other").replace(/_/g," ");
+
+/* CONVERSATION */
+const box = document.getElementById("conversationBox");
+box.innerHTML = "";
+
+/* USER MESSAGE */
+const userInitial = (t.name || "U").charAt(0).toUpperCase();
+
+box.innerHTML += `
+<div style="background:white;padding:15px;border-radius:10px;margin-bottom:15px;display:flex;gap:10px;">
+
+<div style="width:35px;height:35px;border-radius:50%;background:#cfd8dc;
+display:flex;align-items:center;justify-content:center;font-weight:600;">
+${userInitial}
+</div>
+
+<div>
+  <b>${t.name}</b> 
+  <div style="color:#888;font-size:12px;">
+  reported ${new Date(t.createdAt).toLocaleString()}
+  </div>
+
+  <p style="margin-top:8px;">${t.description}</p>
+  <div style="margin-top:10px;">
+${
+(t.files && t.files.length > 0)
+? t.files.map(file => {
+
+    if(file.type && file.type.startsWith("image/")){
+    return `
+    <img src="${file.url}" 
+         onclick="openImagePreview('${file.url}')"
+         style="max-width:200px;border-radius:8px;margin-top:8px;display:block;cursor:pointer;">
+    `;
+}
+
+    return `
+    <a href="${file.url}" target="_blank"
+       style="display:block;margin-top:6px;color:#1976d2;text-decoration:underline;">
+       📎 ${file.name}
+    </a>
+    `;
+
+}).join("")
+: ""
+}
+</div>
+</div>
+
+</div>
+`;
+
+/* ADMIN REPLY */
+if(t.admin_reply){
+
+box.innerHTML += `
+<div style="background:#f1f3f5;padding:15px;border-radius:10px;margin-top:10px;display:flex;gap:10px;">
+
+<img src="book.png" style="width:35px;height:35px;border-radius:50%;background:#cfd8dc;padding:5px;">
+
+<div>
+  <b>BOOKStore Team</b>
+  <div style="font-size:12px;color:#666;">
+  replied • ${new Date(t.admin_reply_time || Date.now()).toLocaleString()}
+  </div>
+
+  <p style="margin-top:10px;white-space:pre-line;">
+  ${t.admin_reply}
+  </p>
+</div>
+
+</div>
+`;
+}
+/* USER REPLY (reply1) */
+if(t.reply1){
+
+const userInitial = (t.name || "U").charAt(0).toUpperCase();
+
+box.innerHTML += `
+<div style="background:#e3f2fd;padding:15px;border-radius:10px;margin-top:10px;display:flex;gap:10px;">
+
+<div style="width:35px;height:35px;border-radius:50%;background:#90caf9;
+display:flex;align-items:center;justify-content:center;font-weight:600;">
+${userInitial}
+</div>
+
+<div>
+  <b>${t.name}</b>
+  <div style="font-size:12px;color:#666;">replied</div>
+
+  <p style="margin-top:8px;">${t.reply1}</p>
+</div>
+
+</div>
+`;
+}
+
+const commentBox = document.getElementById("commentBox");
+
+/* if reply1 exists → hide input */
+if(t.reply1){
+
+if(t.reply1){
+commentBox.innerHTML = "";
+}
+
+}else{
+
+commentBox.innerHTML = `
+<textarea id="replyInput" placeholder="Write your reply..."
+style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;"></textarea>
+
+<button onclick="submitReply(${t.ticketId})"
+style="margin-top:10px;padding:10px 15px;background:#0d3b53;color:white;border:none;border-radius:6px;">
+Submit Reply
+</button>
+`;
+
+}
+};
+window.submitReply = async function(ticketId){
+
+const input = document.getElementById("replyInput");
+const text = input.value.trim();
+
+if(!text){
+alert("Write something");
+return;
+}
+
+const user = auth.currentUser;
+const uid = user.uid;
+
+const { update } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js");
+
+await update(ref(db, `tickets/${uid}/${ticketId}`), {
+reply1: text
+});
+
+openTicketDetail(ticketId); // refresh
+
+};
+window.openImagePreview = function(src){
+    const modal = document.getElementById("imageModal");
+    const img = document.getElementById("modalImg");
+
+    img.src = src;
+    modal.style.display = "flex";
+}
+
+window.closeImagePreview = function(){
+    document.getElementById("imageModal").style.display = "none";
+}
+import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+window.logoutUser = function(){
+    signOut(auth).then(()=>{
+        window.location.href = "index.html";
+    }).catch(()=>{
+        window.location.href = "index.html";
+    });
+};
+</script>
+<script>
+function hideAllSections(){
+    document.getElementById("homeSection").style.display = "none";
+    document.getElementById("submitSection").style.display = "none";
+    document.getElementById("ticketsSection").style.display = "none";
+    document.getElementById("ticketDetailSection").style.display = "none";
+}
+function goTo(path){
+    window.location.hash = path;
+}
+function handleRoute(){
+
+    const hash = window.location.hash.replace("#","");
+
+    if(hash === "tickets"){
+        openTickets();
+    }
+    else if(hash === "tickets/new"){
+        openSubmit();
+    }
+    else if(hash === "home"){
+        goHome();
+    }
+}
+
+/* RUN ON LOAD */
+window.addEventListener("load", handleRoute);
+
+/* RUN WHEN URL CHANGES */
+window.addEventListener("hashchange", handleRoute);
+function goHome(){
+    window.location.hash = "home";
+    hideAllSections();
+    document.getElementById("homeSection").style.display = "block";
+}
+
+function openTickets(){
+    window.location.hash = "tickets";
+    hideAllSections();
+    document.getElementById("ticketsSection").style.display = "block";
+}
+
+function openSubmit(){
+    window.location.hash = "tickets/new";
+    hideAllSections();
+    document.getElementById("submitSection").style.display = "block";
+}
+const fileInput = document.getElementById("fileUpload");
+const fileList = document.getElementById("fileList");
+
+let selectedFiles = [];
+
+fileInput.addEventListener("change", () => {
+
+selectedFiles = Array.from(fileInput.files);
+renderFiles();
+
+});
+
+function renderFiles(){
+fileList.innerHTML = "";
+
+selectedFiles.forEach((file, index) => {
+
+let sizeKB = (file.size / 1024).toFixed(1);
+
+let div = document.createElement("div");
+div.className = "file-item";
+
+div.innerHTML = `
+<span class="remove-file" onclick="removeFile(${index})">✖</span>
+${file.name} (${sizeKB} kb)
+`;
+
+fileList.appendChild(div);
+
+});
+}
+
+function removeFile(index){
+selectedFiles.splice(index,1);
+renderFiles();
+}
+function toggleMenu(){
+    document.getElementById("mobileMenu").classList.toggle("active");
+}
+
+function toggleProfilePopup(){
+    const popup = document.getElementById("profilePopup");
+    popup.style.display = popup.style.display === "block" ? "none" : "block";
+}
+
+function goProfile(){
+    window.location.href = "profile.html";
+}
+
+/* CLOSE POPUP ON OUTSIDE CLICK */
+window.addEventListener("click", function(e){
+    const popup = document.getElementById("profilePopup");
+    const profile = document.getElementById("profileLetter");
+
+    if(!profile.contains(e.target)){
+        popup.style.display = "none";
+    }
+});
+
+
+function navigate(path){
+    window.location.hash = path;
+
+    // close menu automatically
+    document.getElementById("mobileMenu").classList.remove("active");
+
+    handleRoute(); // update UI
+}
+function setActiveMenu(path){
+
+document.querySelectorAll(".menu-item").forEach(item=>{
+    item.classList.remove("active");
+});
+
+if(path === "home"){
+document.querySelectorAll(".menu-item")[0].classList.add("active");
+}
+else if(path === "tickets"){
+document.querySelectorAll(".menu-item")[1].classList.add("active");
+}
+else if(path === "tickets/new"){
+document.querySelectorAll(".menu-item")[2].classList.add("active");
+}
+}
+function handleRoute(){
+
+const hash = window.location.hash.replace("#","");
+
+setActiveMenu(hash);
+
+if(hash === "tickets"){
+    openTickets();
+}
+else if(hash === "tickets/new"){
+    openSubmit();
+}
+else{
+    goHome();
+}
+}
+</script>
+</body>
+</html>
