@@ -1425,10 +1425,19 @@ input:checked + .slider:before {
 <a href="home.html">
 <i class="ph ph-squares-four"></i> All Classes
 </a>
+<div id="adminToolsSection" style="display:none;">
+    <h4>ADMIN TOOLS</h4>
+
+    <a href="admin.html" id="adminLink" class="active">
+        <i class="ph ph-lock"></i> Management
+    </a>
+
+    <a href="adminsupport.html" id="adminSupportBtn">
+        <i class="ph ph-headset"></i> Admin Support
+    </a>
+</div>
 <h4>EXPLORE BOOKStore</h4>
-<a href="admin.html" id="adminLink" class="active" style="display:none;">
-  <i class="ph ph-lock"></i> Admin Panel
-</a>
+
 <a href="xp-mart.html">
 <i class="ph ph-shopping-bag"></i> XP Mart
 </a>
@@ -1437,8 +1446,10 @@ input:checked + .slider:before {
 </a>
 
 <h4>MORE</h4>
+
+
 <a href="support.html">
-<i class="ph ph-headset"></i> Help & Support
+    <i class="ph ph-headset"></i> Help & Support
 </a>
 
 <a href="refer.html">
@@ -1663,9 +1674,25 @@ document.body.style.display="none";
 // Wait for Firebase auth to finish and body to be visible
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        window.location.href = "index.html";
-        return;
-    }
+    window.location.replace("index.html");
+    return;
+}
+
+const adminUIDs = [
+    "F9UxJ3W6CVUVIIgwByuHQxscQab2",
+    "GpdeGHfMN5OQATvsGR4Y7TWHRrs1"
+];
+
+if (!adminUIDs.includes(user.uid)) {
+    window.location.replace("404.html");
+    return;
+}
+const adminToolsSection =
+document.getElementById("adminToolsSection");
+
+if (adminToolsSection) {
+    adminToolsSection.style.display = "block";
+}
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.querySelector(".sidebar");
 const overlay = document.getElementById("overlay");
@@ -1684,14 +1711,15 @@ overlay.onclick = () => {
     document.body.style.display = "block";
 
     const uid = user.uid;
-    const adminUIDs = [
-  "F9UxJ3W6CVUVIIgwByuHQxscQab2",
-  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1"
-];
 const adminLink = document.getElementById("adminLink");
+const adminSupportBtn = document.getElementById("adminSupportBtn");
 
-if(adminUIDs.includes(uid)){
-  adminLink.style.display = "flex";
+if (adminLink) {
+    adminLink.style.display = "flex";
+}
+
+if (adminSupportBtn) {
+    adminSupportBtn.style.display = "flex";
 }
 const userRef = ref(db, "users/" + uid);
 // 🔥 LOAD ALL USERS
