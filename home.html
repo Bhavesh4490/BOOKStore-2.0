@@ -995,7 +995,22 @@ display:flex;
 .mobile-banner{
   display:none;
 }
+/* GOAL DROPDOWN HEADER */
+.goal-header-trigger{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
 
+.goal-header-trigger img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+}
+
+.goal-header-trigger .ph-caret-down{
+    font-size:14px;
+}
 </style>
 </head>
 
@@ -1013,8 +1028,11 @@ display:flex;
 
 <div class="dropdown" id="goalDropdown">
 
-<span id="goalText">Select Goal</span>
-<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
+<div class="goal-header-trigger">
+    <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/51f11d33-2af4-422e-afde-de55f59a5d7b.png" alt="Goal">
+    <span id="goalText">Select Goal</span>
+    <span><i class="ph ph-caret-down"></i></span>
+</div>
 
 <div id="goalMenu" class="goal-menu">
 <div data-goal="class9th">9th Class</div>
@@ -1061,7 +1079,7 @@ display:flex;
 <!-- SIDEBAR -->
 
 <div class="sidebar">
-
+<h4>STUDY PACKS</h4>
 <a href="study.html">
 <i class="ph ph-graduation-cap"></i> Study Hub
 </a>
@@ -1069,20 +1087,21 @@ display:flex;
 <a class="active">
 <i class="ph ph-squares-four"></i> All Classes
 </a>
-
+<h4>EXPLORE BOOKStore</h4>
 <a href="admin.html" id="adminLink" style="display:none;">
   <i class="ph ph-lock"></i> Admin Panel
 </a>
-
-
-<h4>MORE</h4>
-<a href="xp-mart.html">
+<a href="xp-mart.html" >
 <i class="ph ph-shopping-bag"></i> XP Mart
 </a>
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
 </a>
 
+<h4>MORE</h4>
+<a href="support.html">
+<i class="ph ph-headset"></i> Help & Support
+</a>
 
 <a href="refer.html">
 <i class="ph ph-gift"></i> Refer & Earn
@@ -1142,6 +1161,7 @@ display:flex;
             <div data-coach="Mission JEET">Mission JEET</div>
             <div data-coach="Next Toppers">Next Toppers</div>
             <div data-coach="Vibrant Academy">Vibrant Academy</div>
+            <div data-coach="Master Sahab">Master Sahab</div>
         </div>
     </div>
 </div>
@@ -1252,6 +1272,7 @@ margin-bottom:10px;
   <option value="Mission JEET">Mission JEET</option>
   <option value="Next Toppers">Next Toppers</option>
   <option value="Vibrant Academy">Vibrant Academy</option>
+  <option value="Master Sahab">Master Sahab</option>
 </select>
 <select id="editLang" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="English">English</option>
@@ -1329,6 +1350,7 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
   <option value="Mission JEET">Mission JEET</option>
   <option value="Next Toppers">Next Toppers</option>
   <option value="Vibrant Academy">Vibrant Academy</option>
+  <option value="Master Sahab">Master Sahab</option>
 </select>
 <select id="addLang" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="English">English</option>
