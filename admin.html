@@ -1334,6 +1334,22 @@ input:checked + .slider:before {
   border-radius:6px;
   margin-left:6px;
 }
+/* GOAL DROPDOWN HEADER */
+.goal-header-trigger{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.goal-header-trigger img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+}
+
+.goal-header-trigger .ph-caret-down{
+    font-size:14px;
+}
 </style>
 </head>
 
@@ -1351,9 +1367,11 @@ input:checked + .slider:before {
 
 <div class="dropdown" id="goalDropdown">
 
-<span id="goalText">Select Goal</span>
-<span style="margin-left:6px;"><i class="ph ph-caret-down"></i></span>
-
+<div class="goal-header-trigger">
+    <img src="https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/51f11d33-2af4-422e-afde-de55f59a5d7b.png" alt="Goal">
+    <span id="goalText">Select Goal</span>
+    <span><i class="ph ph-caret-down"></i></span>
+</div>
 <div id="goalMenu" class="goal-menu">
 <div data-goal="class9th">9th Class</div>
 <div data-goal="board10th">10th Boards</div>
@@ -1399,7 +1417,7 @@ input:checked + .slider:before {
 <!-- SIDEBAR -->
 
 <div class="sidebar">
-
+<h4>STUDY PACKS</h4>
 <a href="study.html">
 <i class="ph ph-graduation-cap"></i> Study Hub
 </a>
@@ -1407,21 +1425,21 @@ input:checked + .slider:before {
 <a href="home.html">
 <i class="ph ph-squares-four"></i> All Classes
 </a>
-<a class="active" id="adminLink" style="display:none;">
+<h4>EXPLORE BOOKStore</h4>
+<a href="admin.html" id="adminLink" class="active" style="display:none;">
   <i class="ph ph-lock"></i> Admin Panel
 </a>
-
-
-
-<h4>MORE</h4>
 <a href="xp-mart.html">
 <i class="ph ph-shopping-bag"></i> XP Mart
 </a>
-
 <a href="josh-game.html">
 <i class="ph ph-lightning"></i> Josh Game
 </a>
 
+<h4>MORE</h4>
+<a href="support.html">
+<i class="ph ph-headset"></i> Help & Support
+</a>
 
 <a href="refer.html">
 <i class="ph ph-gift"></i> Refer & Earn
