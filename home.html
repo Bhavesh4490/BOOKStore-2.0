@@ -1087,10 +1087,17 @@ display:flex;
 <a class="active">
 <i class="ph ph-squares-four"></i> All Classes
 </a>
-<h4>EXPLORE BOOKStore</h4>
+
+<h4>ADMIN TOOLS</h4>
 <a href="admin.html" id="adminLink" style="display:none;">
-  <i class="ph ph-lock"></i> Admin Panel
+  <i class="ph ph-lock"></i> Management
+</a> 
+<a href="adminsupport.html" id="adminSupportBtn" style="display:none;">
+    <i class="ph ph-headset"></i> Admin Support
 </a>
+
+<h4>EXPLORE BOOKStore</h4>
+
 <a href="xp-mart.html" >
 <i class="ph ph-shopping-bag"></i> XP Mart
 </a>
@@ -1591,18 +1598,24 @@ const provider = user.providerData[0]?.providerId || "";
 const device = getDeviceType();
 // 🔒 ADMIN ACCESS CONTROL
 const adminLink = document.getElementById("adminLink");
+const adminSupportBtn = document.getElementById("adminSupportBtn");
 const adminActions = document.getElementById("adminActions");
+
 const adminUIDs = [
   "F9UxJ3W6CVUVIIgwByuHQxscQab2",
-  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1" // ✅ NEW ADMIN
+  "GpdeGHfMN5OQATvsGR4Y7TWHRrs1"
 ];
 
-if (adminUIDs.includes(uid)) {
+const isAdmin = adminUIDs.includes(uid);
+
+if (isAdmin) {
   adminLink.style.display = "flex";
-  adminActions.style.display = "flex"; // ✅ SHOW BUTTONS
+  adminSupportBtn.style.display = "flex";
+  adminActions.style.display = "flex";
 } else {
   adminLink.style.display = "none";
-  adminActions.style.display = "none"; // ❌ HIDE BUTTONS
+  adminSupportBtn.style.display = "none";
+  adminActions.style.display = "none";
 }
 const userRef = ref(db, "users/" + uid);
 const snapshot = await get(userRef);
