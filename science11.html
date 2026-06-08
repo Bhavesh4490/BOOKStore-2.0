@@ -1283,12 +1283,14 @@ padding:16px;
 <i class="ph ph-squares-four"></i> All Classes
 </a>
 
-<h4>ADMIN TOOLS</h4>
+<h4 id="adminToolsHeading" style="display:none;">ADMIN TOOLS</h4>
+
 <a href="admin.html" id="adminLink" style="display:none;">
   <i class="ph ph-lock"></i> Management
-</a> 
+</a>
+
 <a href="adminsupport.html" id="adminSupportBtn" style="display:none;">
-    <i class="ph ph-headset"></i> Admin Support
+  <i class="ph ph-headset"></i> Admin Support
 </a>
 
 
@@ -1867,19 +1869,18 @@ const adminUIDs = [
 const adminLink = document.getElementById("adminLink");
 const adminActions = document.getElementById("adminActions");
 const adminSupportBtn = document.getElementById("adminSupportBtn");
+const adminToolsHeading = document.getElementById("adminToolsHeading");
 
 if (adminUIDs.includes(uid)) {
 
-  // Show Admin Tools
+  adminToolsHeading.style.display = "block";
   adminLink.style.display = "flex";
   adminActions.style.display = "flex";
-
-  // Show Admin Support
   adminSupportBtn.style.display = "flex";
 
 } else {
 
-  // Hide everything for normal users
+  adminToolsHeading.style.display = "none";
   adminLink.style.display = "none";
   adminActions.style.display = "none";
   adminSupportBtn.style.display = "none";
