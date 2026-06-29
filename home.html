@@ -1011,6 +1011,7 @@ display:flex;
 .goal-header-trigger .ph-caret-down{
     font-size:14px;
 }
+
 </style>
 </head>
 
@@ -1157,6 +1158,7 @@ display:flex;
             <div data-class="commerce11">11th Commerce</div>
             <div data-class="humanities11">11th Humanities</div>
         <div data-class="skills">Earners</div>
+        <div data-class="olympiads">Olympiads</div>
           </div>
     </div>
 
@@ -1370,6 +1372,7 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 
 <select id="addClass" style="width:100%; margin-bottom:10px; padding:8px;">
     <option value="">Select Class *</option>
+    <option value="olympiads">Olympiads</option>
     <option value="skills">Earners</option>
     <option value="class9th">9th Class</option>
     <option value="board10th">10th Boards</option>
@@ -1778,6 +1781,7 @@ const coursesContainer = document.querySelector(".courses");
 function createCard(data, categoryKey) {
   const categoryMap = {
     skills: "Earners",
+    olympiads: "Olympiads",
     class9th: "9th Class",
     board10th: "10th Boards",
     science11: "11th Science",
@@ -1848,17 +1852,22 @@ if (isMember && !isSubscribed) {
 `;
 
   // Explore button logic
-  const btn = card.querySelector(".explore");
-  btn.onclick = () => {
-    if (isMember && !isSubscribed) {
-    window.location.href = "xp-mart.html"; // 🔥 redirect to subscription
+ const btn = card.querySelector(".explore");
+btn.onclick = () => {
+  if (isMember && !isSubscribed) {
+    window.location.href = "xp-mart.html";
     return;
   }
-    if (!data.link) return;
-    const cleanLink = data.link.trim();
-    if (cleanLink.endsWith(".html")) window.location.href = cleanLink;
-    else window.open(cleanLink, "_blank");
-  };
+
+  if (!data.link) return;
+
+  const cleanLink = data.link.trim();
+
+  if (cleanLink.endsWith(".html"))
+    window.location.href = cleanLink;
+  else
+    window.open(cleanLink, "_blank");
+};
 
  // --- ICONS ---
   const editIcon = card.querySelector(".edit-icon");
@@ -2515,5 +2524,6 @@ overlay.onclick = () => {
 };
 
 </script>
+
 </body>
 </html>
