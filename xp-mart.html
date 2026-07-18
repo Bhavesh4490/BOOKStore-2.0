@@ -2752,9 +2752,7 @@ applyCouponBtn.addEventListener("click", () => {
 // ✅ VALID COUPONS
 if (
   code === "bhavesh100" ||
-  code === "books100" ||
-  code === "bhavesh90" ||
-  code === "bookspro90"
+  code === "books100" 
 ) {
 
   // 🔥 90% OFF → 10 XP
@@ -2781,7 +2779,8 @@ if (
   applyCouponBtn.disabled = true;
   couponInput.disabled = true;
 
-} else if (code === "kingofpirates80") {
+} else if (code === "kingofpirates80"
+          code === "sanjana80") {
 
   // 🔥 80% OFF → 20 XP
   discountAmount = Math.floor(basePrice * 0.8);
