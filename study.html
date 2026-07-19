@@ -2171,6 +2171,17 @@ body.popup-active #notificationPanel{
 
 <div class="study-zone">
 
+  <!-- MY BATCHES -->
+  <div class="study-card" style="display:none;"onclick="window.open('https://pipro.deltastudy.site/')">
+    <div class="study-icon">
+      <img src="ph ph-student"></img>
+    </div>
+
+    <div class="study-content">
+      <h3>My Batches</h3>
+      <p>View list of batches in which you are enrollhttps://nextenigma-mj.pages.dev/_next/static/media/4cf2300e9c8272f7-s.p.woff2ed</p>
+    </div>
+  </div>
 <!-- KHAZANA -->
 <div class="study-card" id="khazanawrapper" style="display:none;"
 onclick="window.open('/khazana.html')">
@@ -2185,8 +2196,23 @@ onclick="window.open('/khazana.html')">
 
 </div>
 
+<!-- PI PRO -->
+<div class="study-card" id="piProWrapper" style="display:none;"
+onclick="window.open('https://pipro.deltastudy.site/', '_blank')">
+
+  <div class="study-icon">
+    <img src="https://static.pw.live/5eb393ee95fab7468a79d189/ADMIN/cbb12f15-dd6a-4e69-9294-ad3c8d94af27.svg"></i>
+  </div>
+
+  <div class="study-content">
+    <h3>Pi Pro</h3>
+    <p>Unlock your Pi Pro learning experience</p>
+  </div>
+
+</div>
+
 <!-- LIBRARY -->
-<div class="study-card" id="libraryCard">
+<div class="study-card" id="libraryCard" style="display:none;">
 
   <div class="study-icon">
     <i class="ph-fill ph-books"></i>
@@ -3236,21 +3262,28 @@ if(snap.exists()){
   let name = data.displayName ? data.displayName : "User";
 
 // Check subscription
-const khazanaWrapper = document.getElementById("khazanawrapper"); // Ensure ID matches HTML
+const khazanaWrapper = document.getElementById("khazanawrapper");
+const piProWrapper = document.getElementById("piProWrapper");
 
 if(data.subscribed === true){
   userName.innerHTML = `<span class="pro-badge">PRO</span> Hi, ${name} `;
   
-  // ✅ Show Khazana only for subscribed users
+  // ✅ Show premium cards only for subscribed users
   if(khazanaWrapper) {
     khazanaWrapper.style.display = "flex";
+  }
+  if(piProWrapper) {
+    piProWrapper.style.display = "flex";
   }
 } else {
   userName.innerText = "Hi, " + name;
   
-  // ❌ Ensure Khazana is hidden for others
+  // ❌ Ensure premium cards are hidden for others
   if(khazanaWrapper) {
     khazanaWrapper.style.display = "none";
+  }
+  if(piProWrapper) {
+    piProWrapper.style.display = "none";
   }
 }
 
